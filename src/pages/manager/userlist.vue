@@ -33,7 +33,7 @@
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.pageNo" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
       </el-pagination>
     </div>
-    <el-dialog :title="userManageTitle" size="tiny" :visible.sync="modifyDialog.visible" :modal-append-to-body="false">
+    <el-dialog :title="userManageTitle" size="tiny" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
       <el-form ref="modifyForm" :model="modifyDialog.data" label-width="100px" :rules="modifyDialog.rules">
         <el-form-item label="用户名：" prop="userName">
           <el-input v-model="modifyDialog.data.userName"></el-input>

@@ -21,12 +21,12 @@
           <!-- <el-button type="text">
             <router-link :to="{path:'/home/manager/user-detail'}">查看</router-link>
           </el-button> -->
-          <el-button @click="modifyDevice(scope.row)" type="info" size="small">修改</el-button>
-          <el-button @click="deleteDevice(scope.row.deviceId)" type="info" size="small">删除</el-button>
+          <el-button @click="modifyDevice(scope.row)" type="text" size="small">修改</el-button>
+          <el-button @click="deleteDevice(scope.row.deviceId)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog :title="deviceManageTitle" size="tiny" :visible.sync="modifyDialog.visible" :modal-append-to-body="false">
+    <el-dialog :title="deviceManageTitle" size="tiny" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
       <el-form ref="modifyForm" :model="modifyDialog.data" label-width="100px" :rules="modifyDialog.rules">
         <el-form-item label="设备序列号：" prop="sn">
           <el-input v-model="modifyDialog.data.sn"></el-input>

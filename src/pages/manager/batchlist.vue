@@ -24,10 +24,10 @@
       </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
-          <el-button type="info" size="small">
+          <el-button type="text" size="small">
             <router-link :to="{path:'/home/manager/batch-detail',query:{id:scope.row.batchId}}">查看</router-link>
           </el-button>
-          <el-button @click="deleteBatch(scope.row.batchId)" type="info" size="small">删除</el-button>
+          <el-button @click="deleteBatch(scope.row.batchId)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

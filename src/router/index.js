@@ -75,6 +75,12 @@ const DeviceManage = (resolve) => {
   })
 }
 
+const orderPayment = (resolve) => {
+  import('pages/user/order-payment').then((module) => {
+    resolve(module)
+  })
+}
+
 const HistoryData = (resolve) => {
   import('pages/user/historydata').then((module) => {
     resolve(module)
@@ -82,7 +88,7 @@ const HistoryData = (resolve) => {
 }
 
 const BtnControl = (resolve) => {
-  import('pages/manager/btn-control').then((module) => {
+  import('pages/user/btn-control').then((module) => {
     resolve(module)
   })
 }
@@ -136,12 +142,16 @@ export default new Router({
       name: '设备托管',
       component: DeviceManage
     }, {
+      path: 'user/order-payment',
+      name: '订单支付',
+      component: orderPayment
+    }, {
       path: 'user/historydata',
       name: '历史数据',
       component: HistoryData
     }, {
-      path: 'manager/btn-control',
-      name: '按钮开关',
+      path: 'user/btn-control',
+      name: '设备控制',
       component: BtnControl
     }, {
       path: 'manager/expertlist',

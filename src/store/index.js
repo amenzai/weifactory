@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const state = {
   loading: false,
   url: window.sessionStorage.getItem('url') || '',
-  user: window.sessionStorage.getItem('user') || ''
+  user: window.sessionStorage.getItem('user') || '',
+  orderPay: {}
 }
 const store = new Vuex.Store({
   state: state,
@@ -29,6 +30,9 @@ const store = new Vuex.Store({
       } else {
         window.sessionStorage.removeItem('user')
       }
+    },
+    UPDATE_ORDER(state, orderPay) {
+      state.orderPay = orderPay
     }
   }
 })

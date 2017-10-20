@@ -82,7 +82,7 @@
       </div>
       </Col>
     </Row>
-    <el-dialog title="修改密码" size="small" :visible.sync="modifyPwd.visible" :modal-append-to-body="false">
+    <el-dialog title="修改密码" size="tiny" :visible.sync="modifyPwd.visible" :close-on-click-modal="false">
       <el-form :model="modifyPwd.data" :rules="modifyPwd.rules" label-width="120px" ref="modifyPwdForm">
         <el-form-item label="旧密码" prop="oldPwd">
           <el-input v-model="modifyPwd.data.oldPassword" type="password"></el-input>
@@ -262,9 +262,6 @@ body {
   color: rgba(255, 255, 255, .7);
   a {
     color: rgba(255, 255, 255, .7);
-    &:hover {
-      color: #fff;
-    }
   }
   .layout-logo-left {
     width: 90%;

@@ -146,7 +146,10 @@
           <router-link :to="{ path: '/home/user/historydata',query:{id:$route.params.id}}">查询历史数据</router-link>
         </el-button>
         <el-button>
-          <router-link :to="{ path: '/home/user/device-manage'}">申请专家托管</router-link>
+          <router-link :to="{ path: '/home/user/device-manage',query:{id:$route.params.id}}">申请专家托管</router-link>
+        </el-button>
+        <el-button>
+          <router-link :to="{ path: '/home/user/btn-control'}">设备控制</router-link>
         </el-button>
       </div>
     </el-col>
@@ -155,7 +158,7 @@
         <el-button type="text" @click="addBatch">立即添加</el-button>
       </p>
     </el-col>
-    <el-dialog title="添加设备批次信息" size="large" :visible.sync="batchDialog.visible" :modal-append-to-body="false">
+    <el-dialog title="添加设备批次信息" size="large" :visible.sync="batchDialog.visible" :close-on-click-modal="false">
       <el-form ref="addForm" :model="batchDialog.data" label-width="110px" :rules="batchDialog.rules">
         <el-row>
           <el-col :span="8">

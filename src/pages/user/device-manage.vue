@@ -1,34 +1,25 @@
 <template>
   <el-row>
     <el-col :span="14" :offset="2">
-      <el-form ref="submitForm" :model="form" label-width="120px">
-        <el-form-item label="设备型号：">
-          <el-input v-model="form.seoerName"></el-input>
-        </el-form-item>
-        <el-form-item label="蔬菜名称">
-          <el-input v-model="form.seoerName"></el-input>
-        </el-form-item>
-        <el-form-item label="栽培模式：">
-          <el-select clearable placeholder="请选择" v-model="form.demo">
-            <el-option label="经济效益优先模式" value="1"></el-option>
-            <el-option label="速率优先模式" value="2"></el-option>
-            <el-option label="采收期确定模式" value="3"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="选择托管方式：">
-          <el-select clearable placeholder="请选择" v-model="form.demo">
-            <el-option label="设备全托管方式" value="1"></el-option>
+      <el-form ref="submitForm" :model="form" label-width="120px" :rules="form.rules">
+        <el-form-item label="设备序列号：">{{ resData.sn }}</el-form-item>
+        <el-form-item label="第一层蔬菜名称">{{ resData.plantOne }}</el-form-item>
+        <el-form-item label="第二层蔬菜名称">{{ resData.plantTwo }}</el-form-item>
+        <el-form-item label="第三层蔬菜名称">{{ resData.plantThree }}</el-form-item>
+        <el-form-item label="选择托管方式：" prop="deposit">
+          <el-select clearable placeholder="请选择" v-model="form.deposit" @change="checkValue1">
+            <el-option label="全托管方式" value="1"></el-option>
             <el-option label="自定义托管方式" value="2"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="选择托管专家：">
-          <el-select clearable placeholder="请选择" v-model="form.demo">
-            <el-option label="专家" value="1"></el-option>
-            <el-option label="专家" value="0"></el-option>
+        <el-form-item label="选择托管专家：" prop="exportId">
+          <el-select clearable placeholder="请选择" v-model="form.exportId" @change="checkValue2">
+            <el-option :label="item.label" :value="item.value" v-for="(item,index) in expertArr" :key="index"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="费用：">{{ resData.cost }}</el-form-item>
         <el-form-item class="ta-c">
-          <el-button type="primary" @click="submit">提交</el-button>
+          <el-button type="primary" @click="submit('submitForm')">提交</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -38,7 +29,23 @@
 export default {
   data() {
     return {
+      deviceId: this.$route.query.id || '',
+      batchId: '',
+      expertArr: [],
+      resData: {},
       form: {
+        deposit: '',
+        exportId: '',
+        rules: {
+          deposit: [{
+            required: true,
+            message: '请选择托管方式'
+          }],
+          exportId: [{
+            required: true,
+            message: '请选择专家'
+          }]
+        }
       }
     }
   },
@@ -47,19 +54,52 @@ export default {
   },
   methods: {
     getList() {
-      // successcompanyList(this.table.send)
-      //   .then(res => {
-      //     console.log('angent/sea', res);
-      //     this.table.data = res.data.result;
-      //     this.table.totalCount = res.data.totalCount;
-      //     this.table.totalPages = res.data.totalPages;
-      //   })
+      this.$ajax.get('order/device', this.deviceId)
+        .then(res => {
+          console.log('', res);
+          this.resData = res.data;
+          this.expertArr = this.resData.exports.map(item => {
+            return {
+              label: item.userName,
+              value: item.userId
+            }
+          })
+          console.log(this.expertArr)
+        })
     },
-    submit() {
-
+    submit(formName) {
+      let valid = false;
+      this.$refs[formName].validate((v) => {
+        valid = v
+      });
+      if (!valid) {
+        return false;
+      }
+      const send = {
+        sn: this.resData.sn,
+        batchId: this.resData.batchId,
+        deposit: this.form.deposit,
+        exportId: this.form.exportId
+      }
+      this.$ajax.post('order/pay', send)
+        .then(res => {
+          console.log('', res);
+          var type = res.success ? 'success' : 'error';
+          if (type === 'success') {
+            this.$store.commit('UPDATE_ORDER', res.data);
+            this.$router.push('/home/user/order-payment')
+          }
+          this.$message({
+            message: res.message,
+            type: type
+          });
+        })
     },
-    resetForm(formName) {
-      this.$refs[formName] && this.$refs[formName].resetFields();
+    checkValue1(val) {
+      this.form.deposit = val.toString()
+    },
+    checkValue2(val) {
+      this.form.exportId = val.toString()
     }
   }
 }
