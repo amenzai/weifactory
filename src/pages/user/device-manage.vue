@@ -3,9 +3,9 @@
     <el-col :span="14" :offset="2">
       <el-form ref="submitForm" :model="form" label-width="120px" :rules="form.rules">
         <el-form-item label="设备序列号：">{{ resData.sn }}</el-form-item>
-        <el-form-item label="第一层蔬菜名称">{{ resData.plantOne }}</el-form-item>
-        <el-form-item label="第二层蔬菜名称">{{ resData.plantTwo }}</el-form-item>
-        <el-form-item label="第三层蔬菜名称">{{ resData.plantThree }}</el-form-item>
+        <el-form-item label="第一层蔬菜名称：">{{ resData.plantOne }}</el-form-item>
+        <el-form-item label="第二层蔬菜名称：">{{ resData.plantTwo }}</el-form-item>
+        <el-form-item label="第三层蔬菜名称：">{{ resData.plantThree }}</el-form-item>
         <el-form-item label="选择托管方式：" prop="deposit">
           <el-select clearable placeholder="请选择" v-model="form.deposit">
             <el-option label="全托管方式" value="1"></el-option>

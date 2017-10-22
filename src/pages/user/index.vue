@@ -529,6 +529,7 @@ export default {
 
 .ivu-icon {
   margin-right: 60px;
+  margin-left: 12px;
 }
 
 .el-switch {

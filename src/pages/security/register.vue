@@ -21,11 +21,19 @@
   }
 }
 </style>
-
 <template>
   <div @keyup.enter="submitForm('regForm')">
     <el-form :model="form" :rules="rules" ref="regForm" label-position="left" label-width="0px" class="demo-ruleForm reg-container">
       <h2 class="title">用户注册</h2>
+      <el-form-item>
+        <el-radio-group v-model="form.roleId">
+          <el-radio :label="2">普通用户</el-radio>
+          <el-radio :label="4">专家</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item prop="userName">
+        <el-input v-model="form.userName" placeholder="用户名" size="large" @blur="checkUserName"></el-input>
+      </el-form-item>
       <el-form-item prop="userName">
         <el-input v-model="form.userName" placeholder="用户名" size="large" @blur="checkUserName"></el-input>
       </el-form-item>
@@ -65,178 +73,176 @@
 <script>
 export default {
   data() {
-    var checkPass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'));
-      } else {
-        if (this.form.enpassword !== '') {
-          this.$refs.regForm.validateField('enpassword');
+      var checkPass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.form.enpassword !== '') {
+            this.$refs.regForm.validateField('enpassword');
+          }
+          callback();
         }
-        callback();
+      };
+      var checkPass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.form.userPassword) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
+      return {
+        logining: false,
+        smslogining: false,
+        smsText: '获取验证码',
+        smsDis: false,
+        form: {
+          roleId: 2,
+          userName: '',
+          userPassword: '',
+          enpassword: '',
+          userEmail: '',
+          userPhone: '',
+          codeNum: ''
+        },
+        rules: {
+          userName: [{
+            required: true,
+            message: '请输入用户名',
+            trigger: 'blur'
+          }, {
+            min: 8,
+            message: '长度不少于八位字符',
+            trigger: 'blur'
+          }],
+          userPassword: [{
+            pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/,
+            message: '长度不少于八位字符包含数字和字母',
+            trigger: 'blur'
+          }, {
+            validator: checkPass,
+            trigger: 'blur'
+          }],
+          enpassword: [{
+            validator: checkPass2,
+            trigger: 'blur'
+          }],
+          userEmail: [{
+            type: 'email',
+            message: '邮箱格式不正确',
+            trigger: 'blur'
+          }],
+          userPhone: [{
+            required: true,
+            message: '请输入手机号码',
+            trigger: 'blur'
+          }, {
+            pattern: /^1[34578]\d{9}$/,
+            message: '手机号码格式不正确',
+            trigger: 'blur'
+          }],
+          codeNum: [{
+            required: true,
+            message: '请输入短信验证码',
+            trigger: 'blur'
+          }, {
+            min: 6,
+            max: 6,
+            message: '长度6个字符',
+            trigger: 'blur'
+          }]
+        }
       }
-    };
-    var checkPass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'));
-      } else if (value !== this.form.userPassword) {
-        callback(new Error('两次输入密码不一致!'));
-      } else {
-        callback();
-      }
-    };
-    return {
-      logining: false,
-      smslogining: false,
-      smsText: '获取验证码',
-      smsDis: false,
-      form: {
-        userName: '',
-        userPassword: '',
-        enpassword: '',
-        userEmail: '',
-        userPhone: '',
-        codeNum: ''
+    },
+    methods: {
+      submitForm(formName) {
+        let valid = false;
+        this.$refs[formName].validate((v) => {
+          valid = v
+        });
+        if (!valid) {
+          return false;
+        }
+        this.logining = true;
+        const _this = this;
+        this.$ajax.post('register/doRegister', this.form).then(function(response) {
+          _this.logining = false;
+          if (response.success) {
+            _this.$alert('注册成功，马上登陆！', '提示', {
+              confirmButtonText: '确定',
+              callback: action => {
+                _this.$router.push('/login')
+              }
+            });
+          } else {
+            _this.$message.error(response.message);
+            // _this.loadVerify();
+          }
+        })
       },
-      rules: {
-        userName: [{
-          required: true,
-          message: '请输入用户名',
-          trigger: 'blur'
-        }, {
-          min: 8,
-          message: '长度不少于八位字符',
-          trigger: 'blur'
-        }],
-        userPassword: [{
-          pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/,
-          message: '长度不少于八位字符包含数字和字母',
-          trigger: 'blur'
-        }, {
-          validator: checkPass,
-          trigger: 'blur'
-        }],
-        enpassword: [{
-          validator: checkPass2,
-          trigger: 'blur'
-        }],
-        userEmail: [{
-          type: 'email',
-          message: '邮箱格式不正确',
-          trigger: 'blur'
-        }],
-        userPhone: [{
-          required: true,
-          message: '请输入手机号码',
-          trigger: 'blur'
-        },
-        {
-          pattern: /^1[34578]\d{9}$/,
-          message: '手机号码格式不正确',
-          trigger: 'blur'
-        }],
-        codeNum: [{
-          required: true,
-          message: '请输入短信验证码',
-          trigger: 'blur'
-        },
-        {
-          min: 6,
-          max: 6,
-          message: '长度6个字符',
-          trigger: 'blur'
-        }]
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
+      sendCode() {
+        let valid = false;
+        const _this = this;
+        this.$refs.regForm.validateField('userPhone', function(msg) {
+          if (msg !== _this.form.userPhone && !msg) {
+            valid = true;
+          }
+        });
+        if (!valid) {
+          return false;
+        }
+        this.smslogining = true;
+        const send = {
+          cell: this.form.userPhone
+        }
+        this.$ajax.post('register/smsCode', send).then(function(response) {
+          _this.smslogining = false;
+          if (response.success) {
+            _this.smsDis = true;
+            var count = 120;
+            var ret = setInterval(function() {
+              --count;
+              if (count === 0) {
+                _this.smsDis = false;
+                _this.smsText = '获取验证码';
+                clearInterval(ret)
+              } else {
+                _this.smsText = '重新发送(' + count + 's)';
+              }
+            }, 1000);
+          } else {
+            _this.$message.error(response.message);
+            // _this.loadVerify();
+          }
+        })
+      },
+      checkUserName() {
+        if (this.form.userName) {
+          this.$ajax.get('user', this.form.userName)
+            .then(res => {
+              console.log('', res);
+              if (res.success) {
+                this.$message({
+                  message: '该用户已存在',
+                  type: 'warning'
+                });
+                this.form.userName = ''
+              }
+            })
+        }
       }
+      // loadVerify() {
+      //   const index = this.verifyImage.indexOf('?');
+      //   let imageUrl = this.verifyImage;
+      //   if (index > -1) {
+      //     imageUrl = this.verifyImage.substr(0, index)
+      //   }
+      //   this.verifyImage = imageUrl + '?t=' + new Date().getTime()
+      // }
     }
-  },
-  methods: {
-    submitForm(formName) {
-      let valid = false;
-      this.$refs[formName].validate((v) => {
-        valid = v
-      });
-      if (!valid) {
-        return false;
-      }
-      this.logining = true;
-      const _this = this;
-      this.$ajax.post('register/doRegister', this.form).then(function (response) {
-        _this.logining = false;
-        if (response.success) {
-          _this.$alert('注册成功，马上登陆！', '提示', {
-            confirmButtonText: '确定',
-            callback: action => {
-              _this.$router.push('/login')
-            }
-          });
-        } else {
-          _this.$message.error(response.message);
-          // _this.loadVerify();
-        }
-      })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    sendCode() {
-      let valid = false;
-      const _this = this;
-      this.$refs.regForm.validateField('userPhone', function (msg) {
-        if (msg !== _this.form.userPhone && !msg) {
-          valid = true;
-        }
-      });
-      if (!valid) {
-        return false;
-      }
-      this.smslogining = true;
-      const send = {
-        cell: this.form.userPhone
-      }
-      this.$ajax.post('register/smsCode', send).then(function (response) {
-        _this.smslogining = false;
-        if (response.success) {
-          _this.smsDis = true;
-          var count = 120;
-          var ret = setInterval(function () {
-            --count;
-            if (count === 0) {
-              _this.smsDis = false;
-              _this.smsText = '获取验证码';
-              clearInterval(ret)
-            } else {
-              _this.smsText = '重新发送(' + count + 's)';
-            }
-          }, 1000);
-        } else {
-          _this.$message.error(response.message);
-          // _this.loadVerify();
-        }
-      })
-    },
-    checkUserName() {
-      if (this.form.userName) {
-        this.$ajax.get('user', this.form.userName)
-          .then(res => {
-            console.log('', res);
-            if (res.success) {
-              this.$message({
-                message: '该用户已存在',
-                type: 'warning'
-              });
-              this.form.userName = ''
-            }
-          })
-      }
-    }
-    // loadVerify() {
-    //   const index = this.verifyImage.indexOf('?');
-    //   let imageUrl = this.verifyImage;
-    //   if (index > -1) {
-    //     imageUrl = this.verifyImage.substr(0, index)
-    //   }
-    //   this.verifyImage = imageUrl + '?t=' + new Date().getTime()
-    // }
-  }
 }
-
 </script>

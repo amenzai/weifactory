@@ -3,24 +3,30 @@
     <Row type="flex">
       <Col class="layout-menu-left">
       <div class="layout-logo-left"></div>
-      <Menu theme="dark" width="auto">
-        <div v-if="userData.roleName === 'ROLE_ADMIN'">
+      <Menu theme="dark" width="auto" :open-names="['1']">
+        <Menu-item :name="index" v-for="(item,index) in menus" :key="index" v-if="userData.roleName === 'ROLE_ADMIN'">
+          <router-link :to="item.url">
+            <Icon type="ios-navigate"></Icon>{{item.name}}
+          </router-link>
+        </Menu-item>
+        <Submenu name="-1" v-if="userData.roleName === 'ROLE_USER'">
+          <template slot="title">
+            <span><Icon type="ios-navigate"></Icon>设备管理</span>
+          </template>
+          <Menu-item :name="-2">
+            <router-link :to="'/home/user/devicelist'">设备管理</router-link>
+          </Menu-item>
+        </Submenu>
+        <Submenu name="-1" v-if="userData.roleName === 'ROLE_USER'">
+          <template slot="title">
+            <!-- <router-link :to="'/home/user/devicelist'"> -->
+            <span><Icon type="ios-navigate"></Icon>设备列表</span>
+            <!-- </router-link> -->
+          </template>
           <Menu-item :name="index" v-for="(item,index) in menus" :key="index">
-            <router-link :to="item.url">
-              <Icon type="ios-navigate"></Icon>{{item.name}}
-            </router-link>
+            <span @click="getInfo(item.deviceId)">{{item.sn}}</span>
           </Menu-item>
-        </div>
-        <div v-if="userData.roleName === 'ROLE_USER'">
-          <Menu-item :name="-1 + ''">
-            <router-link :to="'/home/user/devicelist'">
-              <Icon type="ios-navigate"></Icon>设备管理
-            </router-link>
-          </Menu-item>
-          <Menu-item :name="index" v-for="(item,index) in menus" :key="index">
-            <span @click="getInfo(item.deviceId)"><Icon type="ios-navigate"></Icon>{{item.sn}}</span>
-          </Menu-item>
-        </div>
+        </Submenu>
         <!-- <Menu-item name="1-2">
           <Icon type="ios-navigate"></Icon>
           <router-link :to="'/home/manager/userlist'">用户列表</router-link>
@@ -199,15 +205,15 @@ export default {
             //   }
             //   this.imageUrl = userData.avatar;
             //   break;
-            case 'modify':
-              this.modifyPwd.visible = true;
-              this.resetForm('modifyPwdForm');
-              this.modifyPwd.data = {
-                oldPassword: '',
-                newPassword: '',
-                newPassword2: ''
-              };
-              break;
+          case 'modify':
+            this.modifyPwd.visible = true;
+            this.resetForm('modifyPwdForm');
+            this.modifyPwd.data = {
+              oldPassword: '',
+              newPassword: '',
+              newPassword2: ''
+            };
+            break;
         }
       },
       getInfo(id) {
