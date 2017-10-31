@@ -40,61 +40,73 @@ const UserDetail = (resolve) => {
 }
 
 const BatchList = (resolve) => {
-  import('pages/manager/batchlist').then((module) => {
+  import('pages/commonview/batchlist').then((module) => {
     resolve(module)
   })
 }
 
 const BatchDetail = (resolve) => {
-  import('pages/manager/batch-detail').then((module) => {
+  import('pages/commonview/batch-detail').then((module) => {
     resolve(module)
   })
 }
 
 const DeviceList = (resolve) => {
-  import('pages/manager/devicelist').then((module) => {
-    resolve(module)
-  })
-}
-
-const UserDeviceList = (resolve) => {
-  import('pages/user/devicelist').then((module) => {
+  import('pages/commonview/devicelist').then((module) => {
     resolve(module)
   })
 }
 
 const UserIndex = (resolve) => {
-  import('pages/user/index').then((module) => {
+  import('pages/commonview/device-detail').then((module) => {
     resolve(module)
   })
 }
 
 const DeviceManage = (resolve) => {
-  import('pages/user/device-manage').then((module) => {
+  import('pages/commonview/apply-manage').then((module) => {
     resolve(module)
   })
 }
 
 const orderPayment = (resolve) => {
-  import('pages/user/order-payment').then((module) => {
+  import('pages/commonview/order-payment').then((module) => {
     resolve(module)
   })
 }
 
 const HistoryData = (resolve) => {
-  import('pages/user/historydata').then((module) => {
+  import('pages/commonview/historydata').then((module) => {
     resolve(module)
   })
 }
 
 const BtnControl = (resolve) => {
-  import('pages/user/btn-control').then((module) => {
+  import('pages/commonview/btn-control').then((module) => {
     resolve(module)
   })
 }
 
 const ExpertList = (resolve) => {
   import('pages/manager/expertlist').then((module) => {
+    resolve(module)
+  })
+}
+
+const ModelList = (resolve) => {
+  import('pages/commonview/modellist').then((module) => {
+    resolve(module)
+  })
+}
+
+const OrderList = (resolve) => {
+  import('pages/commonview/orderlist').then((module) => {
+    resolve(module)
+  })
+}
+
+const TrustDeviceList = (resolve) => {
+  import('pages/expert/trust-devicelist').then((module) => {
     resolve(module)
   })
 }
@@ -118,45 +130,53 @@ export default new Router({
       name: '用户详情',
       component: UserDetail
     }, {
-      path: 'manager/batchlist',
+      path: 'commonview/batchlist',
       name: '批次管理',
       component: BatchList
     }, {
-      path: 'manager/batch-detail',
+      path: 'commonview/batch-detail',
       name: '批次详情',
       component: BatchDetail
     }, {
-      path: 'manager/devicelist',
+      path: 'commonview/devicelist',
       name: '设备管理',
       component: DeviceList
     }, {
-      path: 'user/devicelist',
-      name: '个人设备管理',
-      component: UserDeviceList
-    }, {
-      path: 'user/index/:id',
-      name: '个人设备信息',
+      path: 'commonview/device-detail/:id',
+      name: '设备信息',
       component: UserIndex
     }, {
-      path: 'user/device-manage',
-      name: '设备托管',
+      path: 'commonview/apply-manage',
+      name: '申请专家托管',
       component: DeviceManage
     }, {
-      path: 'user/order-payment',
+      path: 'commonview/order-payment',
       name: '订单支付',
       component: orderPayment
     }, {
-      path: 'user/historydata',
+      path: 'commonview/historydata',
       name: '历史数据',
       component: HistoryData
     }, {
-      path: 'user/btn-control',
+      path: 'commonview/btn-control',
       name: '设备控制',
       component: BtnControl
     }, {
       path: 'manager/expertlist',
-      name: '专家列表',
+      name: '专家管理',
       component: ExpertList
+    }, {
+      path: 'commonview/orderlist',
+      name: '订单管理',
+      component: OrderList
+    }, {
+      path: 'commonview/modellist',
+      name: '风控模型库管理',
+      component: ModelList
+    }, {
+      path: 'expert/trust-devicelist',
+      name: '托管设备管理',
+      component: TrustDeviceList
     }]
   }, {
     path: '/login',

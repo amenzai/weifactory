@@ -25,7 +25,7 @@
       <el-table-column label="操作">
         <template scope="scope">
           <el-button type="text" size="small">
-            <router-link :to="{path:'/home/manager/batch-detail',query:{id:scope.row.batchId}}">查看</router-link>
+            <router-link :to="{path:'/home/commonview/batch-detail',query:{id:scope.row.batchId}}">查看</router-link>
           </el-button>
           <el-button @click="deleteBatch(scope.row.batchId)" type="text" size="small">删除</el-button>
         </template>

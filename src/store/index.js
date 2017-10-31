@@ -7,6 +7,7 @@ const state = {
   loading: false,
   url: window.sessionStorage.getItem('url') || '',
   user: window.sessionStorage.getItem('user') || '',
+  userId: '',
   orderPay: {}
 }
 const store = new Vuex.Store({
@@ -33,6 +34,9 @@ const store = new Vuex.Store({
     },
     UPDATE_ORDER(state, orderPay) {
       state.orderPay = orderPay
+    },
+    UPDATE_USERID(state, userId) {
+      state.userId = userId
     }
   }
 })

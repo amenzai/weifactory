@@ -69,52 +69,7 @@ body {
 .el-button--info a:hver {
   color: #fff;
 }
-.ivu-menu-vertical .ivu-menu-item, 
-.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item,
-.ivu-menu-vertical .ivu-menu-submenu-title {
-  padding: 0;
-}
 
-.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item span,
-.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item a {
-  padding-left: 34px;
-}
-
-.ivu-menu-item a,
-.ivu-menu-submenu-title span {
-  display: block;
-  line-height: 40px;
-}
-
-.ivu-menu-submenu-title span {
-  padding-left: 16px;
-}
-
-.ivu-menu-item span {
-  display: block;
-  line-height: 40px;
-}
-
-.ivu-menu-dark.ivu-menu-vertical .ivu-menu-item:hover {
-  background-color: #363e4f;
-}
-
-.ivu-menu-vertical .ivu-menu-submenu-title-icon {
-  top: -25px;
-  right: 10px;
-}
-
-.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item:hover {
-  background-color: #2d8cf0 !important;
-}
-
-.ivu-menu-vertical .ivu-menu-item a {
-  padding-left: 16px;
-}
-
-.ivu-menu-item a i {
-  margin-right: 8px;
-}
 
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 

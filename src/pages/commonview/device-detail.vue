@@ -1,5 +1,5 @@
 <template>
-  <el-row>
+  <el-row v-if="isShow">
     <el-col v-if="formFirst !== null">
       <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
         <el-tab-pane label="第一层" name="first">
@@ -143,17 +143,17 @@
       </el-tabs>
       <div class="bottom-info ta-c">
         <el-button>
-          <router-link :to="{ path: '/home/user/historydata',query:{id:$route.params.id}}">查询历史数据</router-link>
+          <router-link :to="{ path: '/home/commonview/historydata',query:{id:$route.params.id}}">查询历史数据</router-link>
         </el-button>
         <el-button>
-          <router-link :to="{ path: '/home/user/device-manage',query:{id:$route.params.id}}">申请专家托管</router-link>
+          <router-link :to="{ path: '/home/commonview/apply-manage',query:{id:$route.params.id}}">申请专家托管</router-link>
         </el-button>
         <el-button>
-          <router-link :to="{ path: '/home/user/btn-control'}">设备控制</router-link>
+          <router-link :to="{ path: '/home/commonview/btn-control'}">设备控制</router-link>
         </el-button>
       </div>
     </el-col>
-    <el-col v-if="formFirst === null">
+    <el-col v-else>
       <p>该设备还没有批次信息，你可以
         <el-button type="text" @click="addBatch">立即添加</el-button>
       </p>
@@ -281,7 +281,9 @@
 export default {
   data() {
       return {
+        deviceId: '',
         batchId: '',
+        isShow: false,
         activeName2: 'first',
         formFirst: {},
         batchDialog: {
@@ -338,17 +340,8 @@ export default {
       }
     },
     mounted() {
+      this.deviceId = this.$route.params.id
       this.getList()
-    },
-    computed: {
-      deviceId() {
-        return this.$route.params.id
-      }
-    },
-    watch: {
-      deviceId(val, oldVal) {
-        this.getList()
-      }
     },
     methods: {
       init() {
@@ -377,6 +370,7 @@ export default {
         this.$ajax.get('batch', this.deviceId)
           .then(res => {
             console.log('', res);
+            this.isShow = true;
             if (res.data === null) {
               this.formFirst = null
             } else {

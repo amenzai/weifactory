@@ -88,7 +88,7 @@ export default {
           var type = res.success ? 'success' : 'error';
           if (type === 'success') {
             this.$store.commit('UPDATE_ORDER', res.data);
-            this.$router.push('/home/user/order-payment')
+            this.$router.push('/home/commonview/order-payment')
           }
           this.$message({
             message: res.message,

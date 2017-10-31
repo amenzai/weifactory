@@ -3,48 +3,15 @@
     <Row type="flex">
       <Col class="layout-menu-left">
       <div class="layout-logo-left"></div>
-      <Menu theme="dark" width="auto" :open-names="['1']">
-        <Menu-item :name="index" v-for="(item,index) in menus" :key="index" v-if="userData.roleName === 'ROLE_ADMIN'">
-          <router-link :to="item.url">
-            <Icon type="ios-navigate"></Icon>{{item.name}}
-          </router-link>
-        </Menu-item>
-        <Submenu name="-1" v-if="userData.roleName === 'ROLE_USER'">
+      <Menu theme="dark" width="auto" :open-names="['-1']">
+        <Submenu :name="mainIndex + ''" v-for="(item,mainIndex) in menus" :key="mainIndex">
           <template slot="title">
-            <span><Icon type="ios-navigate"></Icon>设备管理</span>
+            <span><Icon type="ios-navigate"></Icon>{{ item.name }}</span>
           </template>
-          <Menu-item :name="-2">
-            <router-link :to="'/home/user/devicelist'">设备管理</router-link>
+          <Menu-item :name="mainIndex + '-' + index" v-for="(child,index) in item.children" :key="index">
+            <router-link :to="child.url">{{ child.name }}</router-link>
           </Menu-item>
         </Submenu>
-        <Submenu name="-1" v-if="userData.roleName === 'ROLE_USER'">
-          <template slot="title">
-            <!-- <router-link :to="'/home/user/devicelist'"> -->
-            <span><Icon type="ios-navigate"></Icon>设备列表</span>
-            <!-- </router-link> -->
-          </template>
-          <Menu-item :name="index" v-for="(item,index) in menus" :key="index">
-            <span @click="getInfo(item.deviceId)">{{item.sn}}</span>
-          </Menu-item>
-        </Submenu>
-        <!-- <Menu-item name="1-2">
-          <Icon type="ios-navigate"></Icon>
-          <router-link :to="'/home/manager/userlist'">用户列表</router-link>
-        </Menu-item>
-        <Menu-item name="1-2">
-          <Icon type="ios-navigate"></Icon>
-          <router-link :to="{path:'/home/manager/devicelist'}">设备列表</router-link>
-        </Menu-item> -->
-        <!-- <Submenu name="2">
-          <template slot="title">
-            <Icon type="ios-keypad"></Icon>
-            设备信息
-          </template>
-          <Menu-item name="2-1">
-            <router-link :to="{path:'/home/user/index'}">ZWGC001</router-link>
-          </Menu-item>
-          <Menu-item name="2-2">选项 2</Menu-item>
-        </Submenu> -->
       </Menu>
       </Col>
       <Col class="layout-main">
@@ -59,7 +26,6 @@
                 <Icon type="arrow-down-b"></Icon>
               </a>
               <Dropdown-menu slot="list">
-                <!-- <Dropdown-item name="modify">修改密码</Dropdown-item> -->
                 <Dropdown-item name="modify">修改密码</Dropdown-item>
                 <Dropdown-item name="logout">退出</Dropdown-item>
               </Dropdown-menu>
@@ -69,10 +35,6 @@
       </div>
       <div class="layout-content">
         <div class="layout-breadcrumb">
-          <!-- <el-breadcrumb separator="/">
-            <el-breadcrumb-item>{{ $route.matched[key].meta.parent }}</el-breadcrumb-item>
-            <el-breadcrumb-item v-for="(item,key) in $route.matched">{{ item.name }}</el-breadcrumb-item>
-          </el-breadcrumb> -->
           <h2 class="subtitle">{{ $route.matched[1].name }}</h2>
         </div>
         <div class="layout-content-main">
@@ -179,6 +141,7 @@ export default {
         }).then(() => {
           this.$store.commit('UPDATE_USER', '');
           this.$store.commit('UPDATE_URL', this.$route.path);
+          console.log(1)
           this.$router.push('/login');
         }).catch(() => {});
       },
@@ -188,23 +151,6 @@ export default {
           case 'logout':
             this.logout();
             break;
-            // case 'userInfo':
-            //   this.resetForm('userInfoForm');
-            //   this.userInfo.visible = true;
-            //   const userData = JSON.parse(window.sessionStorage.getItem('user'))
-            //   console.log(userData)
-            //   this.userInfo.data = {
-            //     id: userData.id,
-            //     userName: userData.userName,
-            //     realname: userData.realname,
-            //     mobile: userData.mobile,
-            //     qq: userData.qq,
-            //     remark: userData.remark,
-            //     adminRoles: userData.adminRoles
-            //     // avatar: userData.avatar
-            //   }
-            //   this.imageUrl = userData.avatar;
-            //   break;
           case 'modify':
             this.modifyPwd.visible = true;
             this.resetForm('modifyPwdForm');
@@ -215,9 +161,6 @@ export default {
             };
             break;
         }
-      },
-      getInfo(id) {
-        this.$router.push('/home/user/index/' + id)
       },
       modifySubmit(formName) {
         let valid = false;
@@ -259,7 +202,7 @@ body {
 }
 
 .layout-menu-left {
-  width: 200px;
+  width: 160px;
   background: #464c5b;
   position: absolute;
   top: 0;
@@ -282,7 +225,7 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  left: 200px;
+  left: 160px;
   bottom: 0;
   .layout-header {
     height: 60px;
@@ -347,5 +290,19 @@ body {
 
 .el-breadcrumb {
   font-size: 12px;
+}
+
+.ivu-menu-item a {
+  display: block;
+  line-height: 40px;
+  padding-left: 44px;
+}
+
+.ivu-menu-item a:hover {
+  background-color: #2d8cf0;
+}
+
+.ivu-menu-vertical .ivu-menu-item {
+  padding: 0;
 }
 </style>

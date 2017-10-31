@@ -92,6 +92,7 @@ export default {
           window.sessionStorage.setItem('menuType', 1);
           var user = JSON.stringify(response.data);
           that.$store.commit('UPDATE_USER', user);
+          that.$store.commit('UPDATE_USERID', response.data.userId);
           const url = window.sessionStorage.getItem('url') || '';
           if (url !== '' && url.indexOf('register') < 0 && url.indexOf('findpwd') < 0) {
             that.$store.commit('UPDATE_URL', '');

@@ -1,11 +1,13 @@
 <template>
   <el-row>
-    <el-col :span="24" class="mb10">
+    <el-col :span="24" class="mb10" v-if="userId !== 2">
       <el-button @click="addDevice">设备添加</el-button>
     </el-col>
     <el-table :data="table.data" border style="width: 100%">
       <el-table-column label="设备序列号">
-        <template scope="scope">{{ scope.row.sn }}</template>
+        <template scope="scope">
+          <router-link :to="{path:'/home/commonview/device-detail/' + scope.row.deviceId}" target="_blank">{{ scope.row.sn }}</router-link>
+        </template>
       </el-table-column>
       <el-table-column label="经度">
         <template scope="scope">{{ scope.row.longitude }}</template>
@@ -18,14 +20,18 @@
       </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
-          <!-- <el-button type="text">
-            <router-link :to="{path:'/home/manager/user-detail'}">查看</router-link>
-          </el-button> -->
+          <el-button type="text">
+            <router-link :to="{path:'/home/commonview/device-detail/' + scope.row.deviceId}" target="_blank">查看</router-link>
+          </el-button>
           <el-button @click="modifyDevice(scope.row)" type="text" size="small">修改</el-button>
           <el-button @click="deleteDevice(scope.row.deviceId)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <div class="fl-r mt10" v-if="userId === 2">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.pageNo" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
+      </el-pagination>
+    </div>
     <el-dialog :title="deviceManageTitle" size="tiny" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
       <el-form ref="modifyForm" :model="modifyDialog.data" label-width="100px" :rules="modifyDialog.rules">
         <el-form-item label="设备序列号：" prop="sn">
@@ -51,6 +57,7 @@
 export default {
   data() {
     return {
+      userData: '',
       userId: '',
       deviceManageTitle: '',
       modifyDialog: {
@@ -75,11 +82,19 @@ export default {
         }
       },
       table: {
-        data: []
+        data: [],
+        send: {
+          pageNo: 1,
+          pageSize: this.$CONSTANT.PAGE_SIZE
+        },
+        totalCount: 0,
+        totalPages: 0,
+        pageSelect: this.$CONSTANT.PAGE_SELECT
       }
     }
   },
   mounted() {
+    this.userData = JSON.parse(window.sessionStorage.getItem('user'))
     this.init()
     this.getList()
   },
@@ -95,11 +110,22 @@ export default {
     },
     getList() {
       this.userId = JSON.parse(window.sessionStorage.getItem('user')).userId
-      this.$ajax.get('device/deviceList',this.userId)
-        .then(res => {
-          console.log('', res);
-          this.table.data = res.data;
-        })
+      const send = this.table.send.pageNo + '/' + this.table.send.pageSize
+      if (this.userId === 2) {
+        this.$ajax.get('device/list',send)
+          .then(res => {
+            console.log('', res);
+            this.table.data = res.data.list;
+            this.table.totalCount = res.data.total;
+            this.table.totalPages = res.data.pages;
+          })
+        } else {
+          this.$ajax.get('device/deviceList',this.userId)
+            .then(res => {
+              console.log('', res);
+              this.table.data = res.data;
+            })
+        }
     },
     addDevice() {
       this.deviceManageTitle = '添加设备'
@@ -182,6 +208,14 @@ export default {
             });
           })
       }).catch(() => {});
+    },
+    handleSizeChange(val) {
+      this.table.send.pageSize = val;
+      this.getList();
+    },
+    handleCurrentChange(val) {
+      this.table.send.pageNo = val;
+      this.getList();
     },
     resetForm(formName) {
       this.$refs[formName] && this.$refs[formName].resetFields();
