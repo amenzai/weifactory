@@ -2,114 +2,24 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router)
-
-const Login = (resolve) => {
-  import('pages/security/login').then((module) => {
-    resolve(module)
-  })
-}
-
-const Register = (resolve) => {
-  import('pages/security/register').then((module) => {
-    resolve(module)
-  })
-}
-
-const Home = (resolve) => {
-  import('pages/home').then((module) => {
-    resolve(module)
-  })
-}
-
-const Index = (resolve) => {
-  import('pages/index').then((module) => {
-    resolve(module)
-  })
-}
-
-const UserList = (resolve) => {
-  import('pages/manager/userlist').then((module) => {
-    resolve(module)
-  })
-}
-
-const UserDetail = (resolve) => {
-  import('pages/manager/user-detail').then((module) => {
-    resolve(module)
-  })
-}
-
-const BatchList = (resolve) => {
-  import('pages/commonview/batchlist').then((module) => {
-    resolve(module)
-  })
-}
-
-const BatchDetail = (resolve) => {
-  import('pages/commonview/batch-detail').then((module) => {
-    resolve(module)
-  })
-}
-
-const DeviceList = (resolve) => {
-  import('pages/commonview/devicelist').then((module) => {
-    resolve(module)
-  })
-}
-
-const UserIndex = (resolve) => {
-  import('pages/commonview/device-detail').then((module) => {
-    resolve(module)
-  })
-}
-
-const DeviceManage = (resolve) => {
-  import('pages/commonview/apply-manage').then((module) => {
-    resolve(module)
-  })
-}
-
-const orderPayment = (resolve) => {
-  import('pages/commonview/order-payment').then((module) => {
-    resolve(module)
-  })
-}
-
-const HistoryData = (resolve) => {
-  import('pages/commonview/historydata').then((module) => {
-    resolve(module)
-  })
-}
-
-const BtnControl = (resolve) => {
-  import('pages/commonview/btn-control').then((module) => {
-    resolve(module)
-  })
-}
-
-const ExpertList = (resolve) => {
-  import('pages/manager/expertlist').then((module) => {
-    resolve(module)
-  })
-}
-
-const ModelList = (resolve) => {
-  import('pages/commonview/modellist').then((module) => {
-    resolve(module)
-  })
-}
-
-const OrderList = (resolve) => {
-  import('pages/commonview/orderlist').then((module) => {
-    resolve(module)
-  })
-}
-
-const TrustDeviceList = (resolve) => {
-  import('pages/expert/trust-devicelist').then((module) => {
-    resolve(module)
-  })
-}
+import Login from 'pages/security/login'
+import Register from 'pages/security/register'
+import Home from 'pages/home'
+import Index from 'pages/index'
+import UserList from 'pages/manager/userlist'
+import UserDetail from 'pages/manager/user-detail'
+import BatchList from 'pages/commonview/batchlist'
+import BatchDetail from 'pages/commonview/batch-detail'
+import DeviceList from 'pages/commonview/devicelist'
+import DeviceDetail from 'pages/commonview/device-detail'
+import ApplyManage from 'pages/commonview/apply-manage'
+import orderPayment from 'pages/commonview/order-payment'
+import HistoryData from 'pages/commonview/historydata'
+import BtnControl from 'pages/commonview/btn-control'
+import ExpertList from 'pages/manager/expertlist'
+import ModelList from 'pages/commonview/modellist'
+import OrderList from 'pages/commonview/orderlist'
+import TrustDeviceList from 'pages/expert/trust-devicelist'
 
 export default new Router({
   routes: [{
@@ -144,11 +54,11 @@ export default new Router({
     }, {
       path: 'commonview/device-detail/:id',
       name: '设备信息',
-      component: UserIndex
+      component: DeviceDetail
     }, {
       path: 'commonview/apply-manage',
       name: '申请专家托管',
-      component: DeviceManage
+      component: ApplyManage
     }, {
       path: 'commonview/order-payment',
       name: '订单支付',

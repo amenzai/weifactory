@@ -1,37 +1,33 @@
 <template>
-  <div class="layout">
-    <Row type="flex">
-      <Col class="layout-menu-left">
+  <div class="layout clearfix">
+    <div class="layout-menu-left">
       <div class="layout-logo-left"></div>
-      <Menu theme="dark" width="auto" :open-names="['-1']">
-        <Submenu :name="mainIndex + ''" v-for="(item,mainIndex) in menus" :key="mainIndex">
+      <el-menu default-active="-1" class="el-menu-vertical-demo" theme="dark">
+        <el-submenu :index="mainIndex + ''" v-for="(item,mainIndex) in menus" :key="mainIndex">
           <template slot="title">
-            <span><Icon type="ios-navigate"></Icon>{{ item.name }}</span>
+            <span><i class="el-icon-setting"></i>{{ item.name }}</span>
           </template>
-          <Menu-item :name="mainIndex + '-' + index" v-for="(child,index) in item.children" :key="index">
+          <el-menu-item :index="mainIndex + '-' + index" v-for="(child,index) in item.children" :key="index">
             <router-link :to="child.url">{{ child.name }}</router-link>
-          </Menu-item>
-        </Submenu>
-      </Menu>
-      </Col>
-      <Col class="layout-main">
+          </el-menu-item>
+        </el-submenu>
+      </el-menu>
+    </div>
+    <div class="layout-main">
       <div class="layout-header">
-        <Menu mode="horizontal" theme="dark">
-          <div class="layout-nav">
-            <h1 class="title fl-l">微型植物工厂智能监控系统</h1>
-            <Dropdown trigger="click" placement="bottom-end" @on-click="handleClick">
-              <a href="javascript:void(0)">
-                <Icon type="person" />
-                <span>{{userData.userName}}</span>
-                <Icon type="arrow-down-b"></Icon>
-              </a>
-              <Dropdown-menu slot="list">
-                <Dropdown-item name="modify">修改密码</Dropdown-item>
-                <Dropdown-item name="logout">退出</Dropdown-item>
-              </Dropdown-menu>
-            </Dropdown>
-          </div>
-        </Menu>
+        <div class="layout-nav">
+          <h1 class="title fl-l">微型植物工厂智能监控系统</h1>
+          <el-dropdown @command="handleClick">
+            <span class="el-dropdown-link">
+                <i class="el-icon-setting"></i>
+                {{userData.userName}}<i class="el-icon-caret-bottom el-icon--right"></i>
+              </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="modify">修改密码</el-dropdown-item>
+              <el-dropdown-item command="logout">退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </div>
       <div class="layout-content">
         <div class="layout-breadcrumb">
@@ -48,8 +44,7 @@
           2011-2016 &copy; TalkingData
         </div>
       </div>
-      </Col>
-    </Row>
+    </div>
     <el-dialog title="修改密码" size="tiny" :visible.sync="modifyPwd.visible" :close-on-click-modal="false">
       <el-form :model="modifyPwd.data" :rules="modifyPwd.rules" label-width="120px" ref="modifyPwdForm">
         <el-form-item label="旧密码" prop="oldPwd">
@@ -198,6 +193,7 @@ export default {
 <style scoped lang="less">
 html,
 body {
+  width: 100%;
   height: 100%;
 }
 
@@ -229,7 +225,8 @@ body {
   bottom: 0;
   .layout-header {
     height: 60px;
-    background: #fff;
+    line-height: 60px;
+    background: #495060;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
     position: absolute;
     top: 0;
@@ -269,40 +266,7 @@ body {
     }
   }
 }
-
-.ivu-menu {
-  font-size: 12px;
-  .ivu-menu-item {
-    font-size: 12px;
-  }
-}
-
-.ivu-dropdown {
-  float: right;
-  margin-right: 20px;
-  .ivu-select-dropdown {
-    z-index: 9999999;
-  }
-  a {
-    color: rgba(255, 255, 255, .7);
-  }
-}
-
-.el-breadcrumb {
-  font-size: 12px;
-}
-
-.ivu-menu-item a {
-  display: block;
-  line-height: 40px;
-  padding-left: 44px;
-}
-
-.ivu-menu-item a:hover {
-  background-color: #2d8cf0;
-}
-
-.ivu-menu-vertical .ivu-menu-item {
-  padding: 0;
+.el-menu-item.is-active a {
+  color: #20a0ff;
 }
 </style>
