@@ -41,7 +41,7 @@
           </transition>
         </div>
         <div class="layout-copy">
-          2011-2016 &copy; TalkingData
+          2017-2018 &copy; vastsum group
         </div>
       </div>
     </div>
@@ -259,10 +259,6 @@ body {
       padding-top: 15px;
     }
     .layout-copy {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
       text-align: center;
       line-height: 30px;
       color: #9ea7b4;

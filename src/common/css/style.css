@@ -225,6 +225,11 @@ a:hover {
   float: right;
 }
 
+.blue {
+  color: #20a0ff;
+  cursor: pointer;
+}
+
 .clearfix:before,
 .clearfix:after {
   content: " ";
