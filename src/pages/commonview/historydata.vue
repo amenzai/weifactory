@@ -74,7 +74,7 @@ export default {
         optionB: {}
       }
     },
-    mounted() {
+    created() {
       this.init()
       this.getList()     
       this.getChartData()

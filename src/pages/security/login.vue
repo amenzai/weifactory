@@ -2,30 +2,12 @@
   <div @keyup.enter="submitForm('loginForm')">
     <el-form :model="form" :rules="rules" ref="loginForm" label-position="left" class="demo-ruleForm login-container">
       <h2 class="title">系统登录</h2>
-      <!-- <el-form-item label="">
-        <el-select clearable placeholder="请选择" v-model="form.demo">
-          <el-option label="经济效益优先模式" value="1"></el-option>
-          <el-option label="速率优先模式" value="2"></el-option>
-          <el-option label="采收期确定模式" value="3"></el-option>
-        </el-select>
-      </el-form-item> -->
       <el-form-item prop="username">
         <el-input v-model="form.username" placeholder="用户名" size="large"></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input type="password" v-model="form.password" placeholder="密码" size="large"></el-input>
       </el-form-item>
-      <!-- <el-form-item required>
-        <el-col :span="11">
-          <el-form-item prop="captcha">
-            <el-input v-model="form.captcha" placeholder="验证码" size="large"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col class="line" :span="2">&nbsp;</el-col>
-        <el-col :span="11">
-          <img class="weui-vcode-img" :src="verifyImage" height="32" @click="loadVerify" />
-        </el-col>
-      </el-form-item> -->
       <el-form-item style="width:100%;">
         <el-button type="primary" style="width:100%;" @click="submitForm('loginForm')" :loading="logining" size="large">立即登录</el-button>
       </el-form-item>
@@ -46,11 +28,9 @@ export default {
   data() {
     return {
       logining: false,
-      // verifyImage: this.$appconfig.captcha,
       form: {
         username: '', //  admin
         password: '' //  123456
-        // captcha: '',
         // rememberMe: false
       },
       rules: {
@@ -67,7 +47,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     window.sessionStorage.clear();
     // this.$cookie.delete('AUID');
   },
@@ -109,22 +89,6 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
-    // loadVerify() {
-    //   // const index = this.verifyImage.indexOf('?');
-    //   // let imageUrl = this.verifyImage;
-    //   // if (index > -1) {
-    //   //   imageUrl = this.verifyImage.substr(0, index)
-    //   // }
-    //   // this.verifyImage = imageUrl + '?t=' + new Date().getTime()
-    // },
-    // getBtnPerms() {
-    //   // btnPerms().then(res => {
-    //   //   if (res.success) {
-    //   //     var perms = res.data;
-    //   //     window.sessionStorage.setItem('btn-perms', JSON.stringify(perms));
-    //   //   }
-    //   // })
-    // }
   }
 }
 </script>

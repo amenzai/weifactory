@@ -45,7 +45,7 @@ export default {
         batchDetail: {}
       }
     },
-    mounted() {
+    created() {
       this.batchId = this.$route.query.id || ''
       this.getList()
     },

@@ -31,9 +31,9 @@
                   <el-input v-model="formFirst.phOne"></el-input>
                 </el-form-item>
                 <el-form-item style="margin-bottom:0">
-                  <Icon type="record" size="30" :color="formFirst.ledOneLeft === '1' ? '#19be6b' : ''"></Icon>
-                  <Icon type="record" size="30" :color="formFirst.ledOneMiddle === '1' ? '#19be6b' : ''"></Icon>
-                  <Icon type="record" size="30" :color="formFirst.ledOneRight === '1' ? '#19be6b' : ''"></Icon>
+                  <i class="el-icon-circle-check" ></i>
+                  <i class="el-icon-circle-check" ></i>
+                  <i class="el-icon-circle-check" ></i>
                 </el-form-item>
                 <el-form-item label="灯开关：">
                   <el-switch v-model="formFirst.ledOneLeft" on-value="1" off-value="0"></el-switch>
@@ -76,9 +76,9 @@
                   <el-input v-model="formFirst.phTwo "></el-input>
                 </el-form-item>
                 <el-form-item style="margin-bottom:0">
-                  <Icon type="record" size="30" :color="formFirst.ledTwoLeft === '1' ? '#19be6b' : ''"></Icon>
-                  <Icon type="record" size="30" :color="formFirst.ledTwoMiddle === '1' ? '#19be6b' : ''"></Icon>
-                  <Icon type="record" size="30" :color="formFirst.ledTwoRight === '1' ? '#19be6b' : ''"></Icon>
+                  <i class="el-icon-circle-check" ></i>
+                  <i class="el-icon-circle-check" ></i>
+                  <i class="el-icon-circle-check" ></i>
                 </el-form-item>
                 <el-form-item label="灯开关：">
                   <el-switch v-model="formFirst.ledTwoLeft" on-value="1" off-value="0"></el-switch>
@@ -121,9 +121,9 @@
                   <el-input v-model="formFirst.phThree "></el-input>
                 </el-form-item>
                 <el-form-item style="margin-bottom:0">
-                  <Icon type="record" size="30" :color="formFirst.ledThreeLeft === '1' ? '#19be6b' : ''"></Icon>
-                  <Icon type="record" size="30" :color="formFirst.ledThreeMiddle === '1' ? '#19be6b' : ''"></Icon>
-                  <Icon type="record" size="30" :color="formFirst.ledThreeRight === '1' ? '#19be6b' : ''"></Icon>
+                  <i class="el-icon-circle-check" ></i>
+                  <i class="el-icon-circle-check" ></i>
+                  <i class="el-icon-circle-check" :color="formFirst.ledThreeRight === '1' ? '#19be6b' : ''"></i>
                 </el-form-item>
                 <el-form-item label="灯开关：">
                   <el-switch v-model="formFirst.ledThreeLeft" on-value="1" off-value="0"></el-switch>
@@ -339,7 +339,7 @@ export default {
         }
       }
     },
-    mounted() {
+    created() {
       this.deviceId = this.$route.params.id
       this.getList()
     },

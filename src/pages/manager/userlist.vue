@@ -47,13 +47,13 @@
         <el-form-item label="邮箱：" prop="userEmail">
           <el-input v-model="modifyDialog.data.userEmail"></el-input>
         </el-form-item>
-        <el-form-item label="微信ID" prop="userWeixinId">
+        <el-form-item label="微信ID：" prop="userWeixinId">
           <el-input v-model="modifyDialog.data.userWeixinId"></el-input>
         </el-form-item>
-        <el-form-item label="微信名称" prop="userWeixinNickname">
+        <el-form-item label="微信名称：" prop="userWeixinNickname">
           <el-input v-model="modifyDialog.data.userWeixinNickname"></el-input>
         </el-form-item>
-        <el-form-item label="用户描述" prop="personalIntroduction">
+        <el-form-item label="用户描述：" prop="personalIntroduction">
           <el-input v-model="modifyDialog.data.personalIntroduction"></el-input>
         </el-form-item>
       </el-form>
@@ -105,7 +105,7 @@ export default {
         }
       }
     },
-    mounted() {
+    created() {
       this.getList()
     },
     methods: {
@@ -201,7 +201,7 @@ export default {
         this.$confirm('确定删除用户吗', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          tpyp: 'warning'
+          type: 'warning'
         }).then(() => {
           this.$ajax.get('user/delete', id)
             .then(res => {

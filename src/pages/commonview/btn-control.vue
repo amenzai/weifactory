@@ -46,7 +46,7 @@ export default {
         date: []
       }
     },
-    mounted() {
+    created() {
       this.getList()
     },
     methods: {

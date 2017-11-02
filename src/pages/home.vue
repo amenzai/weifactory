@@ -118,7 +118,7 @@ export default {
         }
       }
     },
-    mounted() {
+    created() {
       this.getMenus()
     },
     methods: {
@@ -249,7 +249,7 @@ body {
     overflow: auto;
     .layout-breadcrumb {
       padding-bottom: 10px;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid rgb(236, 223, 223);
       .subtitle {
         font-size: 20px;
       }
@@ -259,6 +259,10 @@ body {
       padding-top: 15px;
     }
     .layout-copy {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
       text-align: center;
       line-height: 30px;
       color: #9ea7b4;

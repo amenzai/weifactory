@@ -93,7 +93,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.userData = JSON.parse(window.sessionStorage.getItem('user'))
     this.init()
     this.getList()
@@ -194,7 +194,7 @@ export default {
       this.$confirm('确定删除设备吗', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        tpyp: 'warning'
+        type: 'warning'
       }).then(() => {
         this.$ajax.get('device/delete', id)
           .then(res => {

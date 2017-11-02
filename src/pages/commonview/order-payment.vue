@@ -33,7 +33,7 @@ export default {
       payMode: 'alipay'
     }
   },
-  mounted() {
+  created() {
     this.order
     this.getList()
   },

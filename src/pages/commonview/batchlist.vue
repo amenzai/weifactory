@@ -27,7 +27,8 @@
           <el-button type="text" size="small">
             <router-link :to="{path:'/home/commonview/batch-detail',query:{id:scope.row.batchId}}">查看</router-link>
           </el-button>
-          <el-button @click="deleteBatch(scope.row.batchId)" type="text" size="small">删除</el-button>
+          <el-button @click="deleteBatch(scope.row.batchId)" type="text">删除</el-button>
+          <el-button @click="removeBatch(scope.row.batchId)" type="text">废弃</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -41,6 +42,7 @@
 export default {
   data() {
       return {
+        userId: '',
         table: {
           data: [],
           send: {
@@ -53,28 +55,61 @@ export default {
         }
       }
     },
-    mounted() {
+    created() {
+      this.userId = JSON.parse(window.sessionStorage.getItem('user')).userId
       this.getList()
     },
     methods: {
       getList() {
-        const send = this.table.send.pageNo + '/' + this.table.send.pageSize
-        this.$ajax.get('batch/history', send)
-          .then(res => {
-            console.log('', res);
-            this.table.data = res.data.list;
-            this.table.pageNo = res.data.firstPage;
-            this.table.totalCount = res.data.total;
-            this.table.totalPages = res.data.pages;
-          })
+        if (this.userId === 2) {
+          const send = this.table.send.pageNo + '/' + this.table.send.pageSize
+          this.$ajax.get('batch/history', send)
+            .then(res => {
+              console.log('', res);
+              this.table.data = res.data.list;
+              this.table.totalCount = res.data.total;
+              this.table.totalPages = res.data.pages;
+            })
+        } else {
+          const send1 = this.userId + '/' + this.table.send.pageNo + '/' + this.table.send.pageSize
+          this.$ajax.get('batch', send1)
+            .then(res => {
+              console.log('', res);
+              this.table.data = res.data.list;
+              this.table.totalCount = res.data.total;
+              this.table.totalPages = res.data.pages;
+            })
+        }
       },
       deleteBatch(id) {
         this.$confirm('确定删除批次吗', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          tpyp: 'warning'
+          type: 'warning'
         }).then(() => {
           this.$ajax.get('batch/delete', id)
+            .then(res => {
+              var type = res.success ? 'success' : 'error';
+              if (type === 'success') {
+                this.getList();
+              }
+              this.$message({
+                message: res.message,
+                type: type
+              });
+            })
+        }).catch(() => {});
+      },
+      removeBatch(id) {
+        const send = {
+          batchId: id
+        }
+        this.$confirm('确定废弃批次吗', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$ajax.post('batch/remove', send)
             .then(res => {
               var type = res.success ? 'success' : 'error';
               if (type === 'success') {

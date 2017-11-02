@@ -277,11 +277,18 @@ a:hover {
   padding-left: 4px;
 }
 
+.el-menu--dark .el-menu-item, .el-menu--dark .el-submenu__title {
+  color: rgba(255, 255, 255, .7);
+}
+
 .el-dropdown {
   color: rgba(255, 255, 255, .7);
   float: right;
   margin-right: 20px;
   cursor: pointer;
+}
+.el-dropdown-menu {
+  z-index: 999999;
 }
 
 .el-table,
@@ -296,6 +303,18 @@ a:hover {
 .el-table .cell {
   padding-left: 8px;
   padding-right: 8px;
+}
+
+.el-collapse {
+  border: 0;
+}
+
+.el-collapse-item {
+  margin-bottom: 10px;
+}
+.el-collapse-item__header {
+  border-bottom: 0;
+  background-color: #eee;
 }
 
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/

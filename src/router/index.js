@@ -8,6 +8,7 @@ import Home from 'pages/home'
 import Index from 'pages/index'
 import UserList from 'pages/manager/userlist'
 import UserDetail from 'pages/manager/user-detail'
+import DictList from 'pages/manager/dictlist'
 import BatchList from 'pages/commonview/batchlist'
 import BatchDetail from 'pages/commonview/batch-detail'
 import DeviceList from 'pages/commonview/devicelist'
@@ -18,7 +19,9 @@ import HistoryData from 'pages/commonview/historydata'
 import BtnControl from 'pages/commonview/btn-control'
 import ExpertList from 'pages/manager/expertlist'
 import ModelList from 'pages/commonview/modellist'
+import ModelDetail from 'pages/commonview/model-detail'
 import OrderList from 'pages/commonview/orderlist'
+import OrderDetail from 'pages/commonview/order-detail'
 import TrustDeviceList from 'pages/expert/trust-devicelist'
 
 export default new Router({
@@ -35,6 +38,10 @@ export default new Router({
       path: 'manager/userlist',
       name: '用户管理',
       component: UserList
+    }, {
+      path: 'manager/dictlist',
+      name: '字典管理',
+      component: DictList
     }, {
       path: 'manager/user-detail',
       name: '用户详情',
@@ -80,9 +87,17 @@ export default new Router({
       name: '订单管理',
       component: OrderList
     }, {
+      path: 'commonview/order-detail',
+      name: '订单详情',
+      component: OrderDetail
+    }, {
       path: 'commonview/modellist',
       name: '风控模型库管理',
       component: ModelList
+    }, {
+      path: 'commonview/model-detail',
+      name: '风控模型库管理',
+      component: ModelDetail
     }, {
       path: 'expert/trust-devicelist',
       name: '托管设备管理',

@@ -1,22 +1,16 @@
 <template>
   <el-row>
-    <el-table :data="table.data" border style="width: 100%">
-      <el-table-column label="用户名">
-        <template scope="scope">{{ scope.row.userName }}</template>
-      </el-table-column>
-      <el-table-column label="手机号">
-        <template scope="scope">{{ scope.row.userPhone }}</template>
-      </el-table-column>
-      <el-table-column label="邮箱">
-        <template scope="scope">{{ scope.row.userEmail }}</template>
-      </el-table-column>
-      <el-table-column label="创建日期">
-        <template scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
-      </el-table-column>
-      <el-table-column label="修改日期">
-        <template scope="scope">{{ scope.row.gmtModified | dateFilter }}</template>
-      </el-table-column>
-    </el-table>
+    <div class="mb10">
+      <el-button @click="addDict" type="primary">添加字典</el-button>
+    </div>
+    <el-collapse accordion @change="handleClick">
+      <el-collapse-item :title="item.name" :name="item.code" v-for="(item,index) in table.data" :key="index">
+        <li v-for="(item,index) in dictItemList" :key="index" class="dictItem">
+          <span>名称：{{item.itemName}}</span>
+          <span>状态码：{{item.itemCode}}</span>
+        </li>
+      </el-collapse-item>
+    </el-collapse>
     <div class="fl-r mt10">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.pageNo" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
       </el-pagination>
@@ -27,6 +21,7 @@
 export default {
   data() {
     return {
+      dictItemList: [],
       table: {
         data: [],
         send: {
@@ -43,16 +38,29 @@ export default {
     this.getList()
   },
   methods: {
+    handleClick(val) {
+      if (val) {
+        this.$ajax.get('dict/dictItemList', `${val}/1/10`)
+          .then(res => {
+            console.log('', res);
+            this.dictItemList = res.data.list;
+          })
+      } else {
+        return;
+      }
+    },
     getList() {
       const send = this.table.send.pageNo + '/' + this.table.send.pageSize
-      this.$ajax.get('user/expertList',send)
+      this.$ajax.get('dict/list', send)
         .then(res => {
           console.log('', res);
           this.table.data = res.data.list;
-          this.table.pageNo = res.data.firstPage;
           this.table.totalCount = res.data.total;
           this.table.totalPages = res.data.pages;
         })
+    },
+    addDict() {
+
     },
     handleSizeChange(val) {
       this.table.send.pageSize = val;
@@ -64,7 +72,15 @@ export default {
     }
   }
 }
+
 </script>
 <style scoped>
+.dictItem {
+  line-height: 30px;
+}
+
+.dictItem span+span {
+  margin-left: 20px;
+}
 
 </style>

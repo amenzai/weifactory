@@ -22,7 +22,7 @@ export default {
       userDetail: {}
     }
   },
-  mounted() {
+  created() {
     this.userId = this.$route.query.id || ''
     this.getList()
   },

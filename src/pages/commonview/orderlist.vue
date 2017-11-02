@@ -1,20 +1,25 @@
 <template>
   <el-row>
     <el-table :data="table.data" border style="width: 100%">
-      <el-table-column label="用户名">
-        <template scope="scope">{{ scope.row.userName }}</template>
+      <el-table-column label="订单号">
+        <template scope="scope">{{ scope.row.orderNumber }}</template>
       </el-table-column>
-      <el-table-column label="手机号">
-        <template scope="scope">{{ scope.row.userPhone }}</template>
+      <el-table-column label="价格">
+        <template scope="scope">{{ scope.row.orderPrice | currency}}</template>
       </el-table-column>
-      <el-table-column label="邮箱">
-        <template scope="scope">{{ scope.row.userEmail }}</template>
+      <el-table-column label="订单名称">
+        <template scope="scope">{{ scope.row.orderBody }}</template>
       </el-table-column>
-      <el-table-column label="创建日期">
-        <template scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
+      <el-table-column label="设备序列号">
+        <template scope="scope">{{ scope.row.sn }}</template>
       </el-table-column>
-      <el-table-column label="修改日期">
-        <template scope="scope">{{ scope.row.gmtModified | dateFilter }}</template>
+      <el-table-column label="支付渠道">
+        <template scope="scope">{{ scope.row.payChannel }}</template>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template scope="scope">
+          <router-link :to="{path:'/home/commonview/order-detail',query:{orderId:scope.row.orderId}}">查看</router-link>
+        </template>
       </el-table-column>
     </el-table>
     <div class="fl-r mt10">
@@ -27,6 +32,7 @@
 export default {
   data() {
     return {
+      userId: '',
       table: {
         data: [],
         send: {
@@ -39,13 +45,14 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
+    this.userId = JSON.parse(window.sessionStorage.getItem('user')).userId
     this.getList()
   },
   methods: {
     getList() {
-      const send = this.table.send.pageNo + '/' + this.table.send.pageSize
-      this.$ajax.get('user/expertList',send)
+      const send = this.userId + '/' + this.table.send.pageNo + '/' + this.table.send.pageSize
+      this.$ajax.get('order/list',send)
         .then(res => {
           console.log('', res);
           this.table.data = res.data.list;
