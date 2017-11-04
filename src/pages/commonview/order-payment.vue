@@ -10,8 +10,8 @@
         <el-form-item label="第二层栽培模式：">{{ orderData.modeTwo }}</el-form-item>
         <el-form-item label="第三层栽培模式：">{{ orderData.modeThree }}</el-form-item>
         <el-form-item label="托管方式：">{{ orderData.deposit === '1' ? '全托管方式' : '自定义托管方式' }}</el-form-item>
-        <el-form-item label="选择托管专家：">{{ orderData.expertId }}</el-form-item>
-        <el-form-item label="费用：">{{ orderData.cost }}</el-form-item>
+        <el-form-item label="选择托管专家：">{{ orderData.expertName }}</el-form-item>
+        <el-form-item label="费用：">{{ orderData.orderPrice | currency }}</el-form-item>
         <el-form-item label="支付方式：">
           <el-radio-group v-model="payMode">
               <el-radio label="alipay">支付宝</el-radio>

@@ -101,15 +101,12 @@ export default {
         }).catch(() => {});
       },
       removeBatch(id) {
-        const send = {
-          batchId: id
-        }
         this.$confirm('确定废弃批次吗', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$ajax.post('batch/remove', send)
+          this.$ajax.get('batch/remove', id)
             .then(res => {
               var type = res.success ? 'success' : 'error';
               if (type === 'success') {

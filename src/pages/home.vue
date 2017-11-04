@@ -19,7 +19,7 @@
           <h1 class="title fl-l">微型植物工厂智能监控系统</h1>
           <el-dropdown @command="handleClick">
             <span class="el-dropdown-link">
-                <i class="el-icon-setting"></i>
+                <i class="el-icon-my-user"></i>
                 {{userData.userName}}<i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
             <el-dropdown-menu slot="dropdown">

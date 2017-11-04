@@ -31,9 +31,9 @@
                   <el-input v-model="formFirst.phOne"></el-input>
                 </el-form-item>
                 <el-form-item style="margin-bottom:0">
-                  <i class="el-icon-circle-check" ></i>
-                  <i class="el-icon-circle-check" ></i>
-                  <i class="el-icon-circle-check" ></i>
+                  <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledOneLeft === '1'}"></i>
+                  <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledOneMiddle === '1'}"></i>
+                  <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledOneRight === '1'}"></i>
                 </el-form-item>
                 <el-form-item label="灯开关：">
                   <el-switch v-model="formFirst.ledOneLeft" on-value="1" off-value="0"></el-switch>
@@ -76,9 +76,9 @@
                   <el-input v-model="formFirst.phTwo "></el-input>
                 </el-form-item>
                 <el-form-item style="margin-bottom:0">
-                  <i class="el-icon-circle-check" ></i>
-                  <i class="el-icon-circle-check" ></i>
-                  <i class="el-icon-circle-check" ></i>
+                  <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledTwoLeft === '1'}"></i>
+                  <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledTwoMiddle === '1'}"></i>
+                  <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledTwoRight === '1'}"></i>
                 </el-form-item>
                 <el-form-item label="灯开关：">
                   <el-switch v-model="formFirst.ledTwoLeft" on-value="1" off-value="0"></el-switch>
@@ -121,9 +121,9 @@
                   <el-input v-model="formFirst.phThree "></el-input>
                 </el-form-item>
                 <el-form-item style="margin-bottom:0">
-                  <i class="el-icon-circle-check" ></i>
-                  <i class="el-icon-circle-check" ></i>
-                  <i class="el-icon-circle-check" :color="formFirst.ledThreeRight === '1' ? '#19be6b' : ''"></i>
+                  <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledThreeLeft === '1'}"></i>
+                  <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledThreeMiddle === '1'}"></i>
+                  <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledThreeRight === '1'}"></i>
                 </el-form-item>
                 <el-form-item label="灯开关：">
                   <el-switch v-model="formFirst.ledThreeLeft" on-value="1" off-value="0"></el-switch>
@@ -521,9 +521,10 @@ export default {
   border-top: 1px solid #ddd;
 }
 
-.ivu-icon {
+.el-icon-my-light-fill {
   margin-right: 60px;
-  margin-left: 12px;
+  /*margin-left: 12px;*/
+  font-size: 36px;
 }
 
 .el-switch {

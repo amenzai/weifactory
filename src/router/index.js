@@ -18,6 +18,9 @@ import orderPayment from 'pages/commonview/order-payment'
 import HistoryData from 'pages/commonview/historydata'
 import BtnControl from 'pages/commonview/btn-control'
 import ExpertList from 'pages/manager/expertlist'
+import RoleList from 'pages/manager/rolelist'
+import MenuList from 'pages/manager/menulist'
+import MenuPermission from 'pages/manager/menu-permission'
 import ModelList from 'pages/commonview/modellist'
 import ModelDetail from 'pages/commonview/model-detail'
 import OrderList from 'pages/commonview/orderlist'
@@ -83,6 +86,18 @@ export default new Router({
       name: '专家管理',
       component: ExpertList
     }, {
+      path: 'manager/rolelist',
+      name: '角色管理',
+      component: RoleList
+    }, {
+      path: 'manager/menulist',
+      name: '菜单管理',
+      component: MenuList
+    }, {
+      path: 'manager/menu-permission',
+      name: '角色菜单权限',
+      component: MenuPermission
+    }, {
       path: 'commonview/orderlist',
       name: '订单管理',
       component: OrderList
@@ -96,7 +111,7 @@ export default new Router({
       component: ModelList
     }, {
       path: 'commonview/model-detail',
-      name: '风控模型库管理',
+      name: '风控模型详情',
       component: ModelDetail
     }, {
       path: 'expert/trust-devicelist',

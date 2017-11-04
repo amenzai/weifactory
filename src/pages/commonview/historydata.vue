@@ -57,14 +57,17 @@ export default {
   data() {
       return {
         date: [],
+        chartLineA: null,
+        chartLineB: null,
+        timer: null,
         table: {
           data: [],
           send: {
             page: 1,
             pageSize: this.$CONSTANT.PAGE_SIZE,
-            deviceId: this.$route.query.id
-              // startTime: '',
-              // endTime: ''
+            deviceId: this.$route.query.id,
+            startTime: '',
+            endTime: ''
           },
           totalCount: 0,
           totalPages: 0,
@@ -76,14 +79,12 @@ export default {
     },
     created() {
       this.init()
-      this.getList()     
+      this.getList()
       this.getChartData()
-      this.drawChartLineA()
-      this.drawChartLineB() 
     },
     updated() {
       this.drawChartLineA()
-      this.drawChartLineB() 
+      this.drawChartLineB()
     },
     methods: {
       init() {
@@ -151,28 +152,44 @@ export default {
           .then(res => {
             console.log('', res);
             this.table.data = res.data.list;
-            this.table.page = res.data.firstPage;
             this.table.totalCount = res.data.total;
             this.table.totalPages = res.data.pages;
           })
+        var date = new Date()
+        this.$ajax.get('history/sensor/temperature', this.table.send.deviceId)
+          .then(res => {
+            console.log('', res);
+            this.optionA.series[0].name = res.data.name
+            this.optionA.series[0].data.push(res.data.data)
+            this.optionA.xAxis.data.push(this.$dateFilter(date, 'hh:mm:ss'))
+            this.drawChartLineA()
+          })
+        this.$ajax.get('history/sensor/humidity', this.table.send.deviceId)
+          .then(res => {
+            console.log('', res);
+            this.optionB.series[0].name = res.data.name
+            this.optionB.series[0].data.push(res.data.data)
+            this.optionB.xAxis.data.push(this.$dateFilter(date, 'hh:mm:ss'))
+            this.drawChartLineB()
+          })
       },
       getChartData() {
-        // var num = 0
-        // var timer = null
-        // timer = setInterval(() => {
+        var num = 1
+        this.timer = null
+        this.timer = setInterval(() => {
           var date = new Date()
-          // if (num >= 5) {
-          //   this.optionA.series[0].data.shift()
-          //   this.optionA.xAxis.data.shift()
-          //   this.optionB.series[0].data.shift()
-          //   this.optionB.xAxis.data.shift()
-          // }
+          if (num >= 5) {
+            this.optionA.series[0].data.splice(0, 1)
+            this.optionA.xAxis.data.splice(0, 1)
+            this.optionB.series[0].data.splice(0, 1)
+            this.optionB.xAxis.data.splice(0, 1)
+          }
           this.$ajax.get('history/sensor/temperature', this.table.send.deviceId)
             .then(res => {
               console.log('', res);
               this.optionA.series[0].name = res.data.name
               this.optionA.series[0].data.push(res.data.data)
-              this.optionA.xAxis.data.push(this.$dateFilter(date, 'mm:ss'))
+              this.optionA.xAxis.data.push(this.$dateFilter(date, 'hh:mm:ss'))
               this.drawChartLineA()
             })
           this.$ajax.get('history/sensor/humidity', this.table.send.deviceId)
@@ -180,11 +197,11 @@ export default {
               console.log('', res);
               this.optionB.series[0].name = res.data.name
               this.optionB.series[0].data.push(res.data.data)
-              this.optionB.xAxis.data.push(this.$dateFilter(date, 'mm:ss'))
+              this.optionB.xAxis.data.push(this.$dateFilter(date, 'hh:mm:ss'))
               this.drawChartLineB()
             })
-            // num++
-        // }, 1000)
+          num++
+        }, 60000)
       },
       handleSizeChange(val) {
         this.table.send.pageSize = val;
@@ -207,6 +224,9 @@ export default {
       viewPic(url) {
         window.open(url)
       }
+    },
+    destroyed() {
+      clearInterval(this.timer)
     }
 }
 </script>

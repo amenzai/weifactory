@@ -229,6 +229,9 @@ a:hover {
   color: #20a0ff;
   cursor: pointer;
 }
+.yellow {
+  color: #F7BA2A;
+}
 
 .clearfix:before,
 .clearfix:after {
@@ -254,6 +257,10 @@ a:hover {
 
 .mb10 {
   margin-bottom: 10px;
+}
+
+.bg {
+  background-color: #eee;
 }
 
 .el-menu {

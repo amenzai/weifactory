@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-form :inline="true" ref="form">
+    <el-form :inline="true" ref="form" v-if="userData.roleName === 'ROLE_ADMIN'">
       <el-form-item label="模型名称：">
         <el-input v-model="modelName"></el-input>
       </el-form-item>
@@ -44,7 +44,7 @@
       </el-table-column>
     </el-table>
     <div class="fl-r mt10">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.pageNo" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.page" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
       </el-pagination>
     </div>
     <el-dialog :title="ModelManageTitle" size="small" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
@@ -123,7 +123,7 @@
 export default {
   data() {
     return {
-      userId: '',
+      userData: {},
       ModelManageTitle: '',
       modelName: '',
       modifyDialog: {
@@ -230,7 +230,9 @@ export default {
       table: {
         data: [],
         send: {
-          pageNo: 1,
+          userId: '',
+          modelName: '',
+          page: 1,
           pageSize: this.$CONSTANT.PAGE_SIZE
         },
         totalCount: 0,
@@ -240,7 +242,8 @@ export default {
     }
   },
   created() {
-    this.userId = JSON.parse(window.sessionStorage.getItem('user')).userId
+    this.userData = JSON.parse(window.sessionStorage.getItem('user'))
+    this.table.send.userId = this.userData.userId
     this.getList()
   },
   methods: {
@@ -268,8 +271,7 @@ export default {
       }
     },
     getList() {
-      const send = this.userId + '/' + this.table.send.pageNo + '/' + this.table.send.pageSize
-      this.$ajax.get('model/list', send)
+      this.$ajax.post('model/list', this.table.send)
         .then(res => {
           console.log('', res);
           this.table.data = res.data.list;
@@ -289,6 +291,7 @@ export default {
       this.init()
       this.modifyDialog.visible = true;
       this.modifyDialog.data = {
+        modelId: data.modelId,
         modelName: data.modelName,
         temperatureUp: data.temperatureUp.toString(),
         temperatureDown: data.temperatureDown.toString(),
@@ -318,7 +321,7 @@ export default {
       if (!valid) {
         return false;
       }
-      this.modifyDialog.data.userId = this.userId
+      this.modifyDialog.data.userId = this.userData.userId
       const send = JSON.parse(JSON.stringify(this.modifyDialog.data));
       this.$ajax.post('model/saveOrUpdate', send)
         .then(res => {
@@ -359,18 +362,13 @@ export default {
       this.getList();
     },
     handleCurrentChange(val) {
-      this.table.send.pageNo = val;
+      this.table.send.page = val;
       this.getList();
     },
     searchList() {
-      const send = this.modelName + '/' + 1 + '/' + this.table.send.pageSize
-      this.$ajax.get('model/home/list', send)
-        .then(res => {
-          console.log('', res);
-          this.table.data = res.data.list;
-          this.table.totalCount = res.data.total;
-          this.table.totalPages = res.data.pages;
-        })
+      this.table.send.page = 1
+      this.table.send.modelName = this.modelName
+      this.getList();
     },
     resetForm(formName) {
       this.$refs[formName] && this.$refs[formName].resetFields();

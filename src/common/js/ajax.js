@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from '../../store'
 // import router from '../../router'
 import appconfig from '../../appconfig.js'
-// import { Message, Alert } from 'element-ui'
+import { Message } from 'element-ui'
 import querystring from 'querystring'
 
 const commit = store.commit || store.dispatch
@@ -32,41 +32,48 @@ axios.interceptors.request.use(function (config) {
   return Promise.reject(error)
 })
 axios.interceptors.response.use(function (response) {
-  // if (response.status === 200) {
-  //   if (response.data.code === 401) {
-  //     console.log('404')
-  //     Alert('登录超时', '登录超时', {
-  //       confirmButtonText: '确定',
-  //       callback: () => {
-  //         router.push(loginUrl)
-  //       }
-  //     });
-  //   } else if (response.data.code === 301) {
-  //     console.log('301')
-  //     if (response.data.url !== null && response.data.url !== '') {
-  //       router.push(response.data.url)
-  //     }
-  //   } else if (response.data.code === 302) {
-  //     console.log('302', response)
-  //     if (response.data.url.indexOf('http://') === 0 || response.data.url.indexOf('http://') === 0) {
-  //       window.location.href = response.data.url
-  //     } else {
-  //       window.location.href = axios.defaults.baseURL + response.data.url
-  //     }
-  //   } else if (response.data.code === 303) { //  api权限
-  //     // Message({
-  //     //   title: '警告',
-  //     //   message: response.data.message,
-  //     //   type: 'warning'
-  //     // })
-  //   } else if (response.data.code === 500) {
-  //     Message({
-  //       title: '警告',
-  //       message: response.data.message,
-  //       type: 'error'
-  //     })
-  //   }
-  // }
+  if (response.status === 200) {
+    if (!response.data.success) {
+      Message({
+        title: '警告',
+        message: response.data.message,
+        type: 'error'
+      })
+    }
+    // if (response.data.code === 401) {
+    //   console.log('404')
+    //   Alert('登录超时', '登录超时', {
+    //     confirmButtonText: '确定',
+    //     callback: () => {
+    //       router.push(loginUrl)
+    //     }
+    //   });
+    // } else if (response.data.code === 301) {
+    //   console.log('301')
+    //   if (response.data.url !== null && response.data.url !== '') {
+    //     router.push(response.data.url)
+    //   }
+    // } else if (response.data.code === 302) {
+    //   console.log('302', response)
+    //   if (response.data.url.indexOf('http://') === 0 || response.data.url.indexOf('http://') === 0) {
+    //     window.location.href = response.data.url
+    //   } else {
+    //     window.location.href = axios.defaults.baseURL + response.data.url
+    //   }
+    // } else if (response.data.code === 303) { //  api权限
+    //   // Message({
+    //   //   title: '警告',
+    //   //   message: response.data.message,
+    //   //   type: 'warning'
+    //   // })
+    // } else if (response.data.code === 500) {
+    //   Message({
+    //     title: '警告',
+    //     message: response.data.message,
+    //     type: 'error'
+    //   })
+    // }
+  }
   // 不显示loading
   commit('UPDATE_LOADING', false)
   return response
@@ -95,10 +102,14 @@ var ajax = {
   }
 }
 
-function trimObject(obj) {
+function trimObject(data) {
+  var obj = JSON.parse(JSON.stringify(data));
   for (var k in obj) {
     if (Object.prototype.toString.call(obj[k]).slice(8, -1) === 'String') {
       obj[k] = obj[k].trim()
+      if (obj[k] === '') {
+        delete obj[k];
+      }
     } else if (Object.prototype.toString.call(obj[k]).slice(8, -1) === 'Object') {
       trimObject(obj[k])
     }

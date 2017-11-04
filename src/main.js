@@ -8,6 +8,7 @@ import router from './router'
 import ElementUI from 'element-ui'
 import './common/theme/index.css'
 import './common/css/style.css'
+import './common/css/icon.css'
 import MyFilter from './common/js/filter.js'
 // import Components from './components'
 import {

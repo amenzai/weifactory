@@ -1,43 +1,43 @@
 <template>
   <el-row>
     <div class="mb10">
-      <el-button @click="addDict" type="primary">添加字典</el-button>
+      <el-button @click="addMenu" type="primary">添加菜单</el-button>
     </div>
     <el-collapse accordion @change="handleClick">
-      <el-collapse-item :name="item.code" v-for="(item,index) in dictList" :key="index">
-        <template slot="title">{{ item.name }}</template>
+      <el-collapse-item :name="item.menuId" v-for="(item,index) in menuList" :key="index">
+        <template slot="title">{{ `${item.name}` }}<span style="padding-left:40px" v-if="!!item.perms">备注：{{ item.perms }}</span></template>
         <div class="bg">
           <span>名称：{{ item.name }}</span>
-          <span>状态码：{{ item.code }}</span>
-          <span class="blue" @click="modifyDict(item)">编辑</span>
-          <span class="blue" @click="addDictItem">添加字典项</span>
+          <span>路径：{{ item.url }}</span>
+          <span class="blue" @click="modifyMenu(item)">编辑</span>
+          <span class="blue" @click="deleteMenu(item.menuId)">删除</span>
+          <span class="blue" @click="addMenuItem(item.menuId)">添加字菜单</span>
         </div>
-        <li v-for="(item,index) in dictItemList" :key="index" class="dictItem">
-          <span>名称：{{item.itemName}}</span>
-          <span>状态码：{{item.itemCode}}</span>
-          <span class="blue" @click="modifyDictItem(item)">编辑</span>
+        <li v-for="(item,index) in menuItemList" :key="index" class="menuItem">
+          <span>名称：{{ item.name }}</span>
+          <span>路径：{{ item.url }}</span>
+          <span v-if="!!item.perms">备注：{{ item.perms }}</span>
+          <span class="blue" @click="modifyMenuItem(item)">编辑</span>
+          <span class="blue" @click="deleteMenu(item.menuId)">删除</span>
         </li>
       </el-collapse-item>
     </el-collapse>
     <el-dialog :title="title" size="tiny" :visible.sync="addDialog.visible" :close-on-click-modal="false">
       <el-form ref="addForm" :model="addDialog.data" label-width="100px" :rules="addDialog.rules">
-        <el-form-item label="字典code：" prop="code">
-          <el-input v-model="addDialog.data.code"></el-input>
-        </el-form-item>
-        <el-form-item label="字典名称：" prop="name">
+        <el-form-item label="名称" prop="name">
           <el-input v-model="addDialog.data.name"></el-input>
         </el-form-item>
-        <el-form-item label="字典状态：">
-          <el-radio-group v-model="addDialog.data.status">
-            <el-radio label="1">正常</el-radio>
-            <el-radio label="0">禁用</el-radio>
-          </el-radio-group>
+        <el-form-item label="路径：" prop="url">
+          <el-input v-model="addDialog.data.url"></el-input>
         </el-form-item>
-        <el-form-item label="字典描述：">
-          <el-input v-model="addDialog.data.discription"></el-input>
+        <el-form-item label="图标：">
+          <el-input v-model="addDialog.data.icon"></el-input>
         </el-form-item>
-        <el-form-item label="字典序号：">
-          <el-input v-model="addDialog.data.orderNumber"></el-input>
+        <el-form-item label="序号：">
+          <el-input v-model="addDialog.data.orderNum"></el-input>
+        </el-form-item>
+        <el-form-item label="备注：">
+          <el-input v-model="addDialog.data.perms"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -46,26 +46,20 @@
     </el-dialog>
     <el-dialog :title="itemTitle" size="tiny" :visible.sync="addItemDialog.visible" :close-on-click-modal="false">
       <el-form ref="addItemForm" :model="addItemDialog.data" label-width="100px" :rules="addItemDialog.rules">
-        <el-form-item label="字典code：" prop="dictCode">
-          <el-input v-model="addItemDialog.data.dictCode"></el-input>
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="addItemDialog.data.name"></el-input>
         </el-form-item>
-        <el-form-item label="字典项code：" prop="itemCode">
-          <el-input v-model="addItemDialog.data.itemCode"></el-input>
+        <el-form-item label="路径：" prop="url">
+          <el-input v-model="addItemDialog.data.url"></el-input>
         </el-form-item>
-        <el-form-item label="字典项名称：" prop="itemName">
-          <el-input v-model="addItemDialog.data.itemName"></el-input>
+        <el-form-item label="图标：">
+          <el-input v-model="addItemDialog.data.icon"></el-input>
         </el-form-item>
-        <el-form-item label="字典状态：">
-          <el-radio-group v-model="addItemDialog.data.status">
-            <el-radio label="1">正常</el-radio>
-            <el-radio label="0">禁用</el-radio>
-          </el-radio-group>
+        <el-form-item label="序号：">
+          <el-input v-model="addItemDialog.data.orderNum"></el-input>
         </el-form-item>
-        <el-form-item label="字典描述：">
-          <el-input v-model="addItemDialog.data.discription"></el-input>
-        </el-form-item>
-        <el-form-item label="字典序号：">
-          <el-input v-model="addItemDialog.data.orderNumber"></el-input>
+        <el-form-item label="备注：">
+          <el-input v-model="addItemDialog.data.perms"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -80,20 +74,20 @@ export default {
       return {
         title: '',
         itemTitle: '',
-        dictList: [],
-        dictItemList: [],
+        menuList: [],
+        menuItemList: [],
         addDialog: {
           visible: false,
           data: {},
           rules: {
-            code: [{
+            url: [{
               required: true,
-              message: '请输入字典code',
+              message: '请输入菜单路径',
               trigger: 'blur'
             }],
             name: [{
               required: true,
-              message: '请输入字典名称',
+              message: '请输入菜单名称',
               trigger: 'blur'
             }]
           }
@@ -102,19 +96,14 @@ export default {
           visible: false,
           data: {},
           rules: {
-            dictCode: [{
+            url: [{
               required: true,
-              message: '请输入字典code',
+              message: '请输入菜单项路径',
               trigger: 'blur'
             }],
-            itemCode: [{
+            name: [{
               required: true,
-              message: '请输入字典项code',
-              trigger: 'blur'
-            }],
-            itemName: [{
-              required: true,
-              message: '请输入字典项名称',
+              message: '请输入菜单项名称',
               trigger: 'blur'
             }]
           }
@@ -127,58 +116,59 @@ export default {
     methods: {
       init() {
         this.addDialog.data = {
-          code: '',
           name: '',
-          status: '1',
-          discription: '',
-          orderNumber: ''
+          url: '',
+          icon: '',
+          perms: '',
+          orderNum: ''
         }
       },
       initItem() {
         this.addItemDialog.data = {
-          dictCode: '',
-          itemCode: '',
-          itemName: '',
-          status: '1',
-          discription: '',
-          orderNumber: ''
+          parentId: '',
+          name: '',
+          url: '',
+          icon: ' ',
+          perms: '',
+          orderNum: ''
         }
       },
       handleClick(val) {
         if (val) {
-          this.$ajax.get('dict/dictItemList', val)
+          this.$ajax.get('menu/list', val)
             .then(res => {
               console.log('', res);
-              this.dictItemList = res.data;
+              this.menuItemList = res.data;
             })
         } else {
           return;
         }
       },
       getList() {
-        this.$ajax.get('dict/list')
+        this.$ajax.get('menu/list')
           .then(res => {
             console.log('', res);
-            this.dictList = res.data;
+            this.menuList = res.data;
           })
       },
-      addDict() {
-        this.title = '添加字典'
+      addMenu() {
+        this.title = '添加菜单'
         this.resetForm('addForm')
         this.init()
         this.addDialog.visible = true;
       },
-      modifyDict(data) {
-        this.title = '修改字典'
+      modifyMenu(data) {
+        this.title = '修改菜单'
         this.resetForm('addForm')
         this.init()
         this.addDialog.visible = true;
         this.addDialog.data = {
-          code: data.code,
+          menuId: data.menuId,
+          url: data.url,
           name: data.name,
-          status: data.status,
-          discription: data.discription,
-          orderNumber: data.orderNumber
+          icon: data.icon,
+          perms: data.perms,
+          orderNum: data.orderNum
         }
       },
       addSubmit(formName) {
@@ -190,7 +180,7 @@ export default {
           return false;
         }
         const send = JSON.parse(JSON.stringify(this.addDialog.data));
-        this.$ajax.post('dict/saveOrUpdate', send)
+        this.$ajax.post('menu/saveOrUpdate', send)
           .then(res => {
             console.log('', res);
             var type = res.success ? 'success' : 'error';
@@ -204,24 +194,26 @@ export default {
             });
           })
       },
-      addDictItem() {
-        this.itemTitle = '添加字典项'
+      addMenuItem(parentId) {
+        this.itemTitle = '添加菜单项'
         this.resetForm('addItemForm')
         this.initItem()
+        this.addItemDialog.data.parentId = parentId
         this.addItemDialog.visible = true;
       },
-      modifyDictItem(data) {
-        this.itemTitle = '修改字典项'
+      modifyMenuItem(data) {
+        this.itemTitle = '修改菜单项'
         this.resetForm('addItemForm')
         this.initItem()
         this.addItemDialog.visible = true;
         this.addItemDialog.data = {
-          dictCode: data.dictCode,
-          itemCode: data.itemCode,
-          itemName: data.itemName,
-          status: data.status,
-          discription: data.discription,
-          orderNumber: data.orderNumber
+          parentId: data.parentId,
+          menuId: data.menuId,
+          url: data.url,
+          name: data.name,
+          icon: data.icon,
+          perms: data.perms,
+          orderNum: data.orderNum
         }
       },
       addItemSubmit(formName) {
@@ -233,19 +225,38 @@ export default {
           return false;
         }
         const send = JSON.parse(JSON.stringify(this.addItemDialog.data));
-        this.$ajax.post('dict/dictItem/saveOrUpdate', send)
+        this.$ajax.post('menu/saveOrUpdate', send)
           .then(res => {
             console.log('', res);
             var type = res.success ? 'success' : 'error';
             if (type === 'success') {
               this.addItemDialog.visible = false;
-              this.getList();
+              this.handleClick(this.addItemDialog.data.parentId)
             }
             this.$message({
               message: res.message,
               type: type
             });
           })
+      },
+      deleteMenu(id) {
+        this.$confirm('确定删除菜单吗', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$ajax.get('menu/delete', id)
+            .then(res => {
+              var type = res.success ? 'success' : 'error';
+              if (type === 'success') {
+                this.getList();
+              }
+              this.$message({
+                message: res.message,
+                type: type
+              });
+            })
+        }).catch(() => {});
       },
       resetForm(formName) {
         this.$refs[formName] && this.$refs[formName].resetFields();
@@ -254,12 +265,12 @@ export default {
 }
 </script>
 <style scoped>
-.dictItem {
+.menuItem {
   line-height: 30px;
-  padding-left:26px;
+  padding-left:26px
 }
 
-.dictItem span+span {
+.menuItem span+span {
   margin-left: 20px;
 }
 .bg span+span {
@@ -271,4 +282,5 @@ export default {
   margin: -10px -15px 10px;
   padding-left: 16px;
 }
+
 </style>
