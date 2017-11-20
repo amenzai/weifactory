@@ -29,7 +29,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/weifactory': {
-          target: 'http://test.weifactory.vastsum.net/',
+          target: 'http://test.weifactory.vastsum.net:8080',
           changeOrigin: true,
           pathRewrite: {
             '^/weifactory': '/weifactory'

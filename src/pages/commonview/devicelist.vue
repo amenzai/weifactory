@@ -6,7 +6,7 @@
     <el-table :data="table.data" border style="width: 100%">
       <el-table-column label="设备序列号">
         <template scope="scope">
-          <router-link :to="{path:'/home/commonview/device-detail/' + scope.row.deviceId}" target="_blank">{{ scope.row.sn }}</router-link>
+          <el-button type="text" @click="getDetail(scope.row.deviceId,scope.row.sn)">{{ scope.row.sn }}</el-button>
         </template>
       </el-table-column>
       <el-table-column label="经度">
@@ -20,9 +20,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
-          <el-button type="text">
-            <router-link :to="{path:'/home/commonview/device-detail/' + scope.row.deviceId}" target="_blank">查看</router-link>
-          </el-button>
+          <el-button type="text" @click="getDetail(scope.row.deviceId,scope.row.sn)"></el-button>
           <el-button @click="modifyDevice(scope.row)" type="text" size="small">修改</el-button>
           <el-button @click="deleteDevice(scope.row.deviceId)" type="text" size="small">删除</el-button>
         </template>
@@ -126,6 +124,10 @@ export default {
               this.table.data = res.data;
             })
         }
+    },
+    getDetail(id,sn) {
+      this.$router.push('/home/commonview/device-detail/' + id)
+      window.sessionStorage.setItem('sn',sn)
     },
     addDevice() {
       this.deviceManageTitle = '添加设备'

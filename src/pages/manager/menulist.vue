@@ -195,14 +195,14 @@ export default {
           })
       },
       addMenuItem(parentId) {
-        this.itemTitle = '添加菜单项'
+        this.itemTitle = '添加字菜单'
         this.resetForm('addItemForm')
         this.initItem()
         this.addItemDialog.data.parentId = parentId
         this.addItemDialog.visible = true;
       },
       modifyMenuItem(data) {
-        this.itemTitle = '修改菜单项'
+        this.itemTitle = '修改字菜单'
         this.resetForm('addItemForm')
         this.initItem()
         this.addItemDialog.visible = true;

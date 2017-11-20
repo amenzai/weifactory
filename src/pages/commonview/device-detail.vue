@@ -14,20 +14,20 @@
                     <el-option :label="item.value" :value="item.label" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="温度：">
+                <el-form-item label="温度：" required>
                   <el-button icon="minus" size="small" @click="totalAmount('minus',formFirst,1)"></el-button>
                   <el-input-number style="width:80px;" :step="1" size="small" :min="0" v-model="formFirst.temperatureOne" @change="totalAmount" :controls="false"></el-input-number>
                   <el-button icon="plus" size="small" @click="totalAmount('plus',formFirst,1)"></el-button>
                 </el-form-item>
-                <el-form-item label="湿度：">
+                <el-form-item label="湿度：" required>
                   <el-button icon="minus" size="small" @click="totalAmount('minus',formFirst,4)"></el-button>
                   <el-input-number style="width:80px;" :step="1" size="small" :min="0" v-model="formFirst.humidityOne" @change="totalAmount" :controls="false"></el-input-number>
                   <el-button icon="plus" size="small" @click="totalAmount('plus',formFirst,4)"></el-button>
                 </el-form-item>
-                <el-form-item label="EC值：">
+                <el-form-item label="EC值：" required>
                   <el-input v-model="formFirst.ecOne"></el-input>
                 </el-form-item>
-                <el-form-item label="PH值：">
+                <el-form-item label="PH值：" required>
                   <el-input v-model="formFirst.phOne"></el-input>
                 </el-form-item>
                 <el-form-item style="margin-bottom:0">
@@ -59,20 +59,20 @@
                     <el-option :label="item.value" :value="item.label" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="温度：">
+                <el-form-item label="温度：" required>
                   <el-button icon="minus" size="small" @click="totalAmount('minus',formFirst,2)"></el-button>
                   <el-input-number style="width:80px;" :step="1" size="small" :min="0" v-model="formFirst.temperatureTwo" @change="totalAmount" :controls="false"></el-input-number>
                   <el-button icon="plus" size="small" @click="totalAmount('plus',formFirst,2)"></el-button>
                 </el-form-item>
-                <el-form-item label="湿度：">
+                <el-form-item label="湿度：" required>
                   <el-button icon="minus" size="small" @click="totalAmount('minus',formFirst,5)"></el-button>
                   <el-input-number style="width:80px;" :step="1" size="small" :min="0" v-model="formFirst.humidityTwo " @change="totalAmount" :controls="false"></el-input-number>
                   <el-button icon="plus" size="small" @click="totalAmount('plus',formFirst,5)"></el-button>
                 </el-form-item>
-                <el-form-item label="EC值：">
+                <el-form-item label="EC值：" required>
                   <el-input v-model="formFirst.ecTwo "></el-input>
                 </el-form-item>
-                <el-form-item label="PH值：">
+                <el-form-item label="PH值：" required>
                   <el-input v-model="formFirst.phTwo "></el-input>
                 </el-form-item>
                 <el-form-item style="margin-bottom:0">
@@ -104,20 +104,20 @@
                     <el-option :label="item.value" :value="item.label" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="温度：">
+                <el-form-item label="温度：" required>
                   <el-button icon="minus" size="small" @click="totalAmount('minus',formFirst,3)"></el-button>
                   <el-input-number style="width:80px;" :step="1" size="small" :min="0" v-model="formFirst.temperatureThree" @change="totalAmount" :controls="false"></el-input-number>
                   <el-button icon="plus" size="small" @click="totalAmount('plus',formFirst,3)"></el-button>
                 </el-form-item>
-                <el-form-item label="湿度：">
+                <el-form-item label="湿度：" required>
                   <el-button icon="minus" size="small" @click="totalAmount('minus',formFirst,6)"></el-button>
                   <el-input-number style="width:80px;" :step="1" size="small" :min="0" v-model="formFirst.humidityThree " @change="totalAmount" :controls="false"></el-input-number>
                   <el-button icon="plus" size="small" @click="totalAmount('plus',formFirst,6)"></el-button>
                 </el-form-item>
-                <el-form-item label="EC值：">
+                <el-form-item label="EC值：" required>
                   <el-input v-model="formFirst.ecThree "></el-input>
                 </el-form-item>
-                <el-form-item label="PH值：">
+                <el-form-item label="PH值：" required>
                   <el-input v-model="formFirst.phThree "></el-input>
                 </el-form-item>
                 <el-form-item style="margin-bottom:0">
@@ -439,10 +439,17 @@ export default {
           })
       },
       batchSubmit(formName) {
+        let valid = false;
+        this.$refs[formName].validate((v) => {
+          valid = v
+        });
+        if (!valid) {
+          return false;
+        }
         const send = this.formFirst
         send.deviceId = this.deviceId
         send.batchId = this.batchId
-        this.$ajax.post('batch/saveOrUpdate', send)
+        this.$ajax.post('batch/saveOrUpdate', send, true)
           .then(res => {
             console.log('', res);
             var type = res.success ? 'success' : 'error';
