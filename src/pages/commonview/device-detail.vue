@@ -42,8 +42,8 @@
                 </el-form-item>
               </el-form>
             </el-col>
-            <el-col :span="6" :offset="2">
-              <div class="video-img"></div>
+            <el-col :span="8" :offset="2">
+              <img class="video-img" :src="formFirst.videoOne"></img>
             </el-col>
           </el-row>
         </el-tab-pane>
@@ -87,8 +87,8 @@
                 </el-form-item>
               </el-form>
             </el-col>
-            <el-col :span="6" :offset="2">
-              <div class="video-img"></div>
+            <el-col :span="8" :offset="2">
+              <img class="video-img" :src="formFirst.videoTwo"></img>
             </el-col>
           </el-row>
         </el-tab-pane>
@@ -132,8 +132,8 @@
                 </el-form-item>
               </el-form>
             </el-col>
-            <el-col :span="6" :offset="2">
-              <div class="video-img"></div>
+            <el-col :span="8" :offset="2">
+              <img class="video-img" :src="formFirst.videoThree"></img>
             </el-col>
           </el-row>
         </el-tab-pane>
@@ -401,7 +401,10 @@ export default {
                 ecThree: res.data.ecThree,
                 phOne: res.data.phOne,
                 phTwo: res.data.phTwo,
-                phThree: res.data.phThree
+                phThree: res.data.phThree,
+                videoOne: res.data.videoOne,
+                videoTwo: res.data.videoTwo,
+                videoThree: res.data.videoThree
               }
               this.batchId = res.data.batchId
             }
@@ -518,9 +521,9 @@ export default {
 </script>
 <style scoped>
 .video-img {
-  width: 300px;
-  height: 300px;
-  background-color: #666;
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .bottom-info {
