@@ -24,11 +24,16 @@
       </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
-          <el-button type="text" size="small">
-            <router-link :to="{path:'/home/commonview/batch-detail',query:{id:scope.row.batchId}}">查看</router-link>
-          </el-button>
-          <el-button @click="deleteBatch(scope.row.batchId)" type="text">删除</el-button>
-          <el-button @click="removeBatch(scope.row.batchId)" type="text">废弃</el-button>
+          <div>
+            <el-button type="text" size="small">
+              <router-link :to="{path:'/home/commonview/batch-detail',query:{id:scope.row.batchId}}">查看</router-link>
+            </el-button>
+            <el-button @click="deleteBatch(scope.row.batchId)" type="text">删除</el-button>
+          </div>
+          <div>
+            <el-button @click="removeBatch(scope.row.batchId)" type="text">废弃</el-button>
+            <el-button @click="concatModel(scope.row.batchId)" type="text">关联模型</el-button>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -36,6 +41,18 @@
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.pageNo" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
       </el-pagination>
     </div>
+    <el-dialog title="关联模型" size="tiny" :visible.sync="modelVisible" :close-on-click-modal="false">
+      <el-form ref="modelForm" label-width="100px">
+        <el-form-item label="选择模型：">
+          <el-select clearable v-model="modelId" placeholder="请选择">
+            <el-option :label="item.modelName" :value="item.modelId" v-for="(item,index) in modelList" :key="index"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="modelSubmit">确 定</el-button>
+      </span>
+    </el-dialog>
   </el-row>
 </template>
 <script>
@@ -43,6 +60,9 @@ export default {
   data() {
       return {
         userId: '',
+        modelId: '',
+        modelVisible: false,
+        modelList: [],
         table: {
           data: [],
           send: {
@@ -58,6 +78,7 @@ export default {
     created() {
       this.userId = JSON.parse(window.sessionStorage.getItem('user')).userId
       this.getList()
+      this.getModel()
     },
     methods: {
       getList() {
@@ -80,6 +101,18 @@ export default {
               this.table.totalPages = res.data.pages;
             })
         }
+      },
+      getModel() {
+        const send = {
+          userId: this.userId,
+          page: 1,
+          pageSize: 100
+        }
+        this.$ajax.post('model/list', send)
+          .then(res => {
+            console.log('', res);
+            this.modelList = res.data.list;
+          })
       },
       deleteBatch(id) {
         this.$confirm('确定删除批次吗', '提示', {
@@ -119,6 +152,26 @@ export default {
             })
         }).catch(() => {});
       },
+      concatModel(id) {
+        this.batchId = id
+        this.modelId = ''
+        this.modelVisible = true;
+      },
+      modelSubmit() {
+        const send = this.batchId + '/' + this.modelId
+        this.$ajax.get('batch/association', send)
+          .then(res => {
+            var type = res.success ? 'success' : 'error';
+            if (type === 'success') {
+              this.getList();
+              this.modelVisible = false;
+            }
+            this.$message({
+              message: res.message,
+              type: type
+            });
+          })
+      },
       handleSizeChange(val) {
         this.table.send.pageSize = val;
         this.getList();
@@ -131,4 +184,7 @@ export default {
 }
 </script>
 <style scoped>
+.el-form-item {
+  margin-bottom:0
+}
 </style>

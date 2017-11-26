@@ -11,7 +11,7 @@
                 </el-form-item>
                 <el-form-item label="栽培模式：">
                   <el-select clearable v-model="formFirst.cultModelOne" placeholder="请选择">
-                    <el-option :label="item.value" :value="item.label" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
+                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="温度：" required>
@@ -56,7 +56,7 @@
                 </el-form-item>
                 <el-form-item label="栽培模式：">
                   <el-select clearable v-model="formFirst.cultModelTwo" placeholder="请选择">
-                    <el-option :label="item.value" :value="item.label" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
+                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="温度：" required>
@@ -101,7 +101,7 @@
                 </el-form-item>
                 <el-form-item label="栽培模式：">
                   <el-select clearable v-model="formFirst.cultModelThree" placeholder="请选择">
-                    <el-option :label="item.value" :value="item.label" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
+                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="温度：" required>
@@ -145,7 +145,7 @@
         <el-button>
           <router-link :to="{ path: '/home/commonview/historydata',query:{id:$route.params.id}}">查询历史数据</router-link>
         </el-button>
-        <el-button>
+        <el-button v-if="isExit">
           <router-link :to="{ path: '/home/commonview/apply-manage',query:{id:$route.params.id}}">申请专家托管</router-link>
         </el-button>
         <el-button>
@@ -168,7 +168,7 @@
             </el-form-item>
             <el-form-item label="栽培模式：" prop="cultModelOne">
               <el-select clearable v-model="batchDialog.data.cultModelOne" placeholder="请选择">
-                <el-option :label="item.value" :value="item.label" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
+                <el-option :label="item.label" :value="item.value" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="温度：" prop="temperatureOne">
@@ -204,7 +204,7 @@
             </el-form-item>
             <el-form-item label="栽培模式：" prop="cultModelTwo">
               <el-select clearable v-model="batchDialog.data.cultModelTwo" placeholder="请选择">
-                <el-option :label="item.value" :value="item.label" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
+                <el-option :label="item.label" :value="item.value" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="温度：" prop="temperatureTwo">
@@ -240,7 +240,7 @@
             </el-form-item>
             <el-form-item label="栽培模式：" prop="cultModelThree">
               <el-select clearable v-model="batchDialog.data.cultModelThree" placeholder="请选择">
-                <el-option :label="item.value" :value="item.label" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
+                <el-option :label="item.label" :value="item.value" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="温度：" prop="temperatureThree">
@@ -283,6 +283,7 @@ export default {
       return {
         deviceId: '',
         batchId: '',
+        isExit: '',
         isShow: false,
         activeName2: 'first',
         formFirst: {},
@@ -341,6 +342,7 @@ export default {
     },
     created() {
       this.deviceId = this.$route.params.id
+      this.isExit = JSON.parse(window.sessionStorage.getItem('isShow'))
       this.getList()
     },
     methods: {
@@ -352,15 +354,15 @@ export default {
           humidityOne: 0,
           humidityTwo: 0,
           humidityThree: 0,
-          ledOneLeft: '',
-          ledOneMiddle: '',
-          ledOneRight: '',
-          ledTwoLeft: '',
-          ledTwoMiddle: '',
-          ledTwoRight: '',
-          ledThreeLeft: '',
-          ledThreeMiddle: '',
-          ledThreeRight: '',
+          ledOneLeft: '0',
+          ledOneMiddle: '0',
+          ledOneRight: '0',
+          ledTwoLeft: '0',
+          ledTwoMiddle: '0',
+          ledTwoRight: '0',
+          ledThreeLeft: '0',
+          ledThreeMiddle: '0',
+          ledThreeRight: '0',
           cultModelOne: '',
           cultModelTwo: '',
           cultModelThree: ''

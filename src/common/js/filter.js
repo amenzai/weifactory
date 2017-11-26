@@ -66,8 +66,8 @@ function getValue(value, name) {
   if (map !== undefined) {
     for (let i = 0; i < map.length; i++) {
       const tmp = map[i]
-      if (tmp.label === value) {
-        result = tmp.value
+      if (tmp.value === value) {
+        result = tmp.label
         break
       }
     }
@@ -86,6 +86,17 @@ output.install = function(Vue) {
   Vue.filter('currency', currencyFmt);
   Vue.filter('temperature', temperatureFmt);
   Vue.filter('humidity', humidityFmt);
+  Vue.filter('seeValue', function (value, arr) {
+    if (!arr) return;
+    let result = '';
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].value === value) {
+        result = arr[i].label;
+        break;
+      }
+    }
+    return result;
+  })
 }
 
 export default output;

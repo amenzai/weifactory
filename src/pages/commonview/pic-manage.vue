@@ -2,26 +2,18 @@
   <el-row>
     <el-table :data="table.data" border>
       <el-table-column label="设备序列号">
-        <template scope="scope">
-          <el-button type="text" @click="getDetail(scope.row.deviceId,scope.row.sn,false)">{{ scope.row.sn }}</el-button>
-        </template>
+        <template scope="scope">{{ scope.row.sn }}</template>
       </el-table-column>
-      <el-table-column label="经度">
-        <template scope="scope">{{ scope.row.longitude }}</template>
-      </el-table-column>
-      <el-table-column label="纬度">
-        <template scope="scope">{{ scope.row.latitude }}</template>
-      </el-table-column>
-      <el-table-column label="添加日期">
+      <el-table-column label="采集图片时间">
         <template scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
       </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
-          <el-button type="text" @click="getDetail(scope.row.deviceId,scope.row.sn,false)">查看</el-button>
+          <a :href="scope.row.path" target="_blank">查看图片</a>
         </template>
       </el-table-column>
     </el-table>
-    <div class="fl-r mt10" v-if="userId === 2">
+    <div class="fl-r mt10">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.pageNo" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
       </el-pagination>
     </div>
@@ -35,7 +27,7 @@ export default {
         table: {
           data: [],
           send: {
-            pageNo: 1,
+            page: 1,
             pageSize: this.$CONSTANT.PAGE_SIZE
           },
           totalCount: 0,
@@ -50,20 +42,18 @@ export default {
     },
     methods: {
       getList() {
-        const send = this.userId + '/' + this.table.send.pageNo + '/' + this.table.send.pageSize
-        this.$ajax.get('device/list/trust', send)
+        const send = {
+          userId: this.userId,
+          page: this.table.send.page,
+          pageSize: this.table.send.pageSize
+        }
+        this.$ajax.post('image/list', send)
           .then(res => {
             console.log('', res);
             this.table.data = res.data.list;
-            this.table.pageNo = res.data.firstPage;
             this.table.totalCount = res.data.total;
             this.table.totalPages = res.data.pages;
           })
-      },
-      getDetail(id,sn) {
-        this.$router.push('/home/commonview/device-detail/' + id)
-        window.sessionStorage.setItem('sn',sn)
-        window.sessionStorage.setItem('isShow',false)
       },
       handleSizeChange(val) {
         this.table.send.pageSize = val;

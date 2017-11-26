@@ -19,6 +19,7 @@
 export default {
   data() {
       return {
+        hasMenuId: false,
         roleName: '',
         roleId: '',
         data: [], //  保存所有处理过后的菜单数据
@@ -32,7 +33,7 @@ export default {
     },
     methods: {
       getList() {
-        this.$ajax.get('menu/role',this.roleId)
+        this.$ajax.get('menu/role', this.roleId)
           .then(res => {
             this.data = res.data
           })
@@ -46,18 +47,19 @@ export default {
       //   console.log('parentChange', this.selectsData)
       // },
       childChange(item) {
-        this.selectsData = this.getSelects();
-        console.log('childChange', this.selectsData)
+        console.log('childChange', this.getSelects())
       },
       getSelects() {
         var result = [];
         this.data.forEach(item => {
           item.children.forEach(value => {
             if (value.select) {
-              result.push(item.menuId);
               result.push(value.menuId);
             }
           })
+          if (item.children.some(value => value.select === true)) {
+            result.push(item.menuId);
+          }
         })
         return result;
       },
@@ -75,7 +77,7 @@ export default {
           roleId: this.roleId,
           menuString: this.selectsData.join(',')
         }
-        this.$ajax.post('role/updateRoleMenus',send)
+        this.$ajax.post('role/updateRoleMenus', send)
           .then(res => {
             var type = res.success ? 'success' : 'error';
             if (type === 'success') {

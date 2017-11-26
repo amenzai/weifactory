@@ -9,29 +9,50 @@
         <el-button type="primary" @click="searchList">搜索</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="table.data" border style="width: 100%" ref="multipleTable">
-      <el-table-column label="日期">
-        <template scope="scope">{{ scope.row.gmtCreate | dateFilter}}</template>
+    <el-table :data="table.data" border ref="multipleTable">
+      <el-table-column type="expand">
+        <template scope="props">
+          <el-form label-position="left" inline class="demo-table-expand">
+            <el-form-item label="二氧化碳浓度：">{{ props.row.sensorCo2}}</el-form-item>
+            <el-form-item label="氧气浓度：">{{ props.row.sensorOxygen }}</el-form-item>
+            <el-form-item label="PH值：">{{ props.row.sensorPh}}</el-form-item>
+            <el-form-item label="EC值：">{{ props.row.sensorEc}}</el-form-item>
+            <el-form-item label="培养液温度：">{{ props.row.sensorNutrientSolution }}</el-form-item>
+            <el-form-item label="室外温度：">{{ props.row.outdoorTemperature}}</el-form-item>
+            <el-form-item label="高液位：">{{ props.row.sensorHighLevel}}</el-form-item>
+            <el-form-item label="低液位：">{{ props.row.sensorLowLevel}}</el-form-item>
+          </el-form>
+        </template>
       </el-table-column>
-      <el-table-column label="温度">
+      <el-table-column label="日期" width="84">
+        <template scope="scope">{{ scope.row.gmtCreate | dateFilter('yyyy-MM-dd')}}</template>
+      </el-table-column>
+      <el-table-column label="温度第一层" width="80">
         <template scope="scope">{{ scope.row.sensorTemperature1 | temperature}}</template>
       </el-table-column>
-      <el-table-column label="湿度">
+      <el-table-column label="温度第二层" width="80">
+        <template scope="scope">{{ scope.row.sensorTemperature2 | temperature}}</template>
+      </el-table-column>
+      <el-table-column label="温度第三层" width="80">
+        <template scope="scope">{{ scope.row.sensorTemperature3 | temperature}}</template>
+      </el-table-column>
+      <el-table-column label="湿度第一层" width="80">
         <template scope="scope">{{ scope.row.sensorHumidity1 | humidity}}</template>
       </el-table-column>
-      <el-table-column label="光照时间">
+      <el-table-column label="湿度第二层" width="80">
+        <template scope="scope">{{ scope.row.sensorHumidity2 | humidity}}</template>
+      </el-table-column>
+      <el-table-column label="湿度第三层" width="80">
+        <template scope="scope">{{ scope.row.sensorHumidity3 | humidity}}</template>
+      </el-table-column>
+      <el-table-column label="光照强度第一层">
         <template scope="scope">{{ scope.row.sensorIllumination1}}</template>
       </el-table-column>
-      <!-- <el-table-column label="蔬菜种类">
-        <template scope="scope">{{ scope.row.name}}</template>
+      <el-table-column label="光照强度第二层">
+        <template scope="scope">{{ scope.row.sensorIllumination2}}</template>
       </el-table-column>
-      <el-table-column label="栽培模式">
-        <template scope="scope">{{ scope.row.name}}</template>
-      </el-table-column> -->
-      <el-table-column label="图片">
-        <template scope="scope">
-          <el-button type="text" @click="viewPic(scope.row.imgPath1)">查看图片</el-button>
-        </template>
+      <el-table-column label="光照强度第三层">
+        <template scope="scope">{{ scope.row.sensorIllumination3}}</template>
       </el-table-column>
     </el-table>
     <el-row>
@@ -231,4 +252,10 @@ export default {
 }
 </script>
 <style scoped>
+  .el-form--inline .el-form-item {
+    margin-right: 30px;
+  }
+  .el-form-item__label {
+    padding-right: 4px;
+  }
 </style>

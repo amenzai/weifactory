@@ -11,7 +11,7 @@
           <span>路径：{{ item.url }}</span>
           <span class="blue" @click="modifyMenu(item)">编辑</span>
           <span class="blue" @click="deleteMenu(item.menuId)">删除</span>
-          <span class="blue" @click="addMenuItem(item.menuId)">添加字菜单</span>
+          <span class="blue" @click="addMenuItem(item.menuId)">添加子菜单</span>
         </div>
         <li v-for="(item,index) in menuItemList" :key="index" class="menuItem">
           <span>名称：{{ item.name }}</span>
@@ -118,9 +118,9 @@ export default {
         this.addDialog.data = {
           name: '',
           url: '',
-          icon: '',
-          perms: '',
-          orderNum: ''
+          icon: 'el-icon-setting',
+          perms: '-',
+          orderNum: '0'
         }
       },
       initItem() {
@@ -128,9 +128,9 @@ export default {
           parentId: '',
           name: '',
           url: '',
-          icon: ' ',
-          perms: '',
-          orderNum: ''
+          icon: 'el-icon-setting',
+          perms: '-',
+          orderNum: '0'
         }
       },
       handleClick(val) {
@@ -160,7 +160,6 @@ export default {
       modifyMenu(data) {
         this.title = '修改菜单'
         this.resetForm('addForm')
-        this.init()
         this.addDialog.visible = true;
         this.addDialog.data = {
           menuId: data.menuId,
@@ -195,16 +194,15 @@ export default {
           })
       },
       addMenuItem(parentId) {
-        this.itemTitle = '添加字菜单'
+        this.itemTitle = '添加子菜单'
         this.resetForm('addItemForm')
         this.initItem()
         this.addItemDialog.data.parentId = parentId
         this.addItemDialog.visible = true;
       },
       modifyMenuItem(data) {
-        this.itemTitle = '修改字菜单'
+        this.itemTitle = '修改子菜单'
         this.resetForm('addItemForm')
-        this.initItem()
         this.addItemDialog.visible = true;
         this.addItemDialog.data = {
           parentId: data.parentId,

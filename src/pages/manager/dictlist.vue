@@ -10,7 +10,7 @@
           <span>名称：{{ item.name }}</span>
           <span>状态码：{{ item.code }}</span>
           <span class="blue" @click="modifyDict(item)">编辑</span>
-          <span class="blue" @click="addDictItem">添加字典项</span>
+          <span class="blue" @click="addDictItem(item.code)">添加字典项</span>
         </div>
         <li v-for="(item,index) in dictItemList" :key="index" class="dictItem">
           <span>名称：{{item.itemName}}</span>
@@ -22,7 +22,7 @@
     <el-dialog :title="title" size="tiny" :visible.sync="addDialog.visible" :close-on-click-modal="false">
       <el-form ref="addForm" :model="addDialog.data" label-width="100px" :rules="addDialog.rules">
         <el-form-item label="字典code：" prop="code">
-          <el-input v-model="addDialog.data.code"></el-input>
+          <el-input v-model="addDialog.data.code" :disabled="isEdit"></el-input>
         </el-form-item>
         <el-form-item label="字典名称：" prop="name">
           <el-input v-model="addDialog.data.name"></el-input>
@@ -46,11 +46,11 @@
     </el-dialog>
     <el-dialog :title="itemTitle" size="tiny" :visible.sync="addItemDialog.visible" :close-on-click-modal="false">
       <el-form ref="addItemForm" :model="addItemDialog.data" label-width="100px" :rules="addItemDialog.rules">
-        <el-form-item label="字典code：" prop="dictCode">
+        <!-- <el-form-item label="字典code：" prop="dictCode">
           <el-input v-model="addItemDialog.data.dictCode"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="字典项code：" prop="itemCode">
-          <el-input v-model="addItemDialog.data.itemCode"></el-input>
+          <el-input v-model="addItemDialog.data.itemCode" :disabled="isEdit"></el-input>
         </el-form-item>
         <el-form-item label="字典项名称：" prop="itemName">
           <el-input v-model="addItemDialog.data.itemName"></el-input>
@@ -79,6 +79,7 @@ export default {
   data() {
       return {
         title: '',
+        isEdit: false,
         itemTitle: '',
         dictList: [],
         dictItemList: [],
@@ -166,12 +167,13 @@ export default {
         this.title = '添加字典'
         this.resetForm('addForm')
         this.init()
+        this.isEdit = false
         this.addDialog.visible = true;
       },
-      modifyDict(data) {
+      modifyDict(data, state) {
         this.title = '修改字典'
         this.resetForm('addForm')
-        this.init()
+        this.isEdit = true
         this.addDialog.visible = true;
         this.addDialog.data = {
           code: data.code,
@@ -204,16 +206,18 @@ export default {
             });
           })
       },
-      addDictItem() {
+      addDictItem(code) {
         this.itemTitle = '添加字典项'
         this.resetForm('addItemForm')
         this.initItem()
+        this.isEdit = false
+        this.addItemDialog.data.dictCode = code
         this.addItemDialog.visible = true;
       },
-      modifyDictItem(data) {
+      modifyDictItem(data, state) {
         this.itemTitle = '修改字典项'
         this.resetForm('addItemForm')
-        this.initItem()
+        this.isEdit = true
         this.addItemDialog.visible = true;
         this.addItemDialog.data = {
           dictCode: data.dictCode,
@@ -256,15 +260,17 @@ export default {
 <style scoped>
 .dictItem {
   line-height: 30px;
-  padding-left:26px;
+  padding-left: 26px;
 }
 
 .dictItem span+span {
   margin-left: 20px;
 }
+
 .bg span+span {
   margin-left: 20px;
 }
+
 .bg {
   line-height: 30px;
   border-bottom: 1px solid rgb(236, 223, 223);

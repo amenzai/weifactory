@@ -26,6 +26,9 @@ import ModelDetail from 'pages/commonview/model-detail'
 import OrderList from 'pages/commonview/orderlist'
 import OrderDetail from 'pages/commonview/order-detail'
 import TrustDeviceList from 'pages/expert/trust-devicelist'
+import PicManage from 'pages/commonview/pic-manage'
+import ConcatlogManage from 'pages/manager/concatlog-manage'
+import ExceptionManage from 'pages/commonview/exception-manage'
 
 export default new Router({
   routes: [{
@@ -117,6 +120,18 @@ export default new Router({
       path: 'expert/trust-devicelist',
       name: '托管设备管理',
       component: TrustDeviceList
+    }, {
+      path: 'commonview/pic-manage',
+      name: '图片管理',
+      component: PicManage
+    }, {
+      path: 'manager/concatlog-manage',
+      name: '连接日志管理',
+      component: ConcatlogManage
+    }, {
+      path: 'commonview/exception-manage',
+      name: '异常管理',
+      component: ExceptionManage
     }]
   }, {
     path: '/login',
