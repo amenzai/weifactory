@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store'
 
 Vue.use(Router)
+
 import Login from 'pages/security/login'
 import Register from 'pages/security/register'
 import Home from 'pages/home'
@@ -30,7 +32,9 @@ import PicManage from 'pages/commonview/pic-manage'
 import ConcatlogManage from 'pages/manager/concatlog-manage'
 import ExceptionManage from 'pages/commonview/exception-manage'
 
-export default new Router({
+const myRouter = new Router({
+  mode: 'hash',
+  base: __dirname,
   routes: [{
     path: '/',
     redirect: '/login'
@@ -39,6 +43,7 @@ export default new Router({
     component: Home,
     children: [{
       path: '',
+      name: '首页',
       component: Index
     }, {
       path: 'manager/userlist',
@@ -135,9 +140,37 @@ export default new Router({
     }]
   }, {
     path: '/login',
+    name: '用户登录',
     component: Login
   }, {
     path: '/register',
+    name: '用户注册',
     component: Register
   }]
 })
+
+const commit = store.commit
+const loginUrl = '/login'
+myRouter.beforeEach((to, from, next) => {
+  if (to.path === loginUrl) {
+    commit('UPDATE_USER', '')
+  }
+  if (!window.sessionStorage.getItem('user') && to.path !== loginUrl && to.path.indexOf('register') < 0) {
+    if (from.path !== loginUrl) {
+      commit('UPDATE_URL', from.path)
+    }
+    next(loginUrl)
+  } else {
+    commit('UPDATE_LOADING', true)
+    if (to.path !== from.path) {
+      window.document.title = to.name
+    }
+    next()
+  }
+})
+
+myRouter.afterEach(route => {
+  commit('UPDATE_LOADING', false)
+})
+
+export default myRouter

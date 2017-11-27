@@ -18,7 +18,7 @@ export default {
 <style scoped lang="less">
   .index-info {
     height: 400px;
-    margin-top: -20px;
+    // margin-top: -60px;
     background-color: #fff;
   }
 </style>

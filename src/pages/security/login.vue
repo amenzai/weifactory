@@ -3,7 +3,7 @@
     <el-form :model="form" :rules="rules" ref="loginForm" label-position="left" class="demo-ruleForm login-container">
       <h2 class="title">系统登录</h2>
       <el-form-item prop="username">
-        <el-input v-model="form.username" placeholder="用户名" size="large"></el-input>
+        <el-input v-model="form.username" placeholder="用户名" size="large" id="userName"></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input type="password" v-model="form.password" placeholder="密码" size="large"></el-input>
@@ -47,7 +47,8 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
+    document.getElementById('userName').getElementsByTagName('input')[0].focus()
     window.sessionStorage.clear();
     // this.$cookie.delete('AUID');
   },
@@ -69,7 +70,6 @@ export default {
         that.logining = false;
         if (response.success) {
           // that.getBtnPerms();
-          window.sessionStorage.setItem('menuType', 1);
           var user = JSON.stringify(response.data);
           that.$store.commit('UPDATE_USER', user);
           that.$store.commit('UPDATE_USERID', response.data.userId);

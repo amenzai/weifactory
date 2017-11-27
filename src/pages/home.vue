@@ -2,7 +2,7 @@
   <div class="layout clearfix">
     <div class="layout-menu-left">
       <div class="layout-logo-left"></div>
-      <el-menu default-active="-1" class="el-menu-vertical-demo" theme="dark">
+      <el-menu default-active="-1" class="el-menu-vertical-demo" theme="dark" :unique-opened="true">
         <el-submenu :index="mainIndex + ''" v-for="(item,mainIndex) in menus" :key="mainIndex">
           <template slot="title">
             <span><i class="el-icon-setting"></i>{{ item.name }}</span>
@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="layout-content">
-        <div class="layout-breadcrumb">
+        <div class="layout-breadcrumb" v-show="$route.matched[1].name !== '首页'">
           <h2 class="subtitle">{{ $route.matched[1].name }}</h2>
         </div>
         <div class="layout-content-main">
@@ -266,7 +266,7 @@ body {
     }
   }
 }
-.el-menu-item.is-active a {
+.el-menu-item a.router-link-active {
   color: #20a0ff;
 }
 </style>

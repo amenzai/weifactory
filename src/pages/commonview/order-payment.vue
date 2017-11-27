@@ -13,10 +13,9 @@
         <el-form-item label="选择托管专家：">{{ orderData.expertName }}</el-form-item>
         <el-form-item label="费用：">{{ orderData.orderPrice | currency }}</el-form-item>
         <el-form-item label="支付方式：">
-          <el-radio-group v-model="payMode">
-              <el-radio label="alipay">支付宝</el-radio>
-              <el-radio label="weichat">微信支付</el-radio>
-            </el-radio-group>
+          <el-select placeholder="请选择" v-model="payMode">
+            <el-option :label="item.label" :value="item.value" v-for="(item,index) in payChannel" :key="index"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item class="ta-c">
           <el-button type="primary" @click="paySubmit">支付</el-button>
@@ -26,33 +25,37 @@
   </el-row>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      orderData: this.$store.state.orderPay,
-      payMode: 'alipay'
-    }
-  },
-  created() {
-    this.order
-    this.getList()
-  },
-  methods: {
-    getList() {
-      // successcompanyList(this.table.send)
-      //   .then(res => {
-      //     console.log('angent/sea', res);
-      //     this.table.data = res.data.result;
-      //     this.table.totalCount = res.data.totalCount;
-      //     this.table.totalPages = res.data.totalPages;
-      //   })
+  export default {
+    data() {
+      return {
+        orderData: this.$store.state.orderPay,
+        payChannel: [],
+        payMode: 'alipay'
+      }
     },
-    paySubmit() {
+    created() {
+      this.getPayChannel()
+    },
+    methods: {
+      getPayChannel() {
+        this.$ajax.get('dict/dictItemList','payChannel')
+          .then(res => {
+            this.payChannel = res.data.map(item => {
+              return {
+                label: item.itemName,
+                value: item.itemCode
+              }
+            })
+          })
+      },
+      paySubmit() {
 
+      }
     }
   }
-}
+
 </script>
 <style scoped>
-  
+
+
 </style>

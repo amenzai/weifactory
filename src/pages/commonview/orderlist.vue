@@ -14,7 +14,7 @@
         <template scope="scope">{{ scope.row.sn }}</template>
       </el-table-column>
       <el-table-column label="支付渠道">
-        <template scope="scope">{{ scope.row.payChannel }}</template>
+        <template scope="scope">{{ scope.row.payChannel | seeValue(payChannel)}}</template>
       </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
@@ -33,6 +33,7 @@ export default {
   data() {
     return {
       userId: '',
+      payChannel: [],
       table: {
         data: [],
         send: {
@@ -48,6 +49,7 @@ export default {
   created() {
     this.userId = JSON.parse(window.sessionStorage.getItem('user')).userId
     this.getList()
+    this.getPayChannel()
   },
   methods: {
     getList() {
@@ -59,6 +61,17 @@ export default {
           this.table.pageNo = res.data.firstPage;
           this.table.totalCount = res.data.total;
           this.table.totalPages = res.data.pages;
+        })
+    },
+    getPayChannel() {
+      this.$ajax.get('dict/dictItemList','payChannel')
+        .then(res => {
+          this.payChannel = res.data.map(item => {
+            return {
+              label: item.itemName,
+              value: item.itemCode
+            }
+          })
         })
     },
     handleSizeChange(val) {
