@@ -11,7 +11,7 @@
                 </el-form-item>
                 <el-form-item label="栽培模式：">
                   <el-select clearable v-model="formFirst.cultModelOne" placeholder="请选择">
-                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
+                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="温度：" required>
@@ -56,7 +56,7 @@
                 </el-form-item>
                 <el-form-item label="栽培模式：">
                   <el-select clearable v-model="formFirst.cultModelTwo" placeholder="请选择">
-                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
+                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="温度：" required>
@@ -101,7 +101,7 @@
                 </el-form-item>
                 <el-form-item label="栽培模式：">
                   <el-select clearable v-model="formFirst.cultModelThree" placeholder="请选择">
-                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
+                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="温度：" required>
@@ -168,7 +168,7 @@
             </el-form-item>
             <el-form-item label="栽培模式：" prop="cultModelOne">
               <el-select clearable v-model="batchDialog.data.cultModelOne" placeholder="请选择">
-                <el-option :label="item.label" :value="item.value" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
+                <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="温度：" prop="temperatureOne">
@@ -204,7 +204,7 @@
             </el-form-item>
             <el-form-item label="栽培模式：" prop="cultModelTwo">
               <el-select clearable v-model="batchDialog.data.cultModelTwo" placeholder="请选择">
-                <el-option :label="item.label" :value="item.value" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
+                <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="温度：" prop="temperatureTwo">
@@ -240,7 +240,7 @@
             </el-form-item>
             <el-form-item label="栽培模式：" prop="cultModelThree">
               <el-select clearable v-model="batchDialog.data.cultModelThree" placeholder="请选择">
-                <el-option :label="item.label" :value="item.value" v-for="(item,index) in $getWord('cultModel')" :key="index"></el-option>
+                <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="温度：" prop="temperatureThree">
@@ -284,6 +284,7 @@ export default {
         deviceId: '',
         batchId: '',
         isExit: '',
+        cultModel: [],
         isShow: false,
         activeName2: 'first',
         formFirst: {},
@@ -344,6 +345,7 @@ export default {
       this.deviceId = this.$route.params.id
       this.isExit = JSON.parse(window.sessionStorage.getItem('isShow'))
       this.getList()
+      this.getCultModel()
     },
     methods: {
       init() {
@@ -367,6 +369,17 @@ export default {
           cultModelTwo: '',
           cultModelThree: ''
         }
+      },
+      getCultModel() {
+        this.$ajax.get('dict/list/controlModel')
+          .then(res => {
+            this.cultModel = res.data.map(item => {
+              return {
+                label: item.itemName,
+                value: item.itemCode
+              }
+            })
+          })
       },
       getList() {
         this.$ajax.get('batch', this.deviceId)
