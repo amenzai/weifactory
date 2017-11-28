@@ -55,7 +55,6 @@
 export default {
   data() {
     return {
-      userData: '',
       userId: '',
       deviceManageTitle: '',
       modifyDialog: {
@@ -92,7 +91,7 @@ export default {
     }
   },
   created() {
-    this.userData = JSON.parse(window.sessionStorage.getItem('user'))
+    this.userId = JSON.parse(window.sessionStorage.getItem('user')).userId
     this.init()
     this.getList()
   },
@@ -107,7 +106,6 @@ export default {
       }
     },
     getList() {
-      this.userId = JSON.parse(window.sessionStorage.getItem('user')).userId
       const send = this.table.send.pageNo + '/' + this.table.send.pageSize
       if (this.userId === 2) {
         this.$ajax.get('device/list',send)

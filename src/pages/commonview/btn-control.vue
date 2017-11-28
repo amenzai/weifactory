@@ -12,7 +12,7 @@
         <el-row>
           <el-col class="pl20" :span="4">{{ item.actuatorName }}</el-col>
           <el-col :span="16">
-            <el-date-picker v-model="date[index]" type="datetimerange" placeholder="选择时间范围" style="width:60%" v-if="!checkGroup[index]">
+            <el-date-picker v-model="date[index]" type="datetimerange" placeholder="选择时间范围" style="width:60%" v-show="!checkGroup[index]">
             </el-date-picker>
             <el-checkbox v-model="checkGroup[index]" style="margin-left:30px" true-label="1" false-label="">一直开启</el-checkbox>
           </el-col>
@@ -96,20 +96,24 @@ export default {
           })
       },
       postStatus(index, id) {
-        if (!this.checkGroup[index]) {
-          this.getDateRange(this.date[index])
-        }
-        this.send.timeVal = this.checkGroup[index]
-        this.send.sensorId = id
-        this.send.status = this.btnGroup[index]
-        console.log(this.$toJSON(this.send))
-        if (!this.send.timeVal && !this.send.startTime) {
+        if (!this.checkGroup[index] && !this.date[index][0] && !this.date[index][1]) {
           this.$message.error('请先设定开启时间')
           console.log(this.btnGroup[index])
           this.btnGroup[index] = Number(!parseInt(this.btnGroup[index])).toString()
           console.log(this.btnGroup[index])
           return
         }
+        if (!this.checkGroup[index]) {
+          this.getDateRange(this.date[index])
+          this.send.timeVal = ''
+        } else {
+          this.send.timeVal = this.checkGroup[index]
+          this.send.startTime = ''
+          this.send.endTime = ''
+        }
+        this.send.sensorId = id
+        this.send.status = this.btnGroup[index]
+        console.log(this.$toJSON(this.send))
         this.$ajax.post('control/sensor', this.send)
           .then(res => {
             var type = res.success ? 'success' : 'error';

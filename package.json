@@ -1,8 +1,8 @@
 {
-  "name": "vue-demo",
+  "name": "weifactory-web",
   "version": "1.0.0",
-  "description": "hheh",
-  "author": "guojinchao <guojinchao>",
+  "description": "植物工场智能管理系统",
+  "author": "guojinchao <amenzai.me>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",

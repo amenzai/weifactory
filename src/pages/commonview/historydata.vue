@@ -222,7 +222,7 @@ export default {
               this.drawChartLineB()
             })
           num++
-        }, 60000)
+        }, 2000)
       },
       handleSizeChange(val) {
         this.table.send.pageSize = val;

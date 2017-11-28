@@ -223,6 +223,8 @@ export default {
             .then(res => {
               console.log('', res);
               if (res.success) {
+                return
+              } else {
                 this.$message({
                   message: '该用户已存在',
                   type: 'warning'
