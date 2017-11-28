@@ -34,9 +34,6 @@
       <el-form-item prop="userName">
         <el-input v-model="form.userName" placeholder="用户名" size="large" @blur="checkUserName"></el-input>
       </el-form-item>
-      <el-form-item prop="userName">
-        <el-input v-model="form.userName" placeholder="用户名" size="large" @blur="checkUserName"></el-input>
-      </el-form-item>
       <el-form-item prop="userPassword">
         <el-input type="password" v-model="form.userPassword" placeholder="密码" size="large"></el-input>
       </el-form-item>
