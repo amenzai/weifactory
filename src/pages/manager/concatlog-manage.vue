@@ -84,7 +84,7 @@ export default {
         })
     },
     getOptionType() {
-      this.$ajax.get('dict/list/controlModel')
+      this.$ajax.get('dict/dictItemList','optionType')
         .then(res => {
           this.optionType = res.data.map(item => {
             return {
