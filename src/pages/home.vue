@@ -41,7 +41,7 @@
           </transition>
         </div>
         <div class="layout-copy">
-          2017-2018 &copy; vastsum group
+          江苏大学 &copy; 微型植物工厂智能监控系统
         </div>
       </div>
     </div>

@@ -65,9 +65,11 @@
     </el-row>
     <el-row class="mt10">
       <el-col :span="12">
+        <h2 class="title">温度适时数据</h2>
         <div id="myChartA" style="width: 100%;height: 400px"></div>
       </el-col>
       <el-col :span="12">
+        <h2 class="title">湿度适时数据</h2>
         <div id="myChartB" style="width: 100%;height: 400px"></div>
       </el-col>
     </el-row>
@@ -128,9 +130,15 @@ export default {
             type: 'value'
           },
           series: [{
-            name: '',
+            name: '温度',
             type: 'line',
             stack: '总量',
+            label: {
+              normal: {
+                show: true,
+                position: 'top'
+              }
+            },
             data: []
           }]
         }
@@ -153,9 +161,15 @@ export default {
             type: 'value'
           },
           series: [{
-            name: '',
+            name: '湿度',
             type: 'line',
             stack: '总量',
+            label: {
+              normal: {
+                show: true,
+                position: 'top'
+              }
+            },
             data: []
           }]
         }
@@ -180,7 +194,7 @@ export default {
         this.$ajax.get('history/sensor/temperature', this.table.send.deviceId)
           .then(res => {
             console.log('', res);
-            this.optionA.series[0].name = res.data.name
+            // this.optionA.series[0].name = res.data.name
             this.optionA.series[0].data.push(res.data.data)
             this.optionA.xAxis.data.push(this.$dateFilter(date, 'hh:mm:ss'))
             this.drawChartLineA()
@@ -188,7 +202,7 @@ export default {
         this.$ajax.get('history/sensor/humidity', this.table.send.deviceId)
           .then(res => {
             console.log('', res);
-            this.optionB.series[0].name = res.data.name
+            // this.optionB.series[0].name = res.data.name
             this.optionB.series[0].data.push(res.data.data)
             this.optionB.xAxis.data.push(this.$dateFilter(date, 'hh:mm:ss'))
             this.drawChartLineB()
@@ -208,7 +222,7 @@ export default {
           this.$ajax.get('history/sensor/temperature', this.table.send.deviceId)
             .then(res => {
               console.log('', res);
-              this.optionA.series[0].name = res.data.name
+              // this.optionA.series[0].name = res.data.name
               this.optionA.series[0].data.push(res.data.data)
               this.optionA.xAxis.data.push(this.$dateFilter(date, 'hh:mm:ss'))
               this.drawChartLineA()
@@ -216,7 +230,7 @@ export default {
           this.$ajax.get('history/sensor/humidity', this.table.send.deviceId)
             .then(res => {
               console.log('', res);
-              this.optionB.series[0].name = res.data.name
+              // this.optionB.series[0].name = res.data.name
               this.optionB.series[0].data.push(res.data.data)
               this.optionB.xAxis.data.push(this.$dateFilter(date, 'hh:mm:ss'))
               this.drawChartLineB()
@@ -252,10 +266,18 @@ export default {
 }
 </script>
 <style scoped>
-  .el-form--inline .el-form-item {
-    margin-right: 30px;
-  }
-  .el-form-item__label {
-    padding-right: 4px;
-  }
+.el-form--inline .el-form-item {
+  margin-right: 30px;
+}
+
+.el-form-item__label {
+  padding-right: 4px;
+}
+
+.title {
+  font-weight: normal;
+  font-size: 20px;
+  text-align: center;
+  padding-top: 30px;
+}
 </style>
