@@ -92,10 +92,10 @@ var ajax = {
   get: function(path, params) {
     var config
     if (params === void 0) {
-      config = `${base}` + path
+      config = base + path
     } else {
       // params = trimObject(params)
-      config = `${base}` + path + '/' + params
+      config = base + path + '/' + params
     }
     return axios.get(config).then(res => res.data)
   },
@@ -104,7 +104,7 @@ var ajax = {
       params = {}
     }
     params = trimObject(params, type)
-    return axios.post(`${base}` + path, params).then(res => res.data)
+    return axios.post(base + path, params).then(res => res.data)
   }
 }
 

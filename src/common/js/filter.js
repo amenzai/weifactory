@@ -1,4 +1,28 @@
 import dictionary from './dictionary.json';
+import originJsonp from 'jsonp'
+
+function jsonp(url, data, option) {
+  url += (url.indexOf('?') < 0 ? '?' : '&') + param(data)
+
+  return new Promise((resolve, reject) => {
+    originJsonp(url, option, (err, data) => {
+      if (!err) {
+        resolve(data)
+      } else {
+        reject(err)
+      }
+    })
+  })
+}
+
+function param(data) {
+  let url = ''
+  for (var k in data) {
+    const value = data[k] !== undefined ? data[k] : ''
+    url += '&' + k + '=' + encodeURIComponent(value)
+  }
+  return url ? url.substring(1) : ''
+}
 
 function searchWord(name) {
   return dictionary[name].options || [];
@@ -80,13 +104,14 @@ output.install = function(Vue) {
   Vue.prototype.$getWord = searchWord;
   Vue.prototype.$dateFilter = dateFmt;
   Vue.prototype.$toJSON = toJSON;
+  Vue.prototype.$jsonp = jsonp;
 
   Vue.filter('getValue', getValue);
   Vue.filter('dateFilter', dateFmt);
   Vue.filter('currency', currencyFmt);
   Vue.filter('temperature', temperatureFmt);
   Vue.filter('humidity', humidityFmt);
-  Vue.filter('seeValue', function (value, arr) {
+  Vue.filter('seeValue', function(value, arr) {
     if (!arr) return;
     let result = '';
     for (let i = 0; i < arr.length; i++) {

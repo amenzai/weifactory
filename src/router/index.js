@@ -31,6 +31,7 @@ import TrustDeviceList from 'pages/expert/trust-devicelist'
 import PicManage from 'pages/commonview/pic-manage'
 import ConcatlogManage from 'pages/manager/concatlog-manage'
 import ExceptionManage from 'pages/commonview/exception-manage'
+import PaySuccess from 'pages/commonview/pay-success'
 
 const myRouter = new Router({
   mode: 'hash',
@@ -137,6 +138,10 @@ const myRouter = new Router({
       path: 'commonview/exception-manage',
       name: '异常管理',
       component: ExceptionManage
+    }, {
+      path: 'commonview/pay-success',
+      name: '支付成功',
+      component: PaySuccess
     }]
   }, {
     path: '/login',

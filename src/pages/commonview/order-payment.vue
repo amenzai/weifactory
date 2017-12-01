@@ -22,12 +22,18 @@
         </el-form-item>
       </el-form>
     </el-col>
+    <el-dialog title="扫码支付" size="tiny" :visible.sync="visible" :modal-append-to-body="false">
+      <div id="qrcode" style="text-align: center;"></div>
+    </el-dialog>
   </el-row>
 </template>
 <script>
-  export default {
-    data() {
+import querystring from 'querystring'
+export default {
+  data() {
       return {
+        visible: false,
+        qrcode: null,
         orderData: this.$store.state.orderPay,
         payChannel: [],
         payMode: 'alipay'
@@ -38,7 +44,7 @@
     },
     methods: {
       getPayChannel() {
-        this.$ajax.get('dict/dictItemList','payChannel')
+        this.$ajax.get('dict/dictItemList', 'payChannel')
           .then(res => {
             this.payChannel = res.data.map(item => {
               return {
@@ -49,13 +55,28 @@
           })
       },
       paySubmit() {
-
+        this.visible = true
+        const param = {
+          'order_number': this.orderData.orderNumber,
+          'way': this.payMode
+        }
+        const url = 'http://pay.weifactory.vastsum.net/pay'
+        if (this.payMode === 'wechat') {
+          this.$jsonp(url, param)
+            .then(res => {
+              console.log(res)
+              $("#qrcode").qrcode(res)
+            })
+            .catch((e) => {
+              console.log(e)
+            })
+        } else {
+          window.open(url + '?' + querystring.stringify(param))
+        }
       }
     }
-  }
-
+}
 </script>
 <style scoped>
-
 
 </style>
