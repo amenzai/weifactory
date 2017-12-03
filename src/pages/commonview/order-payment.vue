@@ -38,17 +38,25 @@ export default {
     },
     created() {
       this.getPayChannel()
-      this.init()
     },
     methods: {
       init() {
-        var ws = new WebSocket('ws://121.196.217.247:9000');
+        const ws = new WebSocket('ws://121.196.217.247:9000/websocket/' + this.orderData.orderNumber);
+        const that = this
         ws.onopen = function () {
           console.log('successs')
-          ws.send(this.orderData.orderNumber)
+          ws.send(that.orderData.orderNumber)
         }
         ws.onerror = function(event) {
           console.log('fail')
+        }
+        ws.onmessage = function(event) {
+          const data = JSON.parse(event.data)
+          console.log(data)
+          // 处理数据
+          if (data.success) {
+            that.$router.push('/home/commonview/pay-success')
+          }
         };
       },
       getPayChannel() {
@@ -63,13 +71,18 @@ export default {
           })
       },
       paySubmit() {
+        if (!this.orderData.orderNumber) {
+          this.$message.error('订单不存在请重新生成订单！')
+          return
+        }
         const param = {
           'order_number': this.orderData.orderNumber,
           'way': this.payMode
         }
         const url = 'http://pay.weifactory.vastsum.net/pay'
         if (this.payMode === 'wechat') {
-        this.visible = true
+          this.init()
+          this.visible = true
           this.$jsonp(url, param)
             .then(res => {
               console.log(res)
@@ -80,7 +93,7 @@ export default {
               console.log(e)
             })
         } else {
-          window.open(url + '?' + querystring.stringify(param))
+          window.open(url + '?' + querystring.stringify(param),'_self')
         }
       }
     }
