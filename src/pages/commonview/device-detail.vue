@@ -145,7 +145,7 @@
         <el-button>
           <router-link :to="{ path: '/home/commonview/historydata',query:{id:$route.params.id}}">查询历史数据</router-link>
         </el-button>
-        <el-button v-if="isExit">
+        <el-button v-if="isExit && orderStatus !== '3'">
           <router-link :to="{ path: '/home/commonview/apply-manage',query:{id:$route.params.id}}">申请专家托管</router-link>
         </el-button>
         <el-button>
@@ -284,6 +284,7 @@ export default {
         deviceId: '',
         batchId: '',
         isExit: '',
+        orderStatus: '1',
         cultModel: [],
         isShow: false,
         activeName2: 'first',
@@ -389,6 +390,7 @@ export default {
             if (res.data === null) {
               this.formFirst = null
             } else {
+              this.orderStatus = res.data.orderStatus
               this.formFirst = {
                 plantOne: res.data.plantOne,
                 plantTwo: res.data.plantTwo,

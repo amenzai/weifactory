@@ -6,9 +6,6 @@
         <el-form-item label="第一层蔬菜名称：">{{ orderData.plantOne }}</el-form-item>
         <el-form-item label="第二层蔬菜名称：">{{ orderData.plantTwo }}</el-form-item>
         <el-form-item label="第三层蔬菜名称：">{{ orderData.plantThree }}</el-form-item>
-        <el-form-item label="第一层栽培模式：">{{ orderData.modeOne }}</el-form-item>
-        <el-form-item label="第二层栽培模式：">{{ orderData.modeTwo }}</el-form-item>
-        <el-form-item label="第三层栽培模式：">{{ orderData.modeThree }}</el-form-item>
         <el-form-item label="托管方式：">{{ orderData.deposit === '1' ? '全托管方式' : '自定义托管方式' }}</el-form-item>
         <el-form-item label="选择托管专家：">{{ orderData.expertName }}</el-form-item>
         <el-form-item label="费用：">{{ orderData.orderPrice | currency }}</el-form-item>
@@ -41,8 +38,19 @@ export default {
     },
     created() {
       this.getPayChannel()
+      this.init()
     },
     methods: {
+      init() {
+        var ws = new WebSocket('ws://121.196.217.247:9000');
+        ws.onopen = function () {
+          console.log('successs')
+          ws.send(this.orderData.orderNumber)
+        }
+        ws.onerror = function(event) {
+          console.log('fail')
+        };
+      },
       getPayChannel() {
         this.$ajax.get('dict/dictItemList', 'payChannel')
           .then(res => {
@@ -55,16 +63,17 @@ export default {
           })
       },
       paySubmit() {
-        this.visible = true
         const param = {
           'order_number': this.orderData.orderNumber,
           'way': this.payMode
         }
         const url = 'http://pay.weifactory.vastsum.net/pay'
         if (this.payMode === 'wechat') {
+        this.visible = true
           this.$jsonp(url, param)
             .then(res => {
               console.log(res)
+              $('#qrcode').empty()
               $("#qrcode").qrcode(res)
             })
             .catch((e) => {
