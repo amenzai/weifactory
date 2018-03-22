@@ -6,8 +6,12 @@ import { Message } from 'element-ui'
 import querystring from 'querystring'
 
 const commit = store.commit || store.dispatch
-const base = '/weifactory/'
+const base = '/'
 
+// axios.defaults.headers = {
+//   referer: 'http://api.weifactory.vastsum.net:8852',
+//   host: 'api.weifactory.vastsum.net:8852'
+// }
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = appconfig.httpServer
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'

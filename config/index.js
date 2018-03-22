@@ -28,13 +28,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/weifactory': {
-          target: 'http://test.weifactory.vastsum.net:8080',
-          changeOrigin: true,
-          pathRewrite: {
-            '^/weifactory': '/weifactory'
-          }
-        }
+        // '/api': {
+        //   target: 'http://api.weifactory.vastsum.net:8852',
+        //   changeOrigin: true,
+        //   pathRewrite: {
+        //     '^/api': ''
+        //   }
+        // }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
