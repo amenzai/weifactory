@@ -2,22 +2,22 @@
   <el-row>
     <el-table :data="table.data" border style="width: 100%">
       <el-table-column label="用户名">
-        <template scope="scope">{{ scope.row.userName }}</template>
+        <template slot-scope="scope">{{ scope.row.userName }}</template>
       </el-table-column>
       <el-table-column label="手机号">
-        <template scope="scope">{{ scope.row.userPhone }}</template>
+        <template slot-scope="scope">{{ scope.row.userPhone }}</template>
       </el-table-column>
       <el-table-column label="邮箱">
-        <template scope="scope">{{ scope.row.userEmail }}</template>
+        <template slot-scope="scope">{{ scope.row.userEmail }}</template>
       </el-table-column>
       <el-table-column label="创建日期">
-        <template scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
+        <template slot-scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
       </el-table-column>
       <el-table-column label="修改日期">
-        <template scope="scope">{{ scope.row.gmtModified | dateFilter }}</template>
+        <template slot-scope="scope">{{ scope.row.gmtModified | dateFilter }}</template>
       </el-table-column>
       <el-table-column label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text" @click="auditPass(scope.row.userId,1)">审批通过</el-button>
         </template>
       </el-table-column>

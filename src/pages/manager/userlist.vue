@@ -5,22 +5,22 @@
     </el-col>
     <el-table :data="table.data" border style="width: 100%">
       <el-table-column label="用户名">
-        <template scope="scope">{{ scope.row.userName }}</template>
+        <template slot-scope="scope">{{ scope.row.userName }}</template>
       </el-table-column>
       <el-table-column label="手机号">
-        <template scope="scope">{{ scope.row.userPhone }}</template>
+        <template slot-scope="scope">{{ scope.row.userPhone }}</template>
       </el-table-column>
       <el-table-column label="邮箱">
-        <template scope="scope">{{ scope.row.userEmail }}</template>
+        <template slot-scope="scope">{{ scope.row.userEmail }}</template>
       </el-table-column>
       <el-table-column label="创建日期">
-        <template scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
+        <template slot-scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
       </el-table-column>
       <el-table-column label="修改日期">
-        <template scope="scope">{{ scope.row.gmtModified | dateFilter }}</template>
+        <template slot-scope="scope">{{ scope.row.gmtModified | dateFilter }}</template>
       </el-table-column>
       <el-table-column label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text">
             <router-link :to="{path:'/home/manager/user-detail',query:{id:scope.row.userId}}">查看</router-link>
           </el-button>
@@ -33,7 +33,7 @@
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.pageNo" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
       </el-pagination>
     </div>
-    <el-dialog :title="userManageTitle" size="tiny" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
+    <el-dialog :title="userManageTitle" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
       <el-form ref="modifyForm" :model="modifyDialog.data" label-width="100px" :rules="modifyDialog.rules">
         <el-form-item label="用户名：" prop="userName">
           <el-input v-model="modifyDialog.data.userName"></el-input>

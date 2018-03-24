@@ -1,7 +1,7 @@
 import dictionary from './dictionary.json';
 import originJsonp from 'jsonp'
 
-function jsonp(url, data, option) {
+export function jsonp(url, data, option) {
   url += (url.indexOf('?') < 0 ? '?' : '&') + param(data)
 
   return new Promise((resolve, reject) => {
@@ -24,15 +24,15 @@ function param(data) {
   return url ? url.substring(1) : ''
 }
 
-function searchWord(name) {
+export function getDicArr(name) {
   return dictionary[name].options || [];
 }
 
-function toJSON(val) {
+export function toJSON(val) {
   return val == null ? '' : typeof val === 'object' ? JSON.stringify(val, null, 2) : String(val)
 }
 
-function dateFmt(date, format) {
+export function dateFmt(date, format) {
   if (!date) return '';
   date = new Date(date);
   const paddNum = function(num) {
@@ -57,7 +57,7 @@ function dateFmt(date, format) {
   })
 }
 
-function currencyFmt(s, n) {
+export function currencyFmt(s, n) {
   n = n > 0 && n <= 20 ? n : 2;
   if (!s && s !== 0) {
     return '';
@@ -68,19 +68,15 @@ function currencyFmt(s, n) {
   return '\u00a5' + ' ' + l + '.' + r;
 }
 
-function temperatureFmt(value) {
+export function temperatureFmt(value) {
   return value + '℃'
 }
 
-function humidityFmt(value) {
+export function humidityFmt(value) {
   return value + '%RH'
 }
 
-// function ecFmt(value) {
-//   return value + 'mS'
-// }
-
-function getValue(value, name) {
+export function getLabel(value, name) {
   const tmp = dictionary[name]
   if (tmp === undefined) {
     return ''
@@ -99,29 +95,14 @@ function getValue(value, name) {
   } else {}
 }
 
-var output = {};
-output.install = function(Vue) {
-  Vue.prototype.$getWord = searchWord;
-  Vue.prototype.$dateFilter = dateFmt;
-  Vue.prototype.$toJSON = toJSON;
-  Vue.prototype.$jsonp = jsonp;
-
-  Vue.filter('getValue', getValue);
-  Vue.filter('dateFilter', dateFmt);
-  Vue.filter('currency', currencyFmt);
-  Vue.filter('temperature', temperatureFmt);
-  Vue.filter('humidity', humidityFmt);
-  Vue.filter('seeValue', function(value, arr) {
-    if (!arr) return;
-    let result = '';
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].value === value) {
-        result = arr[i].label;
-        break;
-      }
+export function seeLabel(value, arr) {
+  if (!arr) return;
+  let result = '';
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].value === value) {
+      result = arr[i].label;
+      break;
     }
-    return result;
-  })
+  }
+  return result;
 }
-
-export default output;

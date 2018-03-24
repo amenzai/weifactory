@@ -13,7 +13,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "echarts": "^3.7.0",
-    "element-ui": "^1.4.8",
+    "element-ui": "^2.2.2",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
     "vue": "^2.3.3",
@@ -38,6 +38,7 @@
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
     "cssnano": "^3.10.0",
+    "element-theme-chalk": "^2.2.2",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^6.2.1",
     "eslint-config-vue": "^2.0.2",

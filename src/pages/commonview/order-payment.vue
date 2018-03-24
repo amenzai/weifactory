@@ -19,7 +19,7 @@
         </el-form-item>
       </el-form>
     </el-col>
-    <el-dialog title="扫码支付" size="tiny" :visible.sync="visible" :modal-append-to-body="false">
+    <el-dialog title="扫码支付" :visible.sync="visible" :modal-append-to-body="false">
       <div id="qrcode" style="text-align: center;"></div>
     </el-dialog>
   </el-row>

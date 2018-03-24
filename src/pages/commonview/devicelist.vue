@@ -5,21 +5,15 @@
     </el-col>
     <el-table :data="table.data" border style="width: 100%">
       <el-table-column label="设备序列号">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text" @click="getDetail(scope.row.deviceId,scope.row.sn)">{{ scope.row.sn }}</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="经度">
-        <template scope="scope">{{ scope.row.longitude }}</template>
-      </el-table-column>
-      <el-table-column label="纬度">
-        <template scope="scope">{{ scope.row.latitude }}</template>
-      </el-table-column>
       <el-table-column label="添加日期">
-        <template scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
+        <template slot-scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
       </el-table-column>
       <el-table-column label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text" @click="getDetail(scope.row.deviceId,scope.row.sn)">查看</el-button>
           <el-button @click="modifyDevice(scope.row)" type="text" size="small">修改</el-button>
           <el-button @click="deleteDevice(scope.row.deviceId)" type="text" size="small">删除</el-button>
@@ -30,7 +24,7 @@
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.pageNo" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
       </el-pagination>
     </div>
-    <el-dialog :title="deviceManageTitle" size="tiny" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
+    <el-dialog :title="deviceManageTitle" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
       <el-form ref="modifyForm" :model="modifyDialog.data" label-width="100px" :rules="modifyDialog.rules">
         <el-form-item label="设备序列号：" prop="sn">
           <el-input v-model="modifyDialog.data.sn"></el-input>

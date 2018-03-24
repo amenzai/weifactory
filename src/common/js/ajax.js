@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '../../store'
 // import router from '../../router'
-import appconfig from '../../appconfig.js'
+import config from './config'
 import { Message } from 'element-ui'
 import querystring from 'querystring'
 
@@ -13,7 +13,7 @@ const base = '/'
 //   host: 'api.weifactory.vastsum.net:8852'
 // }
 axios.defaults.withCredentials = true
-axios.defaults.baseURL = appconfig.httpServer
+axios.defaults.baseURL = config.httpServer
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.defaults.headers = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -92,7 +92,22 @@ axios.interceptors.response.use(function(response) {
   return Promise.reject(error)
 })
 
-var ajax = {
+function trimObject(data, type) {
+  var obj = JSON.parse(JSON.stringify(data));
+  for (var k in obj) {
+    if (Object.prototype.toString.call(obj[k]).slice(8, -1) === 'String') {
+      obj[k] = obj[k].trim()
+      if (obj[k] === '' && type === undefined) {
+        delete obj[k];
+      }
+    } else if (Object.prototype.toString.call(obj[k]).slice(8, -1) === 'Object') {
+      trimObject(obj[k])
+    }
+  }
+  return obj
+}
+
+export default {
   get: function(path, params) {
     var config
     if (params === void 0) {
@@ -111,20 +126,3 @@ var ajax = {
     return axios.post(base + path, params).then(res => res.data)
   }
 }
-
-function trimObject(data, type) {
-  var obj = JSON.parse(JSON.stringify(data));
-  for (var k in obj) {
-    if (Object.prototype.toString.call(obj[k]).slice(8, -1) === 'String') {
-      obj[k] = obj[k].trim()
-      if (obj[k] === '' && type === undefined) {
-        delete obj[k];
-      }
-    } else if (Object.prototype.toString.call(obj[k]).slice(8, -1) === 'Object') {
-      trimObject(obj[k])
-    }
-  }
-  return obj
-}
-
-export default ajax

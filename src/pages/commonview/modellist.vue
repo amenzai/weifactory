@@ -13,28 +13,28 @@
     </el-col>
     <el-table :data="table.data" border style="width: 100%">
       <el-table-column label="模型名称">
-        <template scope="scope">{{ scope.row.modelName }}</template>
+        <template slot-scope="scope">{{ scope.row.modelName }}</template>
       </el-table-column>
       <el-table-column label="最高温度">
-        <template scope="scope">{{ scope.row.temperatureUp }}</template>
+        <template slot-scope="scope">{{ scope.row.temperatureUp }}</template>
       </el-table-column>
       <el-table-column label="最低温度">
-        <template scope="scope">{{ scope.row.temperatureDown }}</template>
+        <template slot-scope="scope">{{ scope.row.temperatureDown }}</template>
       </el-table-column>
       <el-table-column label="最高湿度">
-        <template scope="scope">{{ scope.row.humidityUp }}</template>
+        <template slot-scope="scope">{{ scope.row.humidityUp }}</template>
       </el-table-column>
       <el-table-column label="最低湿度">
-        <template scope="scope">{{ scope.row.humidityDown }}</template>
+        <template slot-scope="scope">{{ scope.row.humidityDown }}</template>
       </el-table-column>
       <el-table-column label="最高光照强度">
-        <template scope="scope">{{ scope.row.illuminationUp }}</template>
+        <template slot-scope="scope">{{ scope.row.illuminationUp }}</template>
       </el-table-column>
       <el-table-column label="最低光照强度">
-        <template scope="scope">{{ scope.row.illuminationDown }}</template>
+        <template slot-scope="scope">{{ scope.row.illuminationDown }}</template>
       </el-table-column>
       <el-table-column label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text">
             <router-link :to="{path:'/home/commonview/model-detail',query:{modelId:scope.row.modelId}}">查看</router-link>
           </el-button>

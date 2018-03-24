@@ -15,16 +15,16 @@
     </el-form>
     <el-table :data="table.data" border>
       <el-table-column label="设备序列号">
-        <template scope="scope">{{ scope.row.sn }}</template>
+        <template slot-scope="scope">{{ scope.row.sn }}</template>
       </el-table-column>
       <el-table-column label="异常类型">
-        <template scope="scope">{{ scope.row.exceptionType.toString() | seeValue(exceptionType)}}</template>
+        <template slot-scope="scope">{{ scope.row.exceptionType.toString() | seeLabel(exceptionType)}}</template>
       </el-table-column>
       <el-table-column label="异常内容">
-        <template scope="scope">{{ scope.row.exceptionContent }}</template>
+        <template slot-scope="scope">{{ scope.row.exceptionContent }}</template>
       </el-table-column>
       <el-table-column label="发生异常时间">
-        <template scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
+        <template slot-scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
       </el-table-column>
     </el-table>
     <div class="fl-r mt10">

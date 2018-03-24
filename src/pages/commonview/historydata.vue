@@ -11,7 +11,7 @@
     </el-form>
     <el-table :data="table.data" border ref="multipleTable">
       <el-table-column type="expand">
-        <template scope="props">
+        <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="二氧化碳浓度：">{{ props.row.sensorCo2}}</el-form-item>
             <el-form-item label="氧气浓度：">{{ props.row.sensorOxygen }}</el-form-item>
@@ -25,34 +25,34 @@
         </template>
       </el-table-column>
       <el-table-column label="日期" width="84">
-        <template scope="scope">{{ scope.row.gmtCreate | dateFilter('yyyy-MM-dd')}}</template>
+        <template slot-scope="scope">{{ scope.row.gmtCreate | dateFilter('yyyy-MM-dd')}}</template>
       </el-table-column>
       <el-table-column label="温度第一层" width="80">
-        <template scope="scope">{{ scope.row.sensorTemperature1 | temperature}}</template>
+        <template slot-scope="scope">{{ scope.row.sensorTemperature1 | temperature}}</template>
       </el-table-column>
       <el-table-column label="温度第二层" width="80">
-        <template scope="scope">{{ scope.row.sensorTemperature2 | temperature}}</template>
+        <template slot-scope="scope">{{ scope.row.sensorTemperature2 | temperature}}</template>
       </el-table-column>
       <el-table-column label="温度第三层" width="80">
-        <template scope="scope">{{ scope.row.sensorTemperature3 | temperature}}</template>
+        <template slot-scope="scope">{{ scope.row.sensorTemperature3 | temperature}}</template>
       </el-table-column>
       <el-table-column label="湿度第一层" width="80">
-        <template scope="scope">{{ scope.row.sensorHumidity1 | humidity}}</template>
+        <template slot-scope="scope">{{ scope.row.sensorHumidity1 | humidity}}</template>
       </el-table-column>
       <el-table-column label="湿度第二层" width="80">
-        <template scope="scope">{{ scope.row.sensorHumidity2 | humidity}}</template>
+        <template slot-scope="scope">{{ scope.row.sensorHumidity2 | humidity}}</template>
       </el-table-column>
       <el-table-column label="湿度第三层" width="80">
-        <template scope="scope">{{ scope.row.sensorHumidity3 | humidity}}</template>
+        <template slot-scope="scope">{{ scope.row.sensorHumidity3 | humidity}}</template>
       </el-table-column>
       <el-table-column label="光照强度第一层">
-        <template scope="scope">{{ scope.row.sensorIllumination1}}</template>
+        <template slot-scope="scope">{{ scope.row.sensorIllumination1}}</template>
       </el-table-column>
       <el-table-column label="光照强度第二层">
-        <template scope="scope">{{ scope.row.sensorIllumination2}}</template>
+        <template slot-scope="scope">{{ scope.row.sensorIllumination2}}</template>
       </el-table-column>
       <el-table-column label="光照强度第三层">
-        <template scope="scope">{{ scope.row.sensorIllumination3}}</template>
+        <template slot-scope="scope">{{ scope.row.sensorIllumination3}}</template>
       </el-table-column>
     </el-table>
     <el-row>

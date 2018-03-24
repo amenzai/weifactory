@@ -3,7 +3,7 @@
     <el-form ref="formOne" :model="batchDetail" label-width="110px" label-position="left">
       <el-col :span="8">
         <el-form-item label="第一层蔬菜名称：">{{ batchDetail.plantOne }}</el-form-item>
-        <el-form-item label="第一层栽培模式：">{{ batchDetail.cultModelOne | getValue('cultModel')}}</el-form-item>
+        <el-form-item label="第一层栽培模式：">{{ batchDetail.cultModelOne | getLabel('cultModel')}}</el-form-item>
         <el-form-item label="第一层温度：">{{ batchDetail.temperatureOne | temperature}}</el-form-item>
         <el-form-item label="第一层湿度：">{{ batchDetail.humidityOne | humidity}}</el-form-item>
         <el-form-item label="第一层EC值：">{{ batchDetail.ecOne }}</el-form-item>
@@ -14,7 +14,7 @@
       </el-col>
       <el-col :span="8">
         <el-form-item label="第二层蔬菜名称：">{{ batchDetail.plantTwo }}</el-form-item>
-        <el-form-item label="第二层栽培模式：">{{ batchDetail.cultModelTwo | getValue('cultModel')}}</el-form-item>
+        <el-form-item label="第二层栽培模式：">{{ batchDetail.cultModelTwo | getLabel('cultModel')}}</el-form-item>
         <el-form-item label="第二层温度：">{{ batchDetail.temperatureTwo | temperature}}</el-form-item>
         <el-form-item label="第二层湿度：">{{ batchDetail.humidityTwo | humidity}}</el-form-item>
         <el-form-item label="第二层EC值：">{{ batchDetail.ecTwo }}</el-form-item>
@@ -25,7 +25,7 @@
       </el-col>
       <el-col :span="8">
         <el-form-item label="第三层蔬菜名称：">{{ batchDetail.plantThree }}</el-form-item>
-        <el-form-item label="第三层栽培模式：">{{ batchDetail.cultModelThree | getValue('cultModel')}}</el-form-item>
+        <el-form-item label="第三层栽培模式：">{{ batchDetail.cultModelThree | getLabel('cultModel')}}</el-form-item>
         <el-form-item label="第三层温度：">{{ batchDetail.temperatureThree | temperature}}</el-form-item>
         <el-form-item label="第三层湿度：">{{ batchDetail.humidityThree | humidity}}</el-form-item>
         <el-form-item label="第三层EC值：">{{ batchDetail.ecThree }}</el-form-item>

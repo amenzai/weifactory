@@ -2,13 +2,13 @@
   <el-row>
     <el-table :data="table.data" border>
       <el-table-column label="设备序列号">
-        <template scope="scope">{{ scope.row.sn }}</template>
+        <template slot-scope="scope">{{ scope.row.sn }}</template>
       </el-table-column>
       <el-table-column label="采集图片时间">
-        <template scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
+        <template slot-scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
       </el-table-column>
       <el-table-column label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <a :href="scope.row.path" target="_blank">查看图片</a>
         </template>
       </el-table-column>

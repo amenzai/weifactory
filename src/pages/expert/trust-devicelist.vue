@@ -2,21 +2,21 @@
   <el-row>
     <el-table :data="table.data" border>
       <el-table-column label="设备序列号">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text" @click="getDetail(scope.row.deviceId,scope.row.sn,false)">{{ scope.row.sn }}</el-button>
         </template>
       </el-table-column>
       <el-table-column label="经度">
-        <template scope="scope">{{ scope.row.longitude }}</template>
+        <template slot-scope="scope">{{ scope.row.longitude }}</template>
       </el-table-column>
       <el-table-column label="纬度">
-        <template scope="scope">{{ scope.row.latitude }}</template>
+        <template slot-scope="scope">{{ scope.row.latitude }}</template>
       </el-table-column>
       <el-table-column label="添加日期">
-        <template scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
+        <template slot-scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
       </el-table-column>
       <el-table-column label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text" @click="getDetail(scope.row.deviceId,scope.row.sn,false)">查看</el-button>
         </template>
       </el-table-column>

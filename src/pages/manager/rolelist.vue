@@ -2,19 +2,19 @@
   <el-row>
     <el-table :data="table.data" border>
       <el-table-column label="角色Id">
-        <template scope="scope">{{ scope.row.roleId }}</template>
+        <template slot-scope="scope">{{ scope.row.roleId }}</template>
       </el-table-column>
       <el-table-column label="角色名">
-        <template scope="scope">{{ scope.row.roleName }}</template>
+        <template slot-scope="scope">{{ scope.row.roleName }}</template>
       </el-table-column>
       <el-table-column label="角色中文名">
-        <template scope="scope">{{ scope.row.roleChineseName }}</template>
+        <template slot-scope="scope">{{ scope.row.roleChineseName }}</template>
       </el-table-column>
       <el-table-column label="创建日期">
-        <template scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
+        <template slot-scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
       </el-table-column>
       <el-table-column label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="text">
             <router-link :to="{path:'/home/manager/menu-permission',query:{roleId:scope.row.roleId,name:scope.row.roleChineseName}}">菜单权限</router-link>
           </el-button>

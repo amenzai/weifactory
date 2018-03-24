@@ -2,7 +2,7 @@
   <div class="layout clearfix">
     <div class="layout-menu-left">
       <div class="layout-logo-left"></div>
-      <el-menu default-active="-1" class="el-menu-vertical-demo" theme="dark" :unique-opened="true">
+      <el-menu default-active="-1" class="el-menu-vertical-demo" :unique-opened="true" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
         <el-submenu :index="mainIndex + ''" v-for="(item,mainIndex) in menus" :key="mainIndex">
           <template slot="title">
             <span><i class="el-icon-setting"></i>{{ item.name }}</span>
@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <el-dialog title="修改密码" size="tiny" :visible.sync="modifyPwd.visible" :close-on-click-modal="false">
+    <el-dialog title="修改密码" :visible.sync="modifyPwd.visible" :close-on-click-modal="false">
       <el-form :model="modifyPwd.data" :rules="modifyPwd.rules" label-width="120px" ref="modifyPwdForm">
         <el-form-item label="旧密码" prop="oldPwd">
           <el-input v-model="modifyPwd.data.oldPassword" type="password"></el-input>
@@ -198,8 +198,9 @@ body {
 }
 
 .layout-menu-left {
-  width: 160px;
-  background: #464c5b;
+  width: 200px;
+  // background: rgb(238, 241, 246);
+  background: #545c64;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -221,12 +222,12 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  left: 160px;
+  left: 200px;
   bottom: 0;
   .layout-header {
     height: 60px;
     line-height: 60px;
-    background: #495060;
+    background: #545c64;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
     position: absolute;
     top: 0;
@@ -249,7 +250,7 @@ body {
     overflow: auto;
     .layout-breadcrumb {
       padding-bottom: 10px;
-      border-bottom: 1px solid rgb(236, 223, 223);
+      border-bottom: 1px solid #EBEEF5;
       .subtitle {
         font-size: 20px;
       }
@@ -266,7 +267,33 @@ body {
     }
   }
 }
-.el-menu-item a.router-link-active {
-  color: #20a0ff;
+.el-menu {
+  // border-radius: none;
+  border: 0;
 }
+.el-submenu .el-menu-item {
+  padding: 0;
+}
+
+.el-submenu .el-menu-item a {
+  display: block;
+  padding-left: 48px;
+  margin-left: -40px;
+}
+
+.el-menu-item a.router-link-active {
+  color: #ffd04b;
+  background-color: rgb(67, 74, 80);
+}
+
+.el-dropdown {
+  color: rgba(255, 255, 255, .7);
+  float: right;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.el-dropdown-menu {
+  z-index: 999999;
+}
+
 </style>

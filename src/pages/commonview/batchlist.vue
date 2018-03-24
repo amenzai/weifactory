@@ -2,28 +2,28 @@
   <el-row>
     <el-table :data="table.data" border style="width: 100%">
       <el-table-column label="设备序列号">
-        <template scope="scope">{{ scope.row.sn }}</template>
+        <template slot-scope="scope">{{ scope.row.sn }}</template>
       </el-table-column>
       <el-table-column label="第一层蔬菜名称">
-        <template scope="scope">{{ scope.row.plantOne }}</template>
+        <template slot-scope="scope">{{ scope.row.plantOne }}</template>
       </el-table-column>
       <el-table-column label="第一层栽培模式">
-        <template scope="scope">{{ scope.row.cultModelOne | getValue('cultModel')}}</template>
+        <template slot-scope="scope">{{ scope.row.cultModelOne | getLabel('cultModel')}}</template>
       </el-table-column>
       <el-table-column label="第二层蔬菜名称">
-        <template scope="scope">{{ scope.row.plantTwo }}</template>
+        <template slot-scope="scope">{{ scope.row.plantTwo }}</template>
       </el-table-column>
       <el-table-column label="第二层栽培模式">
-        <template scope="scope">{{ scope.row.cultModelTwo | getValue('cultModel')}}</template>
+        <template slot-scope="scope">{{ scope.row.cultModelTwo | getLabel('cultModel')}}</template>
       </el-table-column>
       <el-table-column label="第三层蔬菜名称">
-        <template scope="scope">{{ scope.row.plantThree }}</template>
+        <template slot-scope="scope">{{ scope.row.plantThree }}</template>
       </el-table-column>
       <el-table-column label="第三层栽培模式">
-        <template scope="scope">{{ scope.row.cultModelThree | getValue('cultModel')}}</template>
+        <template slot-scope="scope">{{ scope.row.cultModelThree | getLabel('cultModel')}}</template>
       </el-table-column>
       <el-table-column label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <div>
             <el-button type="text" size="small">
               <router-link :to="{path:'/home/commonview/batch-detail',query:{id:scope.row.batchId}}">查看</router-link>
@@ -41,7 +41,7 @@
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.pageNo" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
       </el-pagination>
     </div>
-    <el-dialog title="关联模型" size="tiny" :visible.sync="modelVisible" :close-on-click-modal="false">
+    <el-dialog title="关联模型" :visible.sync="modelVisible" :close-on-click-modal="false">
       <el-form ref="modelForm" label-width="100px">
         <el-form-item label="选择模型：">
           <el-select clearable v-model="modelId" placeholder="请选择">

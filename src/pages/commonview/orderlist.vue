@@ -2,22 +2,22 @@
   <el-row>
     <el-table :data="table.data" border style="width: 100%">
       <el-table-column label="订单号">
-        <template scope="scope">{{ scope.row.orderNumber }}</template>
+        <template slot-scope="scope">{{ scope.row.orderNumber }}</template>
       </el-table-column>
       <el-table-column label="价格">
-        <template scope="scope">{{ scope.row.orderPrice | currency}}</template>
+        <template slot-scope="scope">{{ scope.row.orderPrice | currency}}</template>
       </el-table-column>
       <el-table-column label="订单名称">
-        <template scope="scope">{{ scope.row.orderBody }}</template>
+        <template slot-scope="scope">{{ scope.row.orderBody }}</template>
       </el-table-column>
       <el-table-column label="设备序列号">
-        <template scope="scope">{{ scope.row.sn }}</template>
+        <template slot-scope="scope">{{ scope.row.sn }}</template>
       </el-table-column>
       <el-table-column label="支付渠道">
-        <template scope="scope">{{ scope.row.payChannel | seeValue(payChannel)}}</template>
+        <template slot-scope="scope">{{ scope.row.payChannel | seeLabel(payChannel)}}</template>
       </el-table-column>
       <el-table-column label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <router-link :to="{path:'/home/commonview/order-detail',query:{orderId:scope.row.orderId}}">查看</router-link>
         </template>
       </el-table-column>

@@ -22,7 +22,7 @@
         </li>
       </el-collapse-item>
     </el-collapse>
-    <el-dialog :title="title" size="tiny" :visible.sync="addDialog.visible" :close-on-click-modal="false">
+    <el-dialog :title="title" :visible.sync="addDialog.visible" :close-on-click-modal="false">
       <el-form ref="addForm" :model="addDialog.data" label-width="100px" :rules="addDialog.rules">
         <el-form-item label="名称" prop="name">
           <el-input v-model="addDialog.data.name"></el-input>
@@ -44,7 +44,7 @@
         <el-button type="primary" @click="addSubmit('addForm')">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog :title="itemTitle" size="tiny" :visible.sync="addItemDialog.visible" :close-on-click-modal="false">
+    <el-dialog :title="itemTitle" :visible.sync="addItemDialog.visible" :close-on-click-modal="false">
       <el-form ref="addItemForm" :model="addItemDialog.data" label-width="100px" :rules="addItemDialog.rules">
         <el-form-item label="名称" prop="name">
           <el-input v-model="addItemDialog.data.name"></el-input>

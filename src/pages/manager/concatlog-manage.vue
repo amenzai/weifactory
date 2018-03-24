@@ -18,28 +18,28 @@
     </el-form>
     <el-table :data="table.data" border>
       <el-table-column label="设备序列号">
-        <template scope="scope">{{ scope.row.sn }}</template>
+        <template slot-scope="scope">{{ scope.row.sn }}</template>
       </el-table-column>
       <el-table-column label="客户端IP">
-        <template scope="scope">{{ scope.row.clientIpAddress }}</template>
+        <template slot-scope="scope">{{ scope.row.clientIpAddress }}</template>
       </el-table-column>
       <el-table-column label="客户端端口号">
-        <template scope="scope">{{ scope.row.clientPort }}</template>
+        <template slot-scope="scope">{{ scope.row.clientPort }}</template>
       </el-table-column>
       <el-table-column label="服务器端内网IP">
-        <template scope="scope">{{ scope.row.serverIpAddress }}</template>
+        <template slot-scope="scope">{{ scope.row.serverIpAddress }}</template>
       </el-table-column>
       <el-table-column label="服务器外网IP">
-        <template scope="scope">{{ scope.row.serverNetAddress }}</template>
+        <template slot-scope="scope">{{ scope.row.serverNetAddress }}</template>
       </el-table-column>
       <el-table-column label="服务器端口号">
-        <template scope="scope">{{ scope.row.serverPort }}</template>
+        <template slot-scope="scope">{{ scope.row.serverPort }}</template>
       </el-table-column>
       <el-table-column label="操作类型">
-        <template scope="scope">{{ scope.row.optionType.toString() | seeValue(optionType) }}</template>
+        <template slot-scope="scope">{{ scope.row.optionType.toString() | seeLabel(optionType) }}</template>
       </el-table-column>
       <el-table-column label="创建时间">
-        <template scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
+        <template slot-scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
       </el-table-column>
     </el-table>
     <div class="fl-r mt10">
