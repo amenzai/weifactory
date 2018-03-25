@@ -1,20 +1,18 @@
 <template>
-  <div @keyup.enter="submitForm('loginForm')">
-    <el-form :model="form" :rules="rules" ref="loginForm" label-position="left" class="demo-ruleForm login-container">
+  <div>
+    <el-form :model="form" :rules="rules" ref="loginForm" label-position="left" class="login-container" @keyup.enter.native="submitForm('loginForm')">
       <h2 class="title">系统登录</h2>
       <el-form-item prop="username">
-        <el-input v-model="form.username" placeholder="用户名" size="large" id="userName"></el-input>
+        <el-input v-model="form.username" placeholder="用户名" id="userName"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input type="password" v-model="form.password" placeholder="密码" size="large"></el-input>
+        <el-input type="password" v-model="form.password" placeholder="密码"></el-input>
       </el-form-item>
       <el-form-item style="width:100%;">
-        <el-button type="primary" style="width:100%;" @click="submitForm('loginForm')" :loading="logining" size="large">立即登录</el-button>
+        <el-button type="primary" style="width:100%;" @click="submitForm('loginForm')" :loading="logining">立即登录</el-button>
       </el-form-item>
       <el-form-item>
-        <!-- <el-col :span="8">
-          <el-checkbox v-model="form.rememberMe" class="remember">保持登录</el-checkbox>
-        </el-col> -->
+        <el-checkbox v-model="form.rememberMe" class="remember">保持登录</el-checkbox>
          <el-col :span="24" style="text-align:right;">
           <el-button type="text" @click="$router.push('/register')">注册新用户</el-button>
           <!-- <el-button type="text">忘记密码？</el-button> -->
@@ -29,34 +27,38 @@ export default {
     return {
       logining: false,
       form: {
-        username: '', //  admin
-        password: '' //  123456
+        username: "", //  admin
+        password: "" //  123456
         // rememberMe: false
       },
       rules: {
-        username: [{
-          required: true,
-          message: '请输入用户名',
-          trigger: 'blur'
-        }],
-        password: [{
-          required: true,
-          message: '请输入密码',
-          trigger: 'blur'
-        }]
+        username: [
+          {
+            required: true,
+            message: "请输入用户名",
+            trigger: "blur"
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: "请输入密码",
+            trigger: "blur"
+          }
+        ]
       }
-    }
+    };
   },
   mounted() {
-    document.getElementById('userName').getElementsByTagName('input')[0].focus()
+    document.getElementById("userName").focus();
     window.sessionStorage.clear();
     // this.$cookie.delete('AUID');
   },
   methods: {
     submitForm(formName) {
       let valid = false;
-      this.$refs[formName].validate((v) => {
-        valid = v
+      this.$refs[formName].validate(v => {
+        valid = v;
       });
       if (!valid) {
         return false;
@@ -64,33 +66,21 @@ export default {
       this.logining = true;
       window.sessionStorage.clear();
       // console.log(this.$refs[formName].validate())
-      const that = this;
-      this.$ajax.post('register/login', this.form).then(function(response) {
-        console.log('login', response)
-        that.logining = false;
-        if (response.success) {
-          // that.getBtnPerms();
-          var user = JSON.stringify(response.data);
-          that.$store.commit('UPDATE_USER', user);
-          that.$store.commit('UPDATE_USERID', response.data.userId);
-          const url = window.sessionStorage.getItem('url') || '';
-          if (url !== '' && url.indexOf('register') < 0 && url.indexOf('findpwd') < 0) {
-            that.$store.commit('UPDATE_URL', '');
-            that.$router.push(url)
-          } else {
-            that.$router.push('/home')
-          }
-        } else {
-          that.$message.error(response.message);
-          // that.loadVerify();
-        }
-      })
+      this.$ajax.post("register/login", this.form).then(res => {
+        this.logining = false;
+        const userData = res.data
+        this.$store.commit("UPDATE_USER", userData);
+        this.$store.commit("UPDATE_USERID", userData.userId);
+        this.$router.push('/home')
+      }).catch(() => {
+        this.logining = false;
+      });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
   }
-}
+};
 </script>
 <style scoped lang="less">
 .login-container {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from '../store'
+// import store from '../store'
 
 Vue.use(Router)
 
@@ -72,7 +72,7 @@ const myRouter = new Router({
       component: DeviceList
     }, {
       path: 'commonview/device-detail/:id',
-      name: '设备信息',
+      name: '设备批次信息',
       component: DeviceDetail
     }, {
       path: 'commonview/apply-manage',
@@ -154,19 +154,13 @@ const myRouter = new Router({
   }]
 })
 
-const commit = store.commit
+// const commit = store.commit
 const loginUrl = '/login'
 myRouter.beforeEach((to, from, next) => {
-  if (to.path === loginUrl) {
-    commit('UPDATE_USER', '')
-  }
   if (!window.sessionStorage.getItem('user') && to.path !== loginUrl && to.path.indexOf('register') < 0) {
-    if (from.path !== loginUrl) {
-      commit('UPDATE_URL', from.path)
-    }
     next(loginUrl)
   } else {
-    commit('UPDATE_LOADING', true)
+    // commit('UPDATE_LOADING', true)
     if (to.path !== from.path) {
       window.document.title = to.name
     }
@@ -174,8 +168,8 @@ myRouter.beforeEach((to, from, next) => {
   }
 })
 
-myRouter.afterEach(route => {
-  commit('UPDATE_LOADING', false)
-})
+// myRouter.afterEach(route => {
+//   commit('UPDATE_LOADING', false)
+// })
 
 export default myRouter

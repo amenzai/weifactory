@@ -1,8 +1,8 @@
 import axios from 'axios'
 import store from '../../store'
-// import router from '../../router'
+import router from '../../router'
 import config from './config'
-import { Message } from 'element-ui'
+import { Message, Notification } from 'element-ui'
 import querystring from 'querystring'
 
 const commit = store.commit || store.dispatch
@@ -37,58 +37,39 @@ axios.interceptors.request.use(function(config) {
 })
 axios.interceptors.response.use(function(response) {
   if (response.status === 200) {
-    if (!response.data.success) {
+    if (response.data.code === 401) {
+      console.log('登录超时')
+      Notification({
+        title: '登录超时',
+        message: '登录超时',
+        type: 'error'
+      })
+      router.push('/login')
+    } else if (response.data.code === 303) { //  api权限
+      Notification({
+        title: '错误',
+        message: '该接口你没有权限！',
+        type: 'error'
+      })
+    } else if (!response.data.success) {
       Message({
-        title: '警告',
-        message: response.data.message,
+        message: res.data.message,
         type: 'error'
       })
     }
-    // if (response.data.code === 401) {
-    //   console.log('404')
-    //   Alert('登录超时', '登录超时', {
-    //     confirmButtonText: '确定',
-    //     callback: () => {
-    //       router.push(loginUrl)
-    //     }
-    //   });
-    // } else if (response.data.code === 301) {
-    //   console.log('301')
-    //   if (response.data.url !== null && response.data.url !== '') {
-    //     router.push(response.data.url)
-    //   }
-    // } else if (response.data.code === 302) {
-    //   console.log('302', response)
-    //   if (response.data.url.indexOf('http://') === 0 || response.data.url.indexOf('http://') === 0) {
-    //     window.location.href = response.data.url
-    //   } else {
-    //     window.location.href = axios.defaults.baseURL + response.data.url
-    //   }
-    // } else if (response.data.code === 303) { //  api权限
-    //   // Message({
-    //   //   title: '警告',
-    //   //   message: response.data.message,
-    //   //   type: 'warning'
-    //   // })
-    // } else if (response.data.code === 500) {
-    //   Message({
-    //     title: '警告',
-    //     message: response.data.message,
-    //     type: 'error'
-    //   })
-    // }
   }
   // 不显示loading
   commit('UPDATE_LOADING', false)
   return response
 }, function(error) {
   // 对响应错误做点什么
-  Message({
-    title: '警告',
-    message: '服务端异常',
+  commit('UPDATE_LOADING', false)
+  const title = error.message === 'Network Error' ? '网络开小差，请稍后再试' : '服务端错误';
+  Notification({
+    title: title,
+    message: error.message,
     type: 'error'
   })
-  commit('UPDATE_LOADING', false)
   return Promise.reject(error)
 })
 
@@ -108,13 +89,13 @@ function trimObject(data, type) {
 }
 
 export default {
-  get: function(path, params) {
+  get: function (path, params) {
     var config
     if (params === void 0) {
       config = base + path
     } else {
-      // params = trimObject(params)
-      config = base + path + '/' + params
+      // params = trimObject(params, type) //  type为true不过滤空字符串的发送
+      config = `${base}` + path + '/' + params
     }
     return axios.get(config).then(res => res.data)
   },
@@ -123,6 +104,19 @@ export default {
       params = {}
     }
     params = trimObject(params, type)
-    return axios.post(base + path, params).then(res => res.data)
+    return axios.post(`${base}` + path, params).then(res => res.data)
+    // return new Promise((resolve, reject) => {
+    //   axios.post(`${base}` + path, params).then(res => {
+    //     if (res.data.code === 200) {
+    //       resolve(res.data)
+    //     } else if (res.data.code === 500) {
+    //       Message({
+    //         message: res.data.message || '',
+    //         type: 'error'
+    //       })
+    //       reject(res.data)
+    //     }
+    //   })
+    // })
   }
 }

@@ -34,6 +34,10 @@ import {
   Icon,
   Row,
   Col,
+  Collapse,
+  CollapseItem,
+  Tabs,
+  TabPane,
   MessageBox,
   Message,
   Notification
@@ -77,6 +81,10 @@ export default {
     Vue.component(Icon.name, Icon);
     Vue.component(Row.name, Row);
     Vue.component(Col.name, Col);
+    Vue.component(Collapse.name, Collapse);
+    Vue.component(CollapseItem.name, CollapseItem);
+    Vue.component(Tabs.name, Tabs);
+    Vue.component(TabPane.name, TabPane);
 
     Vue.prototype.$msgbox = MessageBox;
     Vue.prototype.$alert = MessageBox.alert;

@@ -135,8 +135,7 @@ export default {
           type: 'warning'
         }).then(() => {
           this.$store.commit('UPDATE_USER', '');
-          this.$store.commit('UPDATE_URL', this.$route.path);
-          console.log(1)
+          this.$store.commit('UPDATE_USERID', '');
           this.$router.push('/login');
         }).catch(() => {});
       },

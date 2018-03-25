@@ -22,8 +22,8 @@
 }
 </style>
 <template>
-  <div @keyup.enter="submitForm('regForm')">
-    <el-form :model="form" :rules="rules" ref="regForm" label-position="left" label-width="0px" class="demo-ruleForm reg-container">
+  <div>
+    <el-form :model="form" :rules="rules" ref="regForm" label-position="left" label-width="0px" class="reg-container" @keyup.enter.native="submitForm('regForm')">
       <h2 class="title">用户注册</h2>
       <el-form-item>
         <el-radio-group v-model="form.roleId">
@@ -32,33 +32,33 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item prop="userName">
-        <el-input v-model="form.userName" placeholder="用户名" size="large" @blur="checkUserName"></el-input>
+        <el-input v-model="form.userName" placeholder="用户名" @blur="checkUserName"></el-input>
       </el-form-item>
       <el-form-item prop="userPassword">
-        <el-input type="password" v-model="form.userPassword" placeholder="密码" size="large"></el-input>
+        <el-input type="password" v-model="form.userPassword" placeholder="密码"></el-input>
       </el-form-item>
       <el-form-item prop="enpassword">
-        <el-input type="password" v-model="form.enpassword" placeholder="确认密码" size="large"></el-input>
+        <el-input type="password" v-model="form.enpassword" placeholder="确认密码"></el-input>
       </el-form-item>
       <el-form-item prop="userEmail">
-        <el-input v-model="form.userEmail" placeholder="邮箱" size="large"></el-input>
+        <el-input v-model="form.userEmail" placeholder="邮箱"></el-input>
       </el-form-item>
       <el-form-item prop="userPhone">
-        <el-input v-model="form.userPhone" placeholder="手机" size="large"></el-input>
+        <el-input v-model="form.userPhone" placeholder="手机"></el-input>
       </el-form-item>
       <el-form-item required>
         <el-col :span="11">
           <el-form-item prop="codeNum">
-            <el-input v-model="form.codeNum" placeholder="短信验证码" :disabled="!smsDis" size="large"></el-input>
+            <el-input v-model="form.codeNum" placeholder="短信验证码" :disabled="!smsDis"></el-input>
           </el-form-item>
         </el-col>
         <el-col class="line" :span="2">&nbsp;</el-col>
         <el-col :span="11">
-          <el-button type="primary" size="large" @click="sendCode" :loading="smslogining" :disabled="smsDis">{{smsText}}</el-button>
+          <el-button type="primary" @click="sendCode" :loading="smslogining" :disabled="smsDis">{{smsText}}</el-button>
         </el-col>
       </el-form-item>
       <el-form-item style="width:100%;">
-        <el-button type="primary" style="width:100%;" @click="submitForm('regForm')" :loading="logining" size="large">马上注册</el-button>
+        <el-button type="primary" style="width:100%;" @click="submitForm('regForm')" :loading="logining">马上注册</el-button>
       </el-form-item>
       <el-form-item style="text-align:right;">
         已有账号？

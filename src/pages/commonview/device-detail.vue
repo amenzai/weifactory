@@ -5,45 +5,20 @@
         <el-tab-pane label="第一层" name="first">
           <el-row>
             <el-col :span="14">
-              <el-form ref="formOne" :model="formFirst" label-width="120px">
-                <el-form-item label="蔬菜名称：">
-                  <el-input v-model="formFirst.plantOne"></el-input>
-                </el-form-item>
-                <el-form-item label="栽培模式：">
-                  <el-select clearable v-model="formFirst.cultModelOne" placeholder="请选择">
-                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="温度：" required>
-                  <el-button icon="minus" size="small" @click="totalAmount('minus',formFirst,1)"></el-button>
-                  <el-input-number style="width:80px;" :step="1" size="small" :min="0" v-model="formFirst.temperatureOne" @change="totalAmount" :controls="false"></el-input-number>
-                  <el-button icon="plus" size="small" @click="totalAmount('plus',formFirst,1)"></el-button>
-                </el-form-item>
-                <el-form-item label="湿度：" required>
-                  <el-button icon="minus" size="small" @click="totalAmount('minus',formFirst,4)"></el-button>
-                  <el-input-number style="width:80px;" :step="1" size="small" :min="0" v-model="formFirst.humidityOne" @change="totalAmount" :controls="false"></el-input-number>
-                  <el-button icon="plus" size="small" @click="totalAmount('plus',formFirst,4)"></el-button>
-                </el-form-item>
-                <el-form-item label="EC值：" required>
-                  <el-input v-model="formFirst.ecOne"></el-input>
-                </el-form-item>
-                <el-form-item label="PH值：" required>
-                  <el-input v-model="formFirst.phOne"></el-input>
-                </el-form-item>
-                <el-form-item style="margin-bottom:0">
+              <el-form ref="formOne" :model="formFirst" label-width="80px">
+                <el-form-item label="蔬菜名称：">{{ formFirst.plantOne }}</el-form-item>
+                <el-form-item label="栽培模式：">{{ formFirst.cultModelOne | seeLabel(cultModel)}}</el-form-item>
+                <el-form-item label="温度：">{{ formFirst.temperatureOne }}</el-form-item>
+                <el-form-item label="湿度：">{{ formFirst.humidityOne }}</el-form-item>
+                <el-form-item label="生长灯：">
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledOneLeft === '1'}"></i>
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledOneMiddle === '1'}"></i>
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledOneRight === '1'}"></i>
                 </el-form-item>
-                <el-form-item label="灯开关：">
-                  <el-switch v-model="formFirst.ledOneLeft" on-value="1" off-value="0"></el-switch>
-                  <el-switch v-model="formFirst.ledOneMiddle" on-value="1" off-value="0"></el-switch>
-                  <el-switch v-model="formFirst.ledOneRight" on-value="1" off-value="0"></el-switch>
-                </el-form-item>
               </el-form>
             </el-col>
             <el-col :span="8" :offset="2">
-              <img class="video-img" :src="formFirst.videoOne"></img>
+              <img class="video-img" :src="formFirst.videoOne">
             </el-col>
           </el-row>
         </el-tab-pane>
@@ -60,14 +35,14 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="温度：" required>
-                  <el-button icon="minus" size="small" @click="totalAmount('minus',formFirst,2)"></el-button>
-                  <el-input-number style="width:80px;" :step="1" size="small" :min="0" v-model="formFirst.temperatureTwo" @change="totalAmount" :controls="false"></el-input-number>
-                  <el-button icon="plus" size="small" @click="totalAmount('plus',formFirst,2)"></el-button>
+                  <el-button icon="minus" @click="totalAmount('minus',formFirst,2)"></el-button>
+                  <el-input-number style="width:80px;" :step="1" :min="0" v-model="formFirst.temperatureTwo" @change="totalAmount" :controls="false"></el-input-number>
+                  <el-button icon="plus" @click="totalAmount('plus',formFirst,2)"></el-button>
                 </el-form-item>
                 <el-form-item label="湿度：" required>
-                  <el-button icon="minus" size="small" @click="totalAmount('minus',formFirst,5)"></el-button>
-                  <el-input-number style="width:80px;" :step="1" size="small" :min="0" v-model="formFirst.humidityTwo " @change="totalAmount" :controls="false"></el-input-number>
-                  <el-button icon="plus" size="small" @click="totalAmount('plus',formFirst,5)"></el-button>
+                  <el-button icon="minus" @click="totalAmount('minus',formFirst,5)"></el-button>
+                  <el-input-number style="width:80px;" :step="1" :min="0" v-model="formFirst.humidityTwo " @change="totalAmount" :controls="false"></el-input-number>
+                  <el-button icon="plus" @click="totalAmount('plus',formFirst,5)"></el-button>
                 </el-form-item>
                 <el-form-item label="EC值：" required>
                   <el-input v-model="formFirst.ecTwo "></el-input>
@@ -81,14 +56,14 @@
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledTwoRight === '1'}"></i>
                 </el-form-item>
                 <el-form-item label="灯开关：">
-                  <el-switch v-model="formFirst.ledTwoLeft" on-value="1" off-value="0"></el-switch>
-                  <el-switch v-model="formFirst.ledTwoMiddle" on-value="1" off-value="0"></el-switch>
-                  <el-switch v-model="formFirst.ledTwoRight" on-value="1" off-value="0"></el-switch>
+                  <el-switch v-model="formFirst.ledTwoLeft" active-value="1" inactive-value="0"></el-switch>
+                  <el-switch v-model="formFirst.ledTwoMiddle" active-value="1" inactive-value="0"></el-switch>
+                  <el-switch v-model="formFirst.ledTwoRight" active-value="1" inactive-value="0"></el-switch>
                 </el-form-item>
               </el-form>
             </el-col>
             <el-col :span="8" :offset="2">
-              <img class="video-img" :src="formFirst.videoTwo"></img>
+              <img class="video-img" :src="formFirst.videoTwo">
             </el-col>
           </el-row>
         </el-tab-pane>
@@ -105,14 +80,14 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="温度：" required>
-                  <el-button icon="minus" size="small" @click="totalAmount('minus',formFirst,3)"></el-button>
-                  <el-input-number style="width:80px;" :step="1" size="small" :min="0" v-model="formFirst.temperatureThree" @change="totalAmount" :controls="false"></el-input-number>
-                  <el-button icon="plus" size="small" @click="totalAmount('plus',formFirst,3)"></el-button>
+                  <el-button icon="minus" @click="totalAmount('minus',formFirst,3)"></el-button>
+                  <el-input-number style="width:80px;" :step="1" :min="0" v-model="formFirst.temperatureThree" @change="totalAmount" :controls="false"></el-input-number>
+                  <el-button icon="plus" @click="totalAmount('plus',formFirst,3)"></el-button>
                 </el-form-item>
                 <el-form-item label="湿度：" required>
-                  <el-button icon="minus" size="small" @click="totalAmount('minus',formFirst,6)"></el-button>
-                  <el-input-number style="width:80px;" :step="1" size="small" :min="0" v-model="formFirst.humidityThree " @change="totalAmount" :controls="false"></el-input-number>
-                  <el-button icon="plus" size="small" @click="totalAmount('plus',formFirst,6)"></el-button>
+                  <el-button icon="minus" @click="totalAmount('minus',formFirst,6)"></el-button>
+                  <el-input-number style="width:80px;" :step="1" :min="0" v-model="formFirst.humidityThree " @change="totalAmount" :controls="false"></el-input-number>
+                  <el-button icon="plus" @click="totalAmount('plus',formFirst,6)"></el-button>
                 </el-form-item>
                 <el-form-item label="EC值：" required>
                   <el-input v-model="formFirst.ecThree "></el-input>
@@ -126,14 +101,14 @@
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledThreeRight === '1'}"></i>
                 </el-form-item>
                 <el-form-item label="灯开关：">
-                  <el-switch v-model="formFirst.ledThreeLeft" on-value="1" off-value="0"></el-switch>
-                  <el-switch v-model="formFirst.ledThreeMiddle" on-value="1" off-value="0"></el-switch>
-                  <el-switch v-model="formFirst.ledThreeRight" on-value="1" off-value="0"></el-switch>
+                  <el-switch v-model="formFirst.ledThreeLeft" active-value="1" inactive-value="0"></el-switch>
+                  <el-switch v-model="formFirst.ledThreeMiddle" active-value="1" inactive-value="0"></el-switch>
+                  <el-switch v-model="formFirst.ledThreeRight" active-value="1" inactive-value="0"></el-switch>
                 </el-form-item>
               </el-form>
             </el-col>
             <el-col :span="8" :offset="2">
-              <img class="video-img" :src="formFirst.videoThree"></img>
+              <img class="video-img" :src="formFirst.videoThree">
             </el-col>
           </el-row>
         </el-tab-pane>
@@ -158,7 +133,7 @@
         <el-button type="text" @click="addBatch">立即添加</el-button>
       </p>
     </el-col>
-    <el-dialog title="添加设备批次信息" size="large" :visible.sync="batchDialog.visible" :close-on-click-modal="false">
+    <el-dialog title="添加设备批次信息" width="80%" :visible.sync="batchDialog.visible" :close-on-click-modal="false">
       <el-form ref="addForm" :model="batchDialog.data" label-width="110px" :rules="batchDialog.rules">
         <el-row>
           <el-col :span="8">
@@ -172,14 +147,14 @@
               </el-select>
             </el-form-item>
             <el-form-item label="温度：" prop="temperatureOne">
-              <el-button icon="minus" size="small" @click="totalAmount('minus',batchDialog.data,1)"></el-button>
-              <el-input-number style="width:70px;" :step="1" size="small" :min="0" v-model="batchDialog.data.temperatureOne" @change="totalAmount" :controls="false"></el-input-number>
-              <el-button icon="plus" size="small" @click="totalAmount('plus',batchDialog.data,1)"></el-button>
+              <el-button icon="el-icon-minus" @click="totalAmount('minus',batchDialog.data,1)"></el-button>
+              <el-input-number style="width:70px;" :step="1" :min="0" v-model="batchDialog.data.temperatureOne" @change="totalAmount" :controls="false"></el-input-number>
+              <el-button icon="el-icon-plus" @click="totalAmount('plus',batchDialog.data,1)"></el-button>
             </el-form-item>
             <el-form-item label="湿度：" prop="humidityOne">
-              <el-button icon="minus" size="small" @click="totalAmount('minus',batchDialog.data,4)"></el-button>
-              <el-input-number style="width:70px;" :step="1" size="small" :min="0" v-model="batchDialog.data.humidityOne " @change="totalAmount" :controls="false"></el-input-number>
-              <el-button icon="plus" size="small" @click="totalAmount('plus',batchDialog.data,4)"></el-button>
+              <el-button icon="el-icon-minus" @click="totalAmount('minus',batchDialog.data,4)"></el-button>
+              <el-input-number style="width:70px;" :step="1" :min="0" v-model="batchDialog.data.humidityOne " @change="totalAmount" :controls="false"></el-input-number>
+              <el-button icon="el-icon-plus" @click="totalAmount('plus',batchDialog.data,4)"></el-button>
             </el-form-item>
             <el-form-item label="ec值：" prop="ecOne">
               <el-input v-model="batchDialog.data.ecOne"></el-input>
@@ -208,14 +183,14 @@
               </el-select>
             </el-form-item>
             <el-form-item label="温度：" prop="temperatureTwo">
-              <el-button icon="minus" size="small" @click="totalAmount('minus',batchDialog.data,2)"></el-button>
-              <el-input-number style="width:70px;" :step="1" size="small" :min="0" v-model="batchDialog.data.temperatureTwo" @change="totalAmount" :controls="false"></el-input-number>
-              <el-button icon="plus" size="small" @click="totalAmount('plus',batchDialog.data,2)"></el-button>
+              <el-button icon="minus" @click="totalAmount('minus',batchDialog.data,2)"></el-button>
+              <el-input-number style="width:70px;" :step="1" :min="0" v-model="batchDialog.data.temperatureTwo" @change="totalAmount" :controls="false"></el-input-number>
+              <el-button icon="plus" @click="totalAmount('plus',batchDialog.data,2)"></el-button>
             </el-form-item>
             <el-form-item label="湿度：" prop="humidityTwo">
-              <el-button icon="minus" size="small" @click="totalAmount('minus',batchDialog.data,5)"></el-button>
-              <el-input-number style="width:70px;" :step="1" size="small" :min="0" v-model="batchDialog.data.humidityTwo " @change="totalAmount" :controls="false"></el-input-number>
-              <el-button icon="plus" size="small" @click="totalAmount('plus',batchDialog.data,5)"></el-button>
+              <el-button icon="minus" @click="totalAmount('minus',batchDialog.data,5)"></el-button>
+              <el-input-number style="width:70px;" :step="1" :min="0" v-model="batchDialog.data.humidityTwo " @change="totalAmount" :controls="false"></el-input-number>
+              <el-button icon="plus" @click="totalAmount('plus',batchDialog.data,5)"></el-button>
             </el-form-item>
             <el-form-item label="ec值：" prop="ecTwo">
               <el-input v-model="batchDialog.data.ecTwo"></el-input>
@@ -244,14 +219,14 @@
               </el-select>
             </el-form-item>
             <el-form-item label="温度：" prop="temperatureThree">
-              <el-button icon="minus" size="small" @click="totalAmount('minus',batchDialog.data,3)"></el-button>
-              <el-input-number style="width:70px;" :step="1" size="small" :min="0" v-model="batchDialog.data.temperatureThree" @change="totalAmount" :controls="false"></el-input-number>
-              <el-button icon="plus" size="small" @click="totalAmount('plus',batchDialog.data,3)"></el-button>
+              <el-button icon="minus" @click="totalAmount('minus',batchDialog.data,3)"></el-button>
+              <el-input-number style="width:70px;" :step="1" :min="0" v-model="batchDialog.data.temperatureThree" @change="totalAmount" :controls="false"></el-input-number>
+              <el-button icon="plus" @click="totalAmount('plus',batchDialog.data,3)"></el-button>
             </el-form-item>
             <el-form-item label="湿度：" prop="humidityThree">
-              <el-button icon="minus" size="small" @click="totalAmount('minus',batchDialog.data,6)"></el-button>
-              <el-input-number style="width:70px;" :step="1" size="small" :min="0" v-model="batchDialog.data.humidityThree " @change="totalAmount" :controls="false"></el-input-number>
-              <el-button icon="plus" size="small" @click="totalAmount('plus',batchDialog.data,6)"></el-button>
+              <el-button icon="minus" @click="totalAmount('minus',batchDialog.data,6)"></el-button>
+              <el-input-number style="width:70px;" :step="1" :min="0" v-model="batchDialog.data.humidityThree " @change="totalAmount" :controls="false"></el-input-number>
+              <el-button icon="plus" @click="totalAmount('plus',batchDialog.data,6)"></el-button>
             </el-form-item>
             <el-form-item label="ec值：" prop="ecThree">
               <el-input v-model="batchDialog.data.ecThree"></el-input>
@@ -545,13 +520,13 @@ export default {
 
 .bottom-info {
   padding-top: 20px;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #EBEEF5;
 }
 
 .el-icon-my-light-fill {
-  margin-right: 60px;
+  margin-right: 8px;
   /*margin-left: 12px;*/
-  font-size: 36px;
+  font-size: 18px;
 }
 
 .el-switch {

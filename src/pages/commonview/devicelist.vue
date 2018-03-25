@@ -4,10 +4,16 @@
       <el-button @click="addDevice">设备添加</el-button>
     </el-col>
     <el-table :data="table.data" border style="width: 100%">
-      <el-table-column label="设备序列号">
+      <el-table-column label="设备序列号" width="160">
         <template slot-scope="scope">
           <el-button type="text" @click="getDetail(scope.row.deviceId,scope.row.sn)">{{ scope.row.sn }}</el-button>
         </template>
+      </el-table-column>
+      <el-table-column label="设备规格">
+        <template slot-scope="scope">{{ scope.row.deviceType }}</template>
+      </el-table-column>
+      <el-table-column label="备注">
+        <template slot-scope="scope">{{ scope.row.note }}</template>
       </el-table-column>
       <el-table-column label="添加日期">
         <template slot-scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
@@ -29,11 +35,8 @@
         <el-form-item label="设备序列号：" prop="sn">
           <el-input v-model="modifyDialog.data.sn"></el-input>
         </el-form-item>
-        <el-form-item label="经度：" prop="longitude">
-          <el-input v-model="modifyDialog.data.longitude"></el-input>
-        </el-form-item>
-        <el-form-item label="纬度：" prop="latitude">
-          <el-input v-model="modifyDialog.data.latitude"></el-input>
+        <el-form-item label="设备规格：" prop="deviceType">
+          <el-input v-model="modifyDialog.data.deviceType"></el-input>
         </el-form-item>
         <el-form-item label="备注：" prop="note">
           <el-input v-model="modifyDialog.data.note"></el-input>
@@ -49,7 +52,6 @@
 export default {
   data() {
     return {
-      userId: '',
       deviceManageTitle: '',
       modifyDialog: {
         visible: false,
@@ -60,14 +62,9 @@ export default {
             message: '请输入设备序列号',
             trigger: 'blur'
           }],
-          longitude: [{
+          deviceType: [{
             required: true,
-            message: '请输入经度',
-            trigger: 'blur'
-          }],
-          latitude: [{
-            required: true,
-            message: '请输入纬度',
+            message: '请输入设备规格',
             trigger: 'blur'
           }]
         }
@@ -84,8 +81,12 @@ export default {
       }
     }
   },
+  computed: {
+    userId() {
+      return this.$store.state.userId
+    }
+  },
   created() {
-    this.userId = JSON.parse(window.sessionStorage.getItem('user')).userId
     this.init()
     this.getList()
   },
@@ -94,8 +95,7 @@ export default {
       this.modifyDialog.data = {
         id: '',
         sn: '',
-        latitude: '',
-        longitude: '',
+        deviceType: '',
         note: ''
       }
     },
@@ -138,8 +138,7 @@ export default {
       this.modifyDialog.data = {
         id: data.deviceId,
         sn: data.sn,
-        latitude: data.latitude.toString(),
-        longitude: data.longitude.toString(),
+        deviceType: data.deviceType,
         note: data.note
       }
     },
@@ -169,7 +168,7 @@ export default {
             });
           })
       } else {
-        this.$ajax.post('device/update', send)
+        this.$ajax.post('device/update', send, true)
           .then(res => {
             console.log('', res);
             var type = res.success ? 'success' : 'error';
