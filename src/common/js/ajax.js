@@ -51,11 +51,6 @@ axios.interceptors.response.use(function(response) {
         message: '该接口你没有权限！',
         type: 'error'
       })
-    } else if (!response.data.success) {
-      Message({
-        message: res.data.message,
-        type: 'error'
-      })
     }
   }
   // 不显示loading
@@ -98,25 +93,37 @@ export default {
       config = `${base}` + path + '/' + params
     }
     return axios.get(config).then(res => res.data)
+    return new Promise((resolve, reject) => {
+      axios.get(config).then(res => {
+        if (res.data.success) {
+          resolve(res.data)
+        } else {
+          Message({
+            message: res.data.message,
+            type: 'error'
+          })
+          reject(res.data)
+        }
+      })
+    })
   },
   post: function(path, params, type) {
     if (params === void 0) {
       params = {}
     }
     params = trimObject(params, type)
-    return axios.post(`${base}` + path, params).then(res => res.data)
-    // return new Promise((resolve, reject) => {
-    //   axios.post(`${base}` + path, params).then(res => {
-    //     if (res.data.code === 200) {
-    //       resolve(res.data)
-    //     } else if (res.data.code === 500) {
-    //       Message({
-    //         message: res.data.message || '',
-    //         type: 'error'
-    //       })
-    //       reject(res.data)
-    //     }
-    //   })
-    // })
+    return new Promise((resolve, reject) => {
+      axios.post(`${base}` + path, params).then(res => {
+        if (res.data.success) {
+          resolve(res.data)
+        } else {
+          Message({
+            message: res.data.message,
+            type: 'error'
+          })
+          reject(res.data)
+        }
+      })
+    })
   }
 }

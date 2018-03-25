@@ -147,7 +147,9 @@ export default {
             break;
           case 'modify':
             this.modifyPwd.visible = true;
-            this.resetForm('modifyPwdForm');
+            this.$nextTick(() => {
+              this.$resetForm('modifyPwdForm');
+            })
             this.modifyPwd.data = {
               oldPassword: '',
               newPassword: '',
@@ -157,12 +159,8 @@ export default {
         }
       },
       modifySubmit(formName) {
-        let valid = false;
-        this.$refs[formName].validate((v) => {
-          valid = v
-        });
-        if (!valid) {
-          return false;
+        if (!this.$validateForm(formName)) {
+          return
         }
         const send = {
           username: JSON.parse(window.sessionStorage.getItem('user')).userName,
@@ -181,9 +179,6 @@ export default {
               type: type
             });
           })
-      },
-      resetForm(formName) {
-        this.$refs[formName] && this.$refs[formName].resetFields();
       }
     }
 }

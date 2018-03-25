@@ -7,8 +7,10 @@ import {
   seeLabel,
   currencyFmt,
   temperatureFmt,
-  humidityFmt
- } from "./filter"
+  humidityFmt,
+  resetForm,
+  validateForm
+ } from "./until"
 
  import ajax from './ajax'
 
@@ -25,6 +27,8 @@ import {
      Vue.prototype.$ajax = ajax
      Vue.prototype.$CONSTANT = CONSTANT
      Vue.prototype.$echarts = echarts
+     Vue.prototype.$resetForm = resetForm
+     Vue.prototype.$validateForm = validateForm
 
      Vue.filter('getLabel', getLabel)
      Vue.filter('dateFilter', dateFmt)

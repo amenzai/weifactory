@@ -56,12 +56,8 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      let valid = false;
-      this.$refs[formName].validate(v => {
-        valid = v;
-      });
-      if (!valid) {
-        return false;
+      if (!this.$validateForm(formName)) {
+        return
       }
       this.logining = true;
       window.sessionStorage.clear();
@@ -75,9 +71,6 @@ export default {
       }).catch(() => {
         this.logining = false;
       });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
     }
   }
 };

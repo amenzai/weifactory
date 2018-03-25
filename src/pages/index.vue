@@ -7,37 +7,26 @@
         <p>是否被托管：{{ item.trustStatus === '1' ? '是' : '否' }}</p>
         <p>设备规格：{{ item.deviceType | seeLabel(typeDic) }}</p>
         <el-button>查看</el-button>
-        <el-button @click="modifyDevice(item)">修改 </el-button>
+        <el-button @click="modifyDevice(item)">修改</el-button>
         <el-button>删除</el-button>
       </li>
     </ul>
-    <el-dialog title="修改设备" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
-      <el-form ref="modifyForm" :model="modifyDialog.data" label-width="100px" :rules="modifyDialog.rules">
-        <el-form-item label="设备序列号：" prop="sn">
-          <el-input v-model="modifyDialog.data.sn"></el-input>
-        </el-form-item>
-        <el-form-item label="设备规格：" prop="deviceType">
-          <el-select v-model="modifyDialog.data.deviceType">
-            <el-option :label="item.label" :value="item.value" v-for="(item, index) in typeDic" :key="index"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="备注：" prop="note">
-          <el-input v-model="modifyDialog.data.note"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="modifySubmit('modifyForm')">确 定</el-button>
-      </span>
-    </el-dialog>
+    <add-device ref="AddDevice" :title="title" :data="data" @submit="getDeviceData"></add-device>
   </div>
 </template>
 
 <script>
+import AddDevice from './components/addDevice.vue'
 export default {
+  components: {
+    AddDevice
+  },
   data() {
     return {
       deviceInfo: [],
       typeDic: [],
+      data: {},
+      title: '',
       modifyDialog: {
         visible: false,
         data: {},
@@ -98,42 +87,13 @@ export default {
         });
       });
     },
-    modifyDevice(data) {
-      this.resetForm("modifyForm");
-      this.modifyDialog.visible = true;
-      this.modifyDialog.data = {
-        id: data.deviceId,
-        sn: data.sn,
-        deviceType: data.deviceType,
-        note: data.note
-      };
-    },
-    modifySubmit(formName) {
-      let valid = false;
-      this.$refs[formName].validate(v => {
-        valid = v;
+    modifyDevice(item) {
+      this.data = JSON.parse(JSON.stringify(item))
+      this.title = '修改设备'
+      this.$refs.AddDevice.visible = true
+      this.$nextTick(() => {
+        this.$refs.AddDevice.init();
       });
-      if (!valid) {
-        return false;
-      }
-      const send = JSON.parse(JSON.stringify(this.modifyDialog.data));
-      send.userId = this.userId;
-      this.$ajax.post("device/update", send, true).then(res => {
-        console.log("", res);
-        var type = res.success ? "success" : "error";
-        if (type === "success") {
-          this.resetForm("modifyForm");
-          this.modifyDialog.visible = false;
-          this.getDeviceData();
-        }
-        this.$message({
-          message: res.message,
-          type: type
-        });
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName] && this.$refs[formName].resetFields();
     }
   }
 };
