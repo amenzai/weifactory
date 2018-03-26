@@ -4,128 +4,91 @@
       <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
         <el-tab-pane label="第一层" name="first">
           <el-row>
-            <el-col :span="14">
-              <el-form ref="formOne" :model="formFirst" label-width="80px">
+            <el-form ref="formOne" :model="formFirst" label-width="100px">
+              <el-col :span="8">
                 <el-form-item label="蔬菜名称：">{{ formFirst.plantOne }}</el-form-item>
-                <el-form-item label="栽培模式：">{{ formFirst.cultModelOne | seeLabel(cultModel)}}</el-form-item>
-                <el-form-item label="温度：">{{ formFirst.temperatureOne }}</el-form-item>
-                <el-form-item label="湿度：">{{ formFirst.humidityOne }}</el-form-item>
+                <el-form-item label="生长模式：">{{ formFirst.cultModelOne | seeLabel(cultModel)}}</el-form-item>
+                <el-form-item label="温度/℃：">{{ formFirst.temperatureOne }}</el-form-item>
+                <el-form-item label="湿度/RH%：">{{ formFirst.humidityOne }}</el-form-item>
                 <el-form-item label="生长灯：">
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledOneLeft === '1'}"></i>
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledOneMiddle === '1'}"></i>
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledOneRight === '1'}"></i>
                 </el-form-item>
-              </el-form>
-            </el-col>
-            <el-col :span="8" :offset="2">
-              <img class="video-img" :src="formFirst.videoOne">
-            </el-col>
+              </el-col>
+              <el-col :span="14" :offset="2">
+                <el-form-item label="托管状态：">{{ formFirst.temperatureOne | seeLabel(trustStatusArr)}}</el-form-item>
+                <el-form-item label="定植时间：">{{ formFirst.humidityOne }}</el-form-item>
+                <el-form-item label="预计采收时间：">{{ formFirst.humidityOne }}</el-form-item>
+                <img class="video-img" :src="formFirst.videoOne">
+              </el-col>
+            </el-form>
           </el-row>
         </el-tab-pane>
         <el-tab-pane label="第二层" name="second">
           <el-row>
-            <el-col :span="14">
-              <el-form ref="formOne" :model="formFirst" label-width="120px">
-                <el-form-item label="蔬菜名称：">
-                  <el-input v-model="formFirst.plantTwo"></el-input>
-                </el-form-item>
-                <el-form-item label="栽培模式：">
-                  <el-select clearable v-model="formFirst.cultModelTwo" placeholder="请选择">
-                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="温度：" required>
-                  <el-button icon="minus" @click="totalAmount('minus',formFirst,2)"></el-button>
-                  <el-input-number style="width:80px;" :step="1" :min="0" v-model="formFirst.temperatureTwo" @change="totalAmount" :controls="false"></el-input-number>
-                  <el-button icon="plus" @click="totalAmount('plus',formFirst,2)"></el-button>
-                </el-form-item>
-                <el-form-item label="湿度：" required>
-                  <el-button icon="minus" @click="totalAmount('minus',formFirst,5)"></el-button>
-                  <el-input-number style="width:80px;" :step="1" :min="0" v-model="formFirst.humidityTwo " @change="totalAmount" :controls="false"></el-input-number>
-                  <el-button icon="plus" @click="totalAmount('plus',formFirst,5)"></el-button>
-                </el-form-item>
-                <el-form-item label="EC值：" required>
-                  <el-input v-model="formFirst.ecTwo "></el-input>
-                </el-form-item>
-                <el-form-item label="PH值：" required>
-                  <el-input v-model="formFirst.phTwo "></el-input>
-                </el-form-item>
-                <el-form-item style="margin-bottom:0">
+            <el-form ref="formOne" :model="formFirst" label-width="100px">
+              <el-col :span="8">
+                <el-form-item label="蔬菜名称：">{{ formFirst.plantTwo }}</el-form-item>
+                <el-form-item label="生长模式：">{{ formFirst.cultModelTwo | seeLabel(cultModel)}}</el-form-item>
+                <el-form-item label="温度/℃：">{{ formFirst.temperatureTwo }}</el-form-item>
+                <el-form-item label="湿度/RH%：">{{ formFirst.humidityTwo }}</el-form-item>
+                <el-form-item label="生长灯：">
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledTwoLeft === '1'}"></i>
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledTwoMiddle === '1'}"></i>
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledTwoRight === '1'}"></i>
                 </el-form-item>
-                <el-form-item label="灯开关：">
-                  <el-switch v-model="formFirst.ledTwoLeft" active-value="1" inactive-value="0"></el-switch>
-                  <el-switch v-model="formFirst.ledTwoMiddle" active-value="1" inactive-value="0"></el-switch>
-                  <el-switch v-model="formFirst.ledTwoRight" active-value="1" inactive-value="0"></el-switch>
-                </el-form-item>
-              </el-form>
-            </el-col>
-            <el-col :span="8" :offset="2">
-              <img class="video-img" :src="formFirst.videoTwo">
-            </el-col>
+              </el-col>
+              <el-col :span="14" :offset="2">
+                <el-form-item label="托管状态：">{{ formFirst.temperatureTwo | seeLabel(trustStatusArr)}}</el-form-item>
+                <el-form-item label="定植时间：">{{ formFirst.humidityTwo }}</el-form-item>
+                <el-form-item label="预计采收时间：">{{ formFirst.humidityTwo }}</el-form-item>
+                <img class="video-img" :src="formFirst.videoTwo">
+              </el-col>
+            </el-form>
           </el-row>
         </el-tab-pane>
         <el-tab-pane label="第三层" name="third">
           <el-row>
-            <el-col :span="14">
-              <el-form ref="formOne" :model="formFirst" label-width="120px">
-                <el-form-item label="蔬菜名称：">
-                  <el-input v-model="formFirst.plantThree"></el-input>
-                </el-form-item>
-                <el-form-item label="栽培模式：">
-                  <el-select clearable v-model="formFirst.cultModelThree" placeholder="请选择">
-                    <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="温度：" required>
-                  <el-button icon="minus" @click="totalAmount('minus',formFirst,3)"></el-button>
-                  <el-input-number style="width:80px;" :step="1" :min="0" v-model="formFirst.temperatureThree" @change="totalAmount" :controls="false"></el-input-number>
-                  <el-button icon="plus" @click="totalAmount('plus',formFirst,3)"></el-button>
-                </el-form-item>
-                <el-form-item label="湿度：" required>
-                  <el-button icon="minus" @click="totalAmount('minus',formFirst,6)"></el-button>
-                  <el-input-number style="width:80px;" :step="1" :min="0" v-model="formFirst.humidityThree " @change="totalAmount" :controls="false"></el-input-number>
-                  <el-button icon="plus" @click="totalAmount('plus',formFirst,6)"></el-button>
-                </el-form-item>
-                <el-form-item label="EC值：" required>
-                  <el-input v-model="formFirst.ecThree "></el-input>
-                </el-form-item>
-                <el-form-item label="PH值：" required>
-                  <el-input v-model="formFirst.phThree "></el-input>
-                </el-form-item>
-                <el-form-item style="margin-bottom:0">
+            <el-form ref="formOne" :model="formFirst" label-width="100px">
+              <el-col :span="8">
+                <el-form-item label="蔬菜名称：">{{ formFirst.plantThree }}</el-form-item>
+                <el-form-item label="生长模式：">{{ formFirst.cultModelThree | seeLabel(cultModel)}}</el-form-item>
+                <el-form-item label="温度/℃：">{{ formFirst.temperatureThree }}</el-form-item>
+                <el-form-item label="湿度/RH%：">{{ formFirst.humidityThree }}</el-form-item>
+                <el-form-item label="生长灯：">
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledThreeLeft === '1'}"></i>
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledThreeMiddle === '1'}"></i>
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledThreeRight === '1'}"></i>
                 </el-form-item>
-                <el-form-item label="灯开关：">
-                  <el-switch v-model="formFirst.ledThreeLeft" active-value="1" inactive-value="0"></el-switch>
-                  <el-switch v-model="formFirst.ledThreeMiddle" active-value="1" inactive-value="0"></el-switch>
-                  <el-switch v-model="formFirst.ledThreeRight" active-value="1" inactive-value="0"></el-switch>
-                </el-form-item>
-              </el-form>
-            </el-col>
-            <el-col :span="8" :offset="2">
-              <img class="video-img" :src="formFirst.videoThree">
-            </el-col>
+              </el-col>
+              <el-col :span="14" :offset="2">
+                <el-form-item label="托管状态：">{{ formFirst.temperatureThree | seeLabel(trustStatusArr)}}</el-form-item>
+                <el-form-item label="定植时间：">{{ formFirst.humidityThree }}</el-form-item>
+                <el-form-item label="预计采收时间：">{{ formFirst.humidityThree }}</el-form-item>
+                <img class="video-img" :src="formFirst.videoThree">
+              </el-col>
+            </el-form>
           </el-row>
         </el-tab-pane>
-        <el-col :span="24" class="ta-c mb10">
+        <!-- <el-col :span="24" class="ta-c mb10">
           <el-button type="primary" @click="batchSubmit('formOne')">刷新</el-button>
-        </el-col>
+        </el-col> -->
       </el-tabs>
       <div class="bottom-info ta-c">
+        <el-button>参数设置</el-button>
+        <el-button>手动设置</el-button>
+        <el-button>参数设置</el-button>
         <el-button>
           <router-link :to="{ path: '/home/commonview/historydata',query:{id:$route.params.id}}">查询历史数据</router-link>
         </el-button>
-        <el-button v-if="isExit && orderStatus !== '3'">
+        <el-button v-if="trustStatus === '0'">
           <router-link :to="{ path: '/home/commonview/apply-manage',query:{id:$route.params.id}}">申请专家托管</router-link>
         </el-button>
-        <el-button>
+        <el-button v-if="trustStatus === '0'">申请服务器托管</el-button>
+        <!-- <el-button>
           <router-link :to="{ path: '/home/commonview/btn-control'}">设备控制</router-link>
-        </el-button>
+        </el-button> -->
       </div>
     </el-col>
     <el-col v-else>
@@ -133,115 +96,76 @@
         <el-button type="text" @click="addBatch">立即添加</el-button>
       </p>
     </el-col>
-    <el-dialog title="添加设备批次信息" width="80%" :visible.sync="batchDialog.visible" :close-on-click-modal="false">
+    <el-dialog title="添加设备批次信息" width="90%" :visible.sync="batchDialog.visible" :close-on-click-modal="false">
       <el-form ref="addForm" :model="batchDialog.data" label-width="110px" :rules="batchDialog.rules">
         <el-row>
-          <el-col :span="8">
+          <el-col :span="12">
             <h2 class="col-item-title">第一层</h2>
             <el-form-item label="蔬菜名称：" prop="plantOne">
-              <el-input v-model="batchDialog.data.plantOne"></el-input>
+              <el-select clearable v-model="batchDialog.data.plantOne" placeholder="请选择" v-show="!checked.one">
+                <el-option :label="item.label" :value="item.value" v-for="(item,index) in vegetableName" :key="index"></el-option>
+              </el-select>
+              <el-input v-model="batchDialog.data.plantOne" class="inline" v-show="checked.one"></el-input>
+              <el-checkbox v-model="checked.one">手动输入</el-checkbox>
             </el-form-item>
-            <el-form-item label="栽培模式：" prop="cultModelOne">
+            <el-form-item label="生长模式：" prop="cultModelOne">
               <el-select clearable v-model="batchDialog.data.cultModelOne" placeholder="请选择">
                 <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="温度：" prop="temperatureOne">
-              <el-button icon="el-icon-minus" @click="totalAmount('minus',batchDialog.data,1)"></el-button>
-              <el-input-number style="width:70px;" :step="1" :min="0" v-model="batchDialog.data.temperatureOne" @change="totalAmount" :controls="false"></el-input-number>
-              <el-button icon="el-icon-plus" @click="totalAmount('plus',batchDialog.data,1)"></el-button>
+            <el-form-item label="定植时间：">
+              <el-date-picker v-model="batchDialog.data.onePlantingTime" type="datetime" placeholder="选择日期时间范围">
+              </el-date-picker>
             </el-form-item>
-            <el-form-item label="湿度：" prop="humidityOne">
-              <el-button icon="el-icon-minus" @click="totalAmount('minus',batchDialog.data,4)"></el-button>
-              <el-input-number style="width:70px;" :step="1" :min="0" v-model="batchDialog.data.humidityOne " @change="totalAmount" :controls="false"></el-input-number>
-              <el-button icon="el-icon-plus" @click="totalAmount('plus',batchDialog.data,4)"></el-button>
-            </el-form-item>
-            <el-form-item label="ec值：" prop="ecOne">
-              <el-input v-model="batchDialog.data.ecOne"></el-input>
-            </el-form-item>
-            <el-form-item label="ph值：" prop="phOne">
-              <el-input v-model="batchDialog.data.phOne"></el-input>
-            </el-form-item>
-            <el-form-item label="左边led灯：" prop="ledOneLeft">
-              <el-checkbox v-model="batchDialog.data.ledOneLeft" true-label="1" false-label="0">是否开启</el-checkbox>
-            </el-form-item>
-            <el-form-item label="中间led灯：" prop="ledOneMiddle">
-              <el-checkbox v-model="batchDialog.data.ledOneMiddle" true-label="1" false-label="0">是否开启</el-checkbox>
-            </el-form-item>
-            <el-form-item label="右边led灯：" prop="ledOneRight">
-              <el-checkbox v-model="batchDialog.data.ledOneRight" true-label="1" false-label="0">是否开启</el-checkbox>
+            <el-form-item label="预计采收时间：">
+              <el-date-picker v-model="batchDialog.data.oneRecoveryTime" type="datetime" placeholder="选择日期时间范围">
+              </el-date-picker>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="12">
             <h2 class="col-item-title">第二层</h2>
             <el-form-item label="蔬菜名称：" prop="plantTwo">
-              <el-input v-model="batchDialog.data.plantTwo"></el-input>
+              <el-select clearable v-model="batchDialog.data.plantTwo" placeholder="请选择" v-show="!checked.two">
+                <el-option :label="item.label" :value="item.value" v-for="(item,index) in vegetableName" :key="index"></el-option>
+              </el-select>
+              <el-input v-model="batchDialog.data.plantTwo" class="inline" v-show="checked.two"></el-input>
+              <el-checkbox v-model="checked.two">手动输入</el-checkbox>
             </el-form-item>
-            <el-form-item label="栽培模式：" prop="cultModelTwo">
+            <el-form-item label="生长模式：" prop="cultModelTwo">
               <el-select clearable v-model="batchDialog.data.cultModelTwo" placeholder="请选择">
                 <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="温度：" prop="temperatureTwo">
-              <el-button icon="minus" @click="totalAmount('minus',batchDialog.data,2)"></el-button>
-              <el-input-number style="width:70px;" :step="1" :min="0" v-model="batchDialog.data.temperatureTwo" @change="totalAmount" :controls="false"></el-input-number>
-              <el-button icon="plus" @click="totalAmount('plus',batchDialog.data,2)"></el-button>
+            <el-form-item label="定植时间：">
+              <el-date-picker v-model="batchDialog.data.twoPlantingTime" type="datetime" placeholder="选择日期时间范围">
+              </el-date-picker>
             </el-form-item>
-            <el-form-item label="湿度：" prop="humidityTwo">
-              <el-button icon="minus" @click="totalAmount('minus',batchDialog.data,5)"></el-button>
-              <el-input-number style="width:70px;" :step="1" :min="0" v-model="batchDialog.data.humidityTwo " @change="totalAmount" :controls="false"></el-input-number>
-              <el-button icon="plus" @click="totalAmount('plus',batchDialog.data,5)"></el-button>
-            </el-form-item>
-            <el-form-item label="ec值：" prop="ecTwo">
-              <el-input v-model="batchDialog.data.ecTwo"></el-input>
-            </el-form-item>
-            <el-form-item label="ph值：" prop="phTwo">
-              <el-input v-model="batchDialog.data.phTwo"></el-input>
-            </el-form-item>
-            <el-form-item label="左边led灯：" prop="ledTwoLeft">
-              <el-checkbox v-model="batchDialog.data.ledTwoLeft" true-label="1" false-label="0">是否开启</el-checkbox>
-            </el-form-item>
-            <el-form-item label="中间led灯：" prop="ledTwoMiddle">
-              <el-checkbox v-model="batchDialog.data.ledTwoMiddle" true-label="1" false-label="0">是否开启</el-checkbox>
-            </el-form-item>
-            <el-form-item label="右边led灯：" prop="ledTwoRight">
-              <el-checkbox v-model="batchDialog.data.ledTwoRight" true-label="1" false-label="0">是否开启</el-checkbox>
+            <el-form-item label="预计采收时间：">
+              <el-date-picker v-model="batchDialog.data.twoRecoveryTime" type="datetime" placeholder="选择日期时间范围">
+              </el-date-picker>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="12">
             <h2 class="col-item-title">第三层</h2>
             <el-form-item label="蔬菜名称：" prop="plantThree">
-              <el-input v-model="batchDialog.data.plantThree"></el-input>
+              <el-select clearable v-model="batchDialog.data.plantThree" placeholder="请选择" v-show="!checked.three">
+                <el-option :label="item.label" :value="item.value" v-for="(item,index) in vegetableName" :key="index"></el-option>
+              </el-select>
+              <el-input v-model="batchDialog.data.plantThree" class="inline" v-show="checked.three"></el-input>
+              <el-checkbox v-model="checked.three">手动输入</el-checkbox>
             </el-form-item>
-            <el-form-item label="栽培模式：" prop="cultModelThree">
-              <el-select clearable v-model="batchDialog.data.cultModelThree" placeholder="请选择">
+            <el-form-item label="生长模式：" prop="cultModelOne">
+              <el-select clearable v-model="batchDialog.data.cultModelOne" placeholder="请选择">
                 <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="温度：" prop="temperatureThree">
-              <el-button icon="minus" @click="totalAmount('minus',batchDialog.data,3)"></el-button>
-              <el-input-number style="width:70px;" :step="1" :min="0" v-model="batchDialog.data.temperatureThree" @change="totalAmount" :controls="false"></el-input-number>
-              <el-button icon="plus" @click="totalAmount('plus',batchDialog.data,3)"></el-button>
+            <el-form-item label="定植时间：">
+              <el-date-picker v-model="batchDialog.data.threePlantingTime" type="datetime" placeholder="选择日期时间范围">
+              </el-date-picker>
             </el-form-item>
-            <el-form-item label="湿度：" prop="humidityThree">
-              <el-button icon="minus" @click="totalAmount('minus',batchDialog.data,6)"></el-button>
-              <el-input-number style="width:70px;" :step="1" :min="0" v-model="batchDialog.data.humidityThree " @change="totalAmount" :controls="false"></el-input-number>
-              <el-button icon="plus" @click="totalAmount('plus',batchDialog.data,6)"></el-button>
-            </el-form-item>
-            <el-form-item label="ec值：" prop="ecThree">
-              <el-input v-model="batchDialog.data.ecThree"></el-input>
-            </el-form-item>
-            <el-form-item label="ph值：" prop="phThree">
-              <el-input v-model="batchDialog.data.phThree"></el-input>
-            </el-form-item>
-            <el-form-item label="左边led灯：" prop="ledThreeLeft">
-              <el-checkbox v-model="batchDialog.data.ledThreeLeft" true-label="1" false-label="0">是否开启</el-checkbox>
-            </el-form-item>
-            <el-form-item label="中间led灯：" prop="ledThreeMiddle">
-              <el-checkbox v-model="batchDialog.data.ledThreeMiddle" true-label="1" false-label="0">是否开启</el-checkbox>
-            </el-form-item>
-            <el-form-item label="右边led灯：" prop="ledThreeRight">
-              <el-checkbox v-model="batchDialog.data.ledThreeRight" true-label="1" false-label="0">是否开启</el-checkbox>
+            <el-form-item label="预计采收时间：">
+              <el-date-picker v-model="batchDialog.data.threeRecoveryTime" type="datetime" placeholder="选择日期时间范围">
+              </el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
@@ -255,261 +179,178 @@
 <script>
 export default {
   data() {
-      return {
-        deviceId: '',
-        batchId: '',
-        isExit: '',
-        orderStatus: '1',
-        cultModel: [],
-        isShow: false,
-        activeName2: 'first',
-        formFirst: {},
-        batchDialog: {
-          visible: false,
-          data: {},
-          rules: {
-            plantOne: [{
+    return {
+      deviceId: "",
+      batchId: "",
+      trustStatus: "",
+      cultModel: [],
+      trustStatusArr: [],
+      vegetableName: [],
+      isShow: false,
+      activeName2: "first",
+      formFirst: {},
+      checked: {
+        one: false,
+        two: false,
+        three: false
+      },
+      batchDialog: {
+        visible: false,
+        data: {},
+        rules: {
+          plantOne: [
+            {
               required: true,
-              message: '请输入蔬菜名称',
-              trigger: 'blur'
-            }],
-            plantTwo: [{
+              message: "请输入蔬菜名称",
+              trigger: "blur"
+            }
+          ],
+          plantTwo: [
+            {
               required: true,
-              message: '请输入蔬菜名称',
-              trigger: 'blur'
-            }],
-            plantThree: [{
+              message: "请输入蔬菜名称",
+              trigger: "blur"
+            }
+          ],
+          plantThree: [
+            {
               required: true,
-              message: '请输入蔬菜名称',
-              trigger: 'blur'
-            }],
-            ecOne: [{
-              required: true,
-              message: '请输入ec值',
-              trigger: 'blur'
-            }],
-            ecTwo: [{
-              required: true,
-              message: '请输入ec值',
-              trigger: 'blur'
-            }],
-            ecThree: [{
-              required: true,
-              message: '请输入ec值',
-              trigger: 'blur'
-            }],
-            phOne: [{
-              required: true,
-              message: '请输入ph值',
-              trigger: 'blur'
-            }],
-            phTwo: [{
-              required: true,
-              message: '请输入ph值',
-              trigger: 'blur'
-            }],
-            phThree: [{
-              required: true,
-              message: '请输入ph值',
-              trigger: 'blur'
-            }]
-          }
+              message: "请输入蔬菜名称",
+              trigger: "blur"
+            }
+          ]
         }
       }
+    };
+  },
+  created() {
+    this.deviceId = this.$route.params.id;
+    this.getList();
+    this.getCultModel();
+    this.getTrustStatus();
+    this.getVegetableName();
+  },
+  methods: {
+    init() {
+      this.batchDialog.data = {
+        plantOne: "",
+        plantTwo: "",
+        plantThree: "",
+        cultModelOne: "",
+        cultModelTwo: "",
+        cultModelThree: "",
+        onePlantingTime: "",
+        oneRecoveryTime: "",
+        twoPlantingTime: "",
+        twoRecoveryTime: "",
+        threePlantingTime: "",
+        threeRecoveryTime: ""
+      };
     },
-    created() {
-      this.deviceId = this.$route.params.id
-      this.isExit = JSON.parse(window.sessionStorage.getItem('isShow'))
-      this.getList()
-      this.getCultModel()
+    getCultModel() {
+      this.$ajax.get("dict/list/controlModel").then(res => {
+        this.cultModel = res.data.map(item => {
+          return {
+            label: item.itemName,
+            value: item.itemCode
+          };
+        });
+      });
     },
-    methods: {
-      init() {
-        this.batchDialog.data = {
-          temperatureOne: 0,
-          temperatureTwo: 0,
-          temperatureThree: 0,
-          humidityOne: 0,
-          humidityTwo: 0,
-          humidityThree: 0,
-          ledOneLeft: '0',
-          ledOneMiddle: '0',
-          ledOneRight: '0',
-          ledTwoLeft: '0',
-          ledTwoMiddle: '0',
-          ledTwoRight: '0',
-          ledThreeLeft: '0',
-          ledThreeMiddle: '0',
-          ledThreeRight: '0',
-          cultModelOne: '',
-          cultModelTwo: '',
-          cultModelThree: ''
-        }
-      },
-      getCultModel() {
-        this.$ajax.get('dict/list/controlModel')
-          .then(res => {
-            this.cultModel = res.data.map(item => {
-              return {
-                label: item.itemName,
-                value: item.itemCode
-              }
-            })
-          })
-      },
-      getList() {
-        this.$ajax.get('batch', this.deviceId)
-          .then(res => {
-            console.log('', res);
-            this.isShow = true;
-            if (res.data === null) {
-              this.formFirst = null
-            } else {
-              this.orderStatus = res.data.orderStatus
-              this.formFirst = {
-                plantOne: res.data.plantOne,
-                plantTwo: res.data.plantTwo,
-                plantThree: res.data.plantThree,
-                temperatureOne: res.data.temperatureOne,
-                temperatureTwo: res.data.temperatureTwo,
-                temperatureThree: res.data.temperatureThree,
-                humidityOne: res.data.humidityOne,
-                humidityTwo: res.data.humidityTwo,
-                humidityThree: res.data.humidityThree,
-                ledOneLeft: res.data.ledOneLeft,
-                ledOneMiddle: res.data.ledOneMiddle,
-                ledOneRight: res.data.ledOneRight,
-                ledTwoLeft: res.data.ledTwoLeft,
-                ledTwoMiddle: res.data.ledTwoMiddle,
-                ledTwoRight: res.data.ledTwoRight,
-                ledThreeLeft: res.data.ledThreeLeft,
-                ledThreeMiddle: res.data.ledThreeMiddle,
-                ledThreeRight: res.data.ledThreeRight,
-                cultModelOne: res.data.cultModelOne,
-                cultModelTwo: res.data.cultModelTwo,
-                cultModelThree: res.data.cultModelThree,
-                ecOne: res.data.ecOne,
-                ecTwo: res.data.ecTwo,
-                ecThree: res.data.ecThree,
-                phOne: res.data.phOne,
-                phTwo: res.data.phTwo,
-                phThree: res.data.phThree,
-                videoOne: res.data.videoOne,
-                videoTwo: res.data.videoTwo,
-                videoThree: res.data.videoThree
-              }
-              this.batchId = res.data.batchId
-            }
-          })
-        console.log(this.deviceId, this.batchId)
-      },
-      addBatch() {
-        this.resetForm('addForm')
-        this.init()
-        this.batchDialog.visible = true;
-      },
-      addSubmit(formName) {
-        let valid = false;
-        this.$refs[formName].validate((v) => {
-          valid = v
+    getTrustStatus() {
+      this.$ajax.get("dict/dictItemList/trustStatus").then(res => {
+        this.trustStatusArr = res.data.map(item => {
+          return {
+            label: item.itemName,
+            value: item.itemCode
+          };
         });
-        if (!valid) {
-          return false;
-        }
-        const send = JSON.parse(JSON.stringify(this.batchDialog.data));
-        send.deviceId = this.deviceId
-        this.$ajax.post('batch/saveOrUpdate', send)
-          .then(res => {
-            console.log('', res);
-            var type = res.success ? 'success' : 'error';
-            if (type === 'success') {
-              this.resetForm('modifyForm');
-              this.batchDialog.visible = false;
-              this.getList();
-            }
-            this.$message({
-              message: res.message,
-              type: type
-            });
-          })
-      },
-      batchSubmit(formName) {
-        let valid = false;
-        this.$refs[formName].validate((v) => {
-          valid = v
+      });
+    },
+    getVegetableName() {
+      this.$ajax.get("dict/dictItemList/vegetable.name").then(res => {
+        this.vegetableName = res.data.map(item => {
+          return {
+            label: item.itemName,
+            value: item.itemCode
+          };
         });
-        if (!valid) {
-          return false;
+      });
+    },
+    getList() {
+      this.$ajax.get("batch", this.deviceId).then(res => {
+        console.log("", res);
+        this.isShow = true;
+        if (res.data === null) {
+          this.formFirst = null;
+        } else {
+          this.trustStatus = res.data.trustStatus;
+          this.formFirst = {
+            plantOne: res.data.plantOne,
+            plantTwo: res.data.plantTwo,
+            plantThree: res.data.plantThree,
+            ledOneLeft: res.data.ledOneLeft,
+            ledOneMiddle: res.data.ledOneMiddle,
+            ledOneRight: res.data.ledOneRight,
+            ledTwoLeft: res.data.ledTwoLeft,
+            ledTwoMiddle: res.data.ledTwoMiddle,
+            ledTwoRight: res.data.ledTwoRight,
+            ledThreeLeft: res.data.ledThreeLeft,
+            ledThreeMiddle: res.data.ledThreeMiddle,
+            ledThreeRight: res.data.ledThreeRight,
+            cultModelOne: res.data.cultModelOne,
+            cultModelTwo: res.data.cultModelTwo,
+            cultModelThree: res.data.cultModelThree,
+            onePlantingTime: this.$dateFilter(res.data.onePlantingTime),
+            oneRecoveryTime: this.$dateFilter(res.data.oneRecoveryTime),
+            twoPlantingTime: this.$dateFilter(res.data.twoPlantingTime),
+            twoRecoveryTime: this.$dateFilter(res.data.twoRecoveryTime),
+            threePlantingTime: this.$dateFilter(res.data.threePlantingTime),
+            threeRecoveryTime: this.$dateFilter(res.data.threeRecoveryTime),
+            videoOne: res.data.videoOne,
+            videoTwo: res.data.videoTwo,
+            videoThree: res.data.videoThree
+          };
+          this.batchId = res.data.batchId;
         }
-        const send = this.formFirst
-        send.deviceId = this.deviceId
-        send.batchId = this.batchId
-        this.$ajax.post('batch/saveOrUpdate', send, true)
-          .then(res => {
-            console.log('', res);
-            var type = res.success ? 'success' : 'error';
-            if (type === 'success') {
-              this.getList();
-            }
-            this.$message({
-              message: res.message,
-              type: type
-            });
-          })
-      },
-      handleClick(tab, event) {
-        console.log(tab, event);
-      },
-      totalAmount(type, value, state) {
-        if (type === 'minus') {
-          switch (state) {
-            case 1:
-              value.temperatureOne && value.temperatureOne--;
-              break;
-            case 2:
-              value.temperatureTwo && value.temperatureTwo--;
-              break
-            case 3:
-              value.temperatureThree && value.temperatureThree--;
-              break
-            case 4:
-              value.humidityOne && value.humidityOne--;
-              break
-            case 5:
-              value.humidityTwo && value.humidityTwo--;
-              break
-            case 6:
-              value.humidityThree && value.humidityThree--;
-              break
-          }
-        } else if (type === 'plus') {
-          switch (state) {
-            case 1:
-              value.temperatureOne++;
-              break;
-            case 2:
-              value.temperatureTwo++;
-              break
-            case 3:
-              value.temperatureThree++;
-              break
-            case 4:
-              value.humidityOne++
-                break
-            case 5:
-              value.humidityTwo++
-                break
-            case 6:
-              value.humidityThree++
-                break
-          }
-        }
-      },
-      resetForm(formName) {
-        this.$refs[formName] && this.$refs[formName].resetFields();
+      });
+      console.log(this.deviceId, this.batchId);
+    },
+    addBatch() {
+      this.resetForm("addForm");
+      this.init();
+      this.batchDialog.visible = true;
+    },
+    addSubmit(formName) {
+      let valid = false;
+      this.$refs[formName].validate(v => {
+        valid = v;
+      });
+      if (!valid) {
+        return false;
       }
+      const send = JSON.parse(JSON.stringify(this.batchDialog.data));
+      send.onePlantingTime = this.$dateFilter(send.onePlantingTime);
+      send.oneRecoveryTime = this.$dateFilter(send.oneRecoveryTime);
+      send.twoPlantingTime = this.$dateFilter(send.twoPlantingTime);
+      send.twoRecoveryTime = this.$dateFilter(send.twoRecoveryTime);
+      send.threePlantingTime = this.$dateFilter(send.threePlantingTime);
+      send.threeRecoveryTime = this.$dateFilter(send.threeRecoveryTime);
+      send.deviceId = this.deviceId;
+      this.$ajax.post("batch/save", send).then(res => {
+        this.batchDialog.visible = false;
+        this.getList();
+        this.$message.success(res.message);
+      });
+    },
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
+    resetForm(formName) {
+      this.$refs[formName] && this.$refs[formName].resetFields();
     }
-}
+  }
+};
 </script>
 <style scoped>
 .video-img {
@@ -520,7 +361,7 @@ export default {
 
 .bottom-info {
   padding-top: 20px;
-  border-top: 1px solid #EBEEF5;
+  border-top: 1px solid #ebeef5;
 }
 
 .el-icon-my-light-fill {
@@ -534,8 +375,7 @@ export default {
 }
 
 .col-item-title {
-  text-align: center;
   font-weight: bold;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 </style>

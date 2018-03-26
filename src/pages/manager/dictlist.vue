@@ -272,8 +272,8 @@ export default {
 }
 
 .bg {
-  line-height: 30px;
-  border-bottom: 1px solid rgb(236, 223, 223);
+  line-height: 36px;
+  border-bottom: 1px solid #EBEEF5;
   margin: -10px -15px 10px;
   padding-left: 16px;
 }

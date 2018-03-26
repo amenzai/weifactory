@@ -132,6 +132,7 @@
   }
 
   .device-info {
+    margin-bottom: 20px;
     h2 {
       font-size: 16px;
     }

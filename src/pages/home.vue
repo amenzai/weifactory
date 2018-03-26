@@ -16,7 +16,7 @@
     <div class="layout-main">
       <div class="layout-header">
         <div class="layout-nav">
-          <h1 class="title fl-l">微型植物工厂智能监控系统</h1>
+          <h1 class="title fl-l" @click="$router.push('/home')">微型植物工厂智能监控系统</h1>
           <el-dropdown @command="handleClick">
             <span class="el-dropdown-link">
                 <i class="el-icon-my-user"></i>
