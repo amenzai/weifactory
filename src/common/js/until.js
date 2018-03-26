@@ -106,9 +106,11 @@ export function seeLabel(value, arr) {
   }
   return result;
 }
+
 export function resetForm(formName) {
   this.$refs[formName].resetFields()
 }
+
 export function validateForm(formName) {
   let valid = false;
   this.$refs[formName].validate((v) => {

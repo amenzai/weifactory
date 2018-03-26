@@ -13,7 +13,8 @@ import UserDetail from 'pages/manager/user-detail'
 import DictList from 'pages/manager/dictlist'
 import BatchList from 'pages/commonview/batchlist'
 import BatchDetail from 'pages/commonview/batch-detail'
-import DeviceList from 'pages/commonview/devicelist'
+import DeviceList from 'pages/manager/devicelist'
+import DeviceSn from 'pages/manager/device-sn'
 import DeviceDetail from 'pages/commonview/device-detail'
 import ApplyManage from 'pages/commonview/apply-manage'
 import orderPayment from 'pages/commonview/order-payment'
@@ -67,9 +68,13 @@ const myRouter = new Router({
       name: '批次详情',
       component: BatchDetail
     }, {
-      path: 'commonview/devicelist',
+      path: 'manager/devicelist',
       name: '设备管理',
       component: DeviceList
+    }, {
+      path: 'manager/device-sn',
+      name: '设备序列号管理',
+      component: DeviceSn
     }, {
       path: 'commonview/device-detail/:id',
       name: '设备批次信息',

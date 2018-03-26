@@ -38,6 +38,7 @@ import {
   CollapseItem,
   Tabs,
   TabPane,
+  Card,
   MessageBox,
   Message,
   Notification
@@ -85,6 +86,7 @@ export default {
     Vue.component(CollapseItem.name, CollapseItem);
     Vue.component(Tabs.name, Tabs);
     Vue.component(TabPane.name, TabPane);
+    Vue.component(Card.name, Card);
 
     Vue.prototype.$msgbox = MessageBox;
     Vue.prototype.$alert = MessageBox.alert;

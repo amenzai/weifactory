@@ -59,24 +59,34 @@ export default {
   },
   methods: {
     init() {
-      this.$resetForm("modifyForm");
+      this.$refs['modifyForm'] && this.$refs['modifyForm'].resetFields()
     },
     modifySubmit(formName) {
       if (!this.$validateForm(formName)) {
         return
       }
       const send = {
+        id: this.data.deviceId,
         sn: this.data.sn,
         deviceType: this.data.deviceType,
         note: this.data.note,
-        userId: this.data.userId
+        userId: this.userId
       }
-      this.$ajax.post("device/update", send, true).then(res => {
-        console.log(res)
-        this.visible = false;
-        this.$emit('submit')
-        this.$message.success(res.message);
-      });
+      if (send.id) {
+        this.$ajax.post("device/update", send, true).then(res => {
+          console.log(res)
+          this.visible = false;
+          this.$emit('submit')
+          this.$message.success(res.message);
+        });
+      } else {
+        this.$ajax.post("device/add", send).then(res => {
+          console.log(res)
+          this.visible = false;
+          this.$emit('submit')
+          this.$message.success(res.message);
+        });
+      }
     },
     getTypeDic() {
       this.$ajax.get("dict/dictItemList/device.type").then(res => {
