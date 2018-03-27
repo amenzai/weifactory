@@ -5,7 +5,7 @@
         <el-tab-pane label="第一层" name="first">
           <el-row>
             <el-form ref="formOne" :model="formFirst" label-width="100px">
-              <el-col :span="8">
+              <el-col :span="8" :offset="2">
                 <el-form-item label="蔬菜名称：">{{ formFirst.plantOne }}</el-form-item>
                 <el-form-item label="生长模式：">{{ formFirst.cultModelOne | seeLabel(cultModel)}}</el-form-item>
                 <el-form-item label="温度/℃：">{{ formFirst.temperatureOne }}</el-form-item>
@@ -16,10 +16,10 @@
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledOneRight === '1'}"></i>
                 </el-form-item>
               </el-col>
-              <el-col :span="14" :offset="2">
-                <el-form-item label="托管状态：">{{ formFirst.temperatureOne | seeLabel(trustStatusArr)}}</el-form-item>
-                <el-form-item label="定植时间：">{{ formFirst.humidityOne }}</el-form-item>
-                <el-form-item label="预计采收时间：">{{ formFirst.humidityOne }}</el-form-item>
+              <el-col :span="8" :offset="2">
+                <el-form-item label="托管状态：">{{ trustStatus | seeLabel(trustStatusArr)}}</el-form-item>
+                <el-form-item label="定植时间：">{{ formFirst.onePlantingTime | dateFilter }}</el-form-item>
+                <el-form-item label="预计采收时间：">{{ formFirst.oneRecoveryTime | dateFilter }}</el-form-item>
                 <img class="video-img" :src="formFirst.videoOne">
               </el-col>
             </el-form>
@@ -28,7 +28,7 @@
         <el-tab-pane label="第二层" name="second">
           <el-row>
             <el-form ref="formOne" :model="formFirst" label-width="100px">
-              <el-col :span="8">
+              <el-col :span="8" :offset="2">
                 <el-form-item label="蔬菜名称：">{{ formFirst.plantTwo }}</el-form-item>
                 <el-form-item label="生长模式：">{{ formFirst.cultModelTwo | seeLabel(cultModel)}}</el-form-item>
                 <el-form-item label="温度/℃：">{{ formFirst.temperatureTwo }}</el-form-item>
@@ -39,10 +39,10 @@
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledTwoRight === '1'}"></i>
                 </el-form-item>
               </el-col>
-              <el-col :span="14" :offset="2">
-                <el-form-item label="托管状态：">{{ formFirst.temperatureTwo | seeLabel(trustStatusArr)}}</el-form-item>
-                <el-form-item label="定植时间：">{{ formFirst.humidityTwo }}</el-form-item>
-                <el-form-item label="预计采收时间：">{{ formFirst.humidityTwo }}</el-form-item>
+              <el-col :span="8" :offset="2">
+                <el-form-item label="托管状态：">{{ trustStatus | seeLabel(trustStatusArr)}}</el-form-item>
+                <el-form-item label="定植时间：">{{ formFirst.twoPlantingTime | dateFilter }}</el-form-item>
+                <el-form-item label="预计采收时间：">{{ formFirst.twoRecoveryTime | dateFilter }}</el-form-item>
                 <img class="video-img" :src="formFirst.videoTwo">
               </el-col>
             </el-form>
@@ -51,7 +51,7 @@
         <el-tab-pane label="第三层" name="third">
           <el-row>
             <el-form ref="formOne" :model="formFirst" label-width="100px">
-              <el-col :span="8">
+              <el-col :span="8" :offset="2">
                 <el-form-item label="蔬菜名称：">{{ formFirst.plantThree }}</el-form-item>
                 <el-form-item label="生长模式：">{{ formFirst.cultModelThree | seeLabel(cultModel)}}</el-form-item>
                 <el-form-item label="温度/℃：">{{ formFirst.temperatureThree }}</el-form-item>
@@ -62,14 +62,31 @@
                   <i class="el-icon-my-light-fill" :class="{'yellow':formFirst.ledThreeRight === '1'}"></i>
                 </el-form-item>
               </el-col>
-              <el-col :span="14" :offset="2">
-                <el-form-item label="托管状态：">{{ formFirst.temperatureThree | seeLabel(trustStatusArr)}}</el-form-item>
-                <el-form-item label="定植时间：">{{ formFirst.humidityThree }}</el-form-item>
-                <el-form-item label="预计采收时间：">{{ formFirst.humidityThree }}</el-form-item>
+              <el-col :span="8" :offset="2">
+                <el-form-item label="托管状态：">{{ trustStatus | seeLabel(trustStatusArr)}}</el-form-item>
+                <el-form-item label="定植时间：">{{ formFirst.threePlantingTime | dateFilter }}</el-form-item>
+                <el-form-item label="预计采收时间：">{{ formFirst.threeRecoveryTime | dateFilter }}</el-form-item>
                 <img class="video-img" :src="formFirst.videoThree">
               </el-col>
             </el-form>
           </el-row>
+        </el-tab-pane>
+        <el-tab-pane label="育苗室" name="four">
+          <p v-if="!miaoInfo">该批次未添加育苗，你可以
+            <el-button type="text" @click="addMiao">立即添加</el-button>
+          </p>
+          <div v-else>
+            <el-form :inline="true" :model="miaoInfo" label-width="110px">
+              <el-form-item label="蔬菜名称：">{{ miaoInfo.seedRoomPlant }}</el-form-item>
+              <el-form-item label="播种日期：">{{ miaoInfo.seedPlantingTime | dateFilter}}</el-form-item>
+              <el-form-item label="预计可移植日期：">{{ miaoInfo.seedRecoveryTime | dateFilter}}</el-form-item>
+            </el-form>
+            <div class="btn-info">
+              <p><span>补光灯</span><span>喷淋阀</span></p>
+              <el-switch v-model="miaoInfo.seedLed" active-value="1" inactive-value="0">补光灯</el-switch>
+              <el-switch v-model="miaoInfo.seedSpray" active-value="1" inactive-value="0">补光灯</el-switch>
+            </div>
+          </div>
         </el-tab-pane>
         <!-- <el-col :span="24" class="ta-c mb10">
           <el-button type="primary" @click="batchSubmit('formOne')">刷新</el-button>
@@ -102,10 +119,10 @@
           <el-col :span="12">
             <h2 class="col-item-title">第一层</h2>
             <el-form-item label="蔬菜名称：" prop="plantOne">
-              <el-select clearable v-model="batchDialog.data.plantOne" placeholder="请选择" v-show="!checked.one">
+              <el-select clearable v-model="batchDialog.data.plantOne" placeholder="请选择" v-if="!checked.one">
                 <el-option :label="item.label" :value="item.value" v-for="(item,index) in vegetableName" :key="index"></el-option>
               </el-select>
-              <el-input v-model="batchDialog.data.plantOne" class="inline" v-show="checked.one"></el-input>
+              <el-input v-model="batchDialog.data.plantOne" class="inline" v-else></el-input>
               <el-checkbox v-model="checked.one">手动输入</el-checkbox>
             </el-form-item>
             <el-form-item label="生长模式：" prop="cultModelOne">
@@ -113,7 +130,7 @@
                 <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="定植时间：">
+            <el-form-item label="定植时间：" prop="onePlantingTime">
               <el-date-picker v-model="batchDialog.data.onePlantingTime" type="datetime" placeholder="选择日期时间范围">
               </el-date-picker>
             </el-form-item>
@@ -125,10 +142,10 @@
           <el-col :span="12">
             <h2 class="col-item-title">第二层</h2>
             <el-form-item label="蔬菜名称：" prop="plantTwo">
-              <el-select clearable v-model="batchDialog.data.plantTwo" placeholder="请选择" v-show="!checked.two">
+              <el-select clearable v-model="batchDialog.data.plantTwo" placeholder="请选择" v-if="!checked.two">
                 <el-option :label="item.label" :value="item.value" v-for="(item,index) in vegetableName" :key="index"></el-option>
               </el-select>
-              <el-input v-model="batchDialog.data.plantTwo" class="inline" v-show="checked.two"></el-input>
+              <el-input v-model="batchDialog.data.plantTwo" class="inline" v-else></el-input>
               <el-checkbox v-model="checked.two">手动输入</el-checkbox>
             </el-form-item>
             <el-form-item label="生长模式：" prop="cultModelTwo">
@@ -148,14 +165,14 @@
           <el-col :span="12">
             <h2 class="col-item-title">第三层</h2>
             <el-form-item label="蔬菜名称：" prop="plantThree">
-              <el-select clearable v-model="batchDialog.data.plantThree" placeholder="请选择" v-show="!checked.three">
+              <el-select clearable v-model="batchDialog.data.plantThree" placeholder="请选择" v-if="!checked.three">
                 <el-option :label="item.label" :value="item.value" v-for="(item,index) in vegetableName" :key="index"></el-option>
               </el-select>
-              <el-input v-model="batchDialog.data.plantThree" class="inline" v-show="checked.three"></el-input>
+              <el-input v-model="batchDialog.data.plantThree" class="inline" v-else></el-input>
               <el-checkbox v-model="checked.three">手动输入</el-checkbox>
             </el-form-item>
-            <el-form-item label="生长模式：" prop="cultModelOne">
-              <el-select clearable v-model="batchDialog.data.cultModelOne" placeholder="请选择">
+            <el-form-item label="生长模式：" prop="cultModelThree">
+              <el-select clearable v-model="batchDialog.data.cultModelThree" placeholder="请选择">
                 <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
               </el-select>
             </el-form-item>
@@ -174,6 +191,24 @@
         <el-button type="primary" @click="addSubmit('addForm')">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="添加育苗信息" width="90%" :visible.sync="miaoDialog.visible" :close-on-click-modal="false">
+      <el-form ref="addMiaoForm" :model="miaoDialog.data" label-width="110px" :rules="miaoDialog.rules">
+        <el-form-item label="育苗室植物：" prop="seedRoomPlant">
+          <el-input v-model="miaoDialog.data.seedRoomPlant" class="inline"></el-input>
+        </el-form-item>
+        <el-form-item label="播种时间：" prop="seedPlantingTime">
+          <el-date-picker v-model="miaoDialog.data.seedPlantingTime" type="datetime" placeholder="选择日期时间范围">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="预计可移植日期：">
+          <el-date-picker v-model="miaoDialog.data.seedRecoveryTime" type="datetime" placeholder="选择日期时间范围">
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="addMiaoSubmit('addMiaoForm')">确 定</el-button>
+      </span>
+    </el-dialog>
   </el-row>
 </template>
 <script>
@@ -182,6 +217,7 @@ export default {
     return {
       deviceId: "",
       batchId: "",
+      miaoInfo: {},
       trustStatus: "",
       cultModel: [],
       trustStatusArr: [],
@@ -201,22 +237,51 @@ export default {
           plantOne: [
             {
               required: true,
-              message: "请输入蔬菜名称",
-              trigger: "blur"
+              message: "不能为空",
+              trigger: "change"
             }
           ],
           plantTwo: [
             {
               required: true,
-              message: "请输入蔬菜名称",
-              trigger: "blur"
+              message: "不能为空",
+              trigger: "change"
             }
           ],
           plantThree: [
             {
               required: true,
-              message: "请输入蔬菜名称",
-              trigger: "blur"
+              message: "不能为空",
+              trigger: "change"
+            }
+          ],
+          onePlantingTime: [
+            {
+              type: "date",
+              required: true,
+              message: "不能为空",
+              trigger: "change"
+            }
+          ]
+        }
+      },
+      miaoDialog: {
+        visible: false,
+        data: {},
+        rules: {
+          seedRoomPlant: [
+            {
+              required: true,
+              message: "不能为空",
+              trigger: "change"
+            }
+          ],
+          seedPlantingTime: [
+            {
+              type: "date",
+              required: true,
+              message: "不能为空",
+              trigger: "change"
             }
           ]
         }
@@ -246,6 +311,43 @@ export default {
         threePlantingTime: "",
         threeRecoveryTime: ""
       };
+      this.miaoDialog.data = {
+        batchId: this.batchId,
+        seedRoomPlant: "",
+        seedPlantingTime: "",
+        seedRecoveryTime: ""
+      };
+    },
+    getMiao() {
+      this.$ajax.get("seed/last", this.batchId).then(res => {
+        if (res.data === null) {
+          this.miaoInfo = null;
+        } else {
+          this.miaoInfo = res.data;
+        }
+      });
+    },
+    addMiao() {
+      this.resetForm("addMiaoForm");
+      this.init();
+      this.miaoDialog.visible = true;
+    },
+    addMiaoSubmit(formName) {
+      let valid = false;
+      this.$refs[formName].validate(v => {
+        valid = v;
+      });
+      if (!valid) {
+        return false;
+      }
+      const send = JSON.parse(JSON.stringify(this.miaoDialog.data));
+      send.seedPlantingTime = this.$dateFilter(send.seedPlantingTime);
+      send.seedRecoveryTime = this.$dateFilter(send.seedRecoveryTime);
+      this.$ajax.post("seed/save", send).then(res => {
+        this.miaoDialog.visible = false;
+        this.getMiao();
+        this.$message.success(res.message);
+      });
     },
     getCultModel() {
       this.$ajax.get("dict/list/controlModel").then(res => {
@@ -312,6 +414,7 @@ export default {
             videoThree: res.data.videoThree
           };
           this.batchId = res.data.batchId;
+          this.getMiao();
         }
       });
       console.log(this.deviceId, this.batchId);
@@ -352,7 +455,7 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style scoped lang="less">
 .video-img {
   width: 100%;
   height: auto;
@@ -360,6 +463,7 @@ export default {
 }
 
 .bottom-info {
+  margin-top: 10px;
   padding-top: 20px;
   border-top: 1px solid #ebeef5;
 }
@@ -377,5 +481,20 @@ export default {
 .col-item-title {
   font-weight: bold;
   margin-bottom: 10px;
+}
+.btn-info {
+  border-top: 1px solid #EBEEF5;
+  padding-top: 20px;
+  padding-left: 30px;
+  p {
+    margin-bottom: 8px;
+  }
+  span {
+    padding-left: 4px;
+    display: inline-block;
+    +span {
+      margin-left: 40px;
+    }
+  }
 }
 </style>

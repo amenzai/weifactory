@@ -59,7 +59,7 @@ axios.interceptors.response.use(function(response) {
 }, function(error) {
   // 对响应错误做点什么
   commit('UPDATE_LOADING', false)
-  const title = error.message === 'Network Error' ? '网络开小差，请稍后再试' : '服务端错误';
+  const title = '服务正在升级，请稍后再试！';
   Notification({
     title: title,
     message: error.message,
