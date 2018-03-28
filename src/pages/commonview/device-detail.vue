@@ -93,9 +93,10 @@
         </el-col> -->
       </el-tabs>
       <div class="bottom-info ta-c">
-        <el-button>参数设置</el-button>
-        <el-button>手动设置</el-button>
-        <el-button>参数设置</el-button>
+        <el-button>
+          <router-link :to="{ path: '/home/commonview/setting',query:{id:batchId,}}">参数设置</router-link>
+        </el-button>
+        <el-button>手动控制</el-button>
         <el-button>
           <router-link :to="{ path: '/home/commonview/historydata',query:{id:$route.params.id}}">查询历史数据</router-link>
         </el-button>
@@ -324,6 +325,7 @@ export default {
           this.miaoInfo = null;
         } else {
           this.miaoInfo = res.data;
+          this.saveBatchInfo()
         }
       });
     },
@@ -418,6 +420,22 @@ export default {
         }
       });
       console.log(this.deviceId, this.batchId);
+    },
+    saveBatchInfo() {
+      const send = {
+        trustStatus: this.trustStatus,
+        batchId: this.batchId,
+        plantOne: this.formFirst.plantOne,
+        plantTwo: this.formFirst.plantTwo,
+        plantThree: this.formFirst.plantThree,
+        cultModelOne: this.formFirst.cultModelOne,
+        cultModelTwo: this.formFirst.plantThree,
+        cultModelThree: this.formFirst.cultModelThree,
+        seedRoomPlant: this.miaoInfo.seedRoomPlant,
+        seedPlantingTime: this.miaoInfo.seedPlantingTime,
+        seedRecoveryTime: this.miaoInfo.seedRecoveryTime
+      }
+      this.$store.commit('UPDATE_BATCH_INFO', send)
     },
     addBatch() {
       this.resetForm("addForm");

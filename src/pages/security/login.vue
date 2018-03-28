@@ -60,7 +60,6 @@ export default {
         return
       }
       this.logining = true;
-      window.sessionStorage.clear();
       // console.log(this.$refs[formName].validate())
       this.$ajax.post("register/login", this.form).then(res => {
         this.logining = false;

@@ -242,7 +242,7 @@ export default {
     }
   },
   created() {
-    this.userData = JSON.parse(window.sessionStorage.getItem('user'))
+    this.userData = this.$store.state.userInfo
     this.table.send.userId = this.userData.userId
     this.getList()
   },

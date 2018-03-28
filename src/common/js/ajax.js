@@ -6,7 +6,7 @@ import { Message, Notification } from 'element-ui'
 import querystring from 'querystring'
 
 const commit = store.commit || store.dispatch
-const base = '/'
+const base = ''
 
 // axios.defaults.headers = {
 //   referer: 'http://api.weifactory.vastsum.net:8852',
@@ -90,9 +90,8 @@ export default {
       config = base + path
     } else {
       // params = trimObject(params, type) //  type为true不过滤空字符串的发送
-      config = `${base}` + path + '/' + params
+      config = base + path + '/' + params
     }
-    return axios.get(config).then(res => res.data)
     return new Promise((resolve, reject) => {
       axios.get(config).then(res => {
         if (res.data.success) {
@@ -113,7 +112,7 @@ export default {
     }
     params = trimObject(params, type)
     return new Promise((resolve, reject) => {
-      axios.post(`${base}` + path, params).then(res => {
+      axios.post(base + path, params).then(res => {
         if (res.data.success) {
           resolve(res.data)
         } else {

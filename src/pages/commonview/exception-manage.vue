@@ -55,7 +55,7 @@ export default {
     }
   },
   created() {
-    this.table.send.userId = JSON.parse(window.sessionStorage.getItem('user')).userId
+    this.table.send.userId = this.$store.state.userId
     this.getList()
     this.getExceptionType()
   },

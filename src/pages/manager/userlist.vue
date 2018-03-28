@@ -36,10 +36,10 @@
     <el-dialog :title="userManageTitle" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
       <el-form ref="modifyForm" :model="modifyDialog.data" label-width="100px" :rules="modifyDialog.rules">
         <el-form-item label="用户名：" prop="userName">
-          <el-input v-model="modifyDialog.data.userName"></el-input>
+          <el-input v-model="modifyDialog.data.userName" :disabled="isName"></el-input>
         </el-form-item>
-        <el-form-item label="密码：" prop="userPassword">
-          <el-input v-model="modifyDialog.data.userPassword"></el-input>
+        <el-form-item label="密码：" prop="userPassword" v-show="isShow">
+          <el-input v-model="modifyDialog.data.userPassword" type="password"></el-input>
         </el-form-item>
         <el-form-item label="手机号：" prop="userPhone">
           <el-input v-model="modifyDialog.data.userPhone"></el-input>
@@ -68,6 +68,8 @@ export default {
   data() {
       return {
         state: '',
+        isName: false,
+        isShow: true,
         userManageTitle: '',
         modifyDialog: {
           visible: false,
@@ -135,6 +137,8 @@ export default {
       addUser() {
         this.userManageTitle = '添加用户'
         this.state = 1
+        this.isShow = true
+        this.isName = false
         this.resetForm('modifyForm')
         this.init()
         this.modifyDialog.visible = true;
@@ -142,6 +146,8 @@ export default {
       modifyUser(data) {
         this.userManageTitle = '修改用户信息'
         this.state = 2
+        this.isShow = false
+        this.isName = true
         this.resetForm('modifyForm')
         this.init()
         this.modifyDialog.visible = true;
@@ -171,7 +177,6 @@ export default {
               console.log('', res);
               var type = res.success ? 'success' : 'error';
               if (type === 'success') {
-                this.resetForm('modifyForm');
                 this.modifyDialog.visible = false;
                 this.getList();
               }
@@ -181,12 +186,12 @@ export default {
               });
             })
         } else {
+          delete send.userPassword
           this.$ajax.post('user/update', send)
             .then(res => {
               console.log('', res);
               var type = res.success ? 'success' : 'error';
               if (type === 'success') {
-                this.resetForm('modifyForm');
                 this.modifyDialog.visible = false;
                 this.getList();
               }

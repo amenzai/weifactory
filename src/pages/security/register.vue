@@ -234,16 +234,9 @@ export default {
     checkUserName() {
       if (this.form.userName) {
         this.$ajax.get("user", this.form.userName).then(res => {
-          console.log("", res);
-          if (res.success) {
-            return;
-          } else {
-            this.$message({
-              message: "该用户已存在",
-              type: "warning"
-            });
-            this.form.userName = "";
-          }
+          console.log(res.data)
+        }).catch(() => {
+          this.form.userName = "";
         });
       }
     }

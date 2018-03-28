@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import store from '../store'
+import store from '../store'
 
 Vue.use(Router)
 
@@ -33,6 +33,7 @@ import PicManage from 'pages/commonview/pic-manage'
 import ConcatlogManage from 'pages/manager/concatlog-manage'
 import ExceptionManage from 'pages/commonview/exception-manage'
 import PaySuccess from 'pages/commonview/pay-success'
+import Setting from 'pages/commonview/setting'
 
 const myRouter = new Router({
   mode: 'hash',
@@ -95,6 +96,10 @@ const myRouter = new Router({
       path: 'commonview/btn-control',
       name: '设备控制',
       component: BtnControl
+    }, {
+      path: 'commonview/setting',
+      name: '参数设置',
+      component: Setting
     }, {
       path: 'manager/expertlist',
       name: '专家管理',
@@ -159,10 +164,14 @@ const myRouter = new Router({
   }]
 })
 
-// const commit = store.commit
+const commit = store.commit
 const loginUrl = '/login'
 myRouter.beforeEach((to, from, next) => {
-  if (!window.sessionStorage.getItem('user') && to.path !== loginUrl && to.path.indexOf('register') < 0) {
+  if (to.path === loginUrl) {
+    commit('UPDATE_USER', '')
+    commit('UPDATE_USERID', '')
+  }
+  if (!store.state.userId && to.path !== loginUrl && to.path.indexOf('register') < 0) {
     next(loginUrl)
   } else {
     // commit('UPDATE_LOADING', true)

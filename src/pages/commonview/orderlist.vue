@@ -47,7 +47,7 @@ export default {
     }
   },
   created() {
-    this.userId = JSON.parse(window.sessionStorage.getItem('user')).userId
+    this.userId = this.$store.state.userId
     this.getList()
     this.getPayChannel()
   },

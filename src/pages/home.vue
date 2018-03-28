@@ -119,11 +119,11 @@ export default {
       }
     },
     created() {
+      this.userData = this.$store.state.userInfo
       this.getMenus()
     },
     methods: {
       getMenus() {
-        this.userData = JSON.parse(window.sessionStorage.getItem('user'))
         this.$ajax.get('menu', this.userData.userId).then(res => {
           this.menus = res.data
         }).catch(err => {
@@ -163,7 +163,7 @@ export default {
           return
         }
         const send = {
-          username: JSON.parse(window.sessionStorage.getItem('user')).userName,
+          username: this.$store.state.userInfo.userName,
           oldPassword: this.modifyPwd.data.oldPassword,
           newPassword: this.modifyPwd.data.newPassword
         }
