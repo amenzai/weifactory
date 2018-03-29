@@ -17,7 +17,7 @@
             <el-checkbox v-model="checkGroup[index]" style="margin-left:30px" true-label="1" false-label="">一直开启</el-checkbox>
           </el-col>
           <el-col :span="4">
-            <el-switch v-model="btnGroup[index]" on-value="1" off-value="0" on-text="" off-text="" @change="postStatus(index,item.actuatorId)"></el-switch>
+            <el-switch v-model="btnGroup[index]" active-value="1" inactive-value="0" @change="postStatus(index,item.actuatorId)"></el-switch>
           </el-col>
         </el-row>
       </li>
@@ -98,8 +98,7 @@ export default {
       postStatus(index, id) {
         if (!this.checkGroup[index] && !this.date[index][0] && !this.date[index][1]) {
           this.$message.error('请先设定开启时间')
-          console.log(this.btnGroup[index])
-          this.btnGroup[index] = Number(!parseInt(this.btnGroup[index])).toString()
+          this.btnGroup[index] = '0'
           console.log(this.btnGroup[index])
           return
         }
@@ -116,14 +115,12 @@ export default {
         console.log(this.$toJSON(this.send))
         this.$ajax.post('control/sensor', this.send)
           .then(res => {
-            var type = res.success ? 'success' : 'error';
-            if (type === 'success') {
-              this.getList();
-            }
-            this.$message({
-              message: res.message,
-              type: type
-            });
+            this.getList();
+            this.$message.success(res.message);
+          }).catch(() => {
+            this.$set(this.btnGroup, index, '0')
+            // this.btnGroup[index] = '0'
+            console.log(this.btnGroup[index])
           })
       },
       getDateRange(date) {

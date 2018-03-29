@@ -1,7 +1,8 @@
 <template>
   <el-row v-if="isShow">
+    <p class="ta-r"><el-button @click="$router.push('/home')">&lt;&lt;返回首页</el-button></p>
     <el-col v-if="formFirst !== null">
-      <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
         <el-tab-pane label="第一层" name="first">
           <el-row>
             <el-form ref="formOne" :model="formFirst" label-width="100px">
@@ -94,9 +95,11 @@
       </el-tabs>
       <div class="bottom-info ta-c">
         <el-button>
-          <router-link :to="{ path: '/home/commonview/setting',query:{id:batchId,}}">参数设置</router-link>
+          <router-link :to="{ path: '/home/commonview/setting'}">参数设置</router-link>
         </el-button>
-        <el-button>手动控制</el-button>
+        <el-button>
+          <router-link :to="{ path: '/home/commonview/hand-setting'}">手动控制</router-link>
+        </el-button>
         <el-button>
           <router-link :to="{ path: '/home/commonview/historydata',query:{id:$route.params.id}}">查询历史数据</router-link>
         </el-button>
@@ -224,7 +227,7 @@ export default {
       trustStatusArr: [],
       vegetableName: [],
       isShow: false,
-      activeName2: "first",
+      activeName: "first",
       formFirst: {},
       checked: {
         one: false,
@@ -423,6 +426,7 @@ export default {
     },
     saveBatchInfo() {
       const send = {
+        deviceId: this.deviceId,
         trustStatus: this.trustStatus,
         batchId: this.batchId,
         plantOne: this.formFirst.plantOne,
@@ -501,7 +505,7 @@ export default {
   margin-bottom: 10px;
 }
 .btn-info {
-  border-top: 1px solid #EBEEF5;
+  border-top: 1px solid #ebeef5;
   padding-top: 20px;
   padding-left: 30px;
   p {
@@ -510,9 +514,10 @@ export default {
   span {
     padding-left: 4px;
     display: inline-block;
-    +span {
+    + span {
       margin-left: 40px;
     }
   }
 }
+
 </style>

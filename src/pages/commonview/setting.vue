@@ -1,6 +1,11 @@
 <template>
   <el-row>
-    <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
+    <p class="ta-r">
+      <el-button>
+        <router-link :to="{ path: '/home/commonview/device-detail/' + batchInfo.deviceId}">&lt;&lt;返回批次信息页</router-link>
+      </el-button>
+    </p>
+    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane label="第一层" name="first">
         <el-form ref="formOne" :model="formFirst" label-width="170px" :inline="true">
           <el-form-item label="当前批次：">{{ batchInfo.batchId }}</el-form-item>
@@ -213,7 +218,7 @@ export default {
       trustStatusArr: [],
       vegetableName: [],
       isShow: false,
-      activeName2: "first",
+      activeName: "first",
       formFirst: {},
       checked: {
         one: false,

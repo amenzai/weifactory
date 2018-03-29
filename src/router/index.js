@@ -18,7 +18,6 @@ import DeviceSn from 'pages/manager/device-sn'
 import DeviceDetail from 'pages/commonview/device-detail'
 import ApplyManage from 'pages/commonview/apply-manage'
 import orderPayment from 'pages/commonview/order-payment'
-import HistoryData from 'pages/commonview/historydata'
 import BtnControl from 'pages/commonview/btn-control'
 import ExpertList from 'pages/manager/expertlist'
 import RoleList from 'pages/manager/rolelist'
@@ -34,6 +33,8 @@ import ConcatlogManage from 'pages/manager/concatlog-manage'
 import ExceptionManage from 'pages/commonview/exception-manage'
 import PaySuccess from 'pages/commonview/pay-success'
 import Setting from 'pages/commonview/setting'
+import HandSetting from 'pages/commonview/hand-setting'
+import HistoryData from 'pages/commonview/history-data'
 
 const myRouter = new Router({
   mode: 'hash',
@@ -89,10 +90,6 @@ const myRouter = new Router({
       name: '订单支付',
       component: orderPayment
     }, {
-      path: 'commonview/historydata',
-      name: '历史数据',
-      component: HistoryData
-    }, {
       path: 'commonview/btn-control',
       name: '设备控制',
       component: BtnControl
@@ -100,6 +97,14 @@ const myRouter = new Router({
       path: 'commonview/setting',
       name: '参数设置',
       component: Setting
+    }, {
+      path: 'commonview/hand-setting',
+      name: '手动控制',
+      component: HandSetting
+    }, {
+      path: 'commonview/history-data',
+      name: '历史数据',
+      component: HistoryData
     }, {
       path: 'manager/expertlist',
       name: '专家管理',
