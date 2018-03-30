@@ -12,11 +12,11 @@
         <el-button type="primary" style="width:100%;" @click="submitForm('loginForm')" :loading="logining">立即登录</el-button>
       </el-form-item>
       <el-form-item>
-        <el-checkbox v-model="form.rememberMe" class="remember">保持登录</el-checkbox>
-         <el-col :span="24" style="text-align:right;">
-          <el-button type="text" @click="$router.push('/register')">注册新用户</el-button>
-          <!-- <el-button type="text">忘记密码？</el-button> -->
-        </el-col>
+        <!-- <el-checkbox v-model="form.rememberMe" class="remember">保持登录</el-checkbox> -->
+        <el-col :span="24" style="text-align:right;">
+        <el-button type="text" @click="$router.push('/register')">注册新用户</el-button>
+        <!-- <el-button type="text">忘记密码？</el-button> -->
+      </el-col>
       </el-form-item>
     </el-form>
   </div>
@@ -57,19 +57,25 @@ export default {
   methods: {
     submitForm(formName) {
       if (!this.$validateForm(formName)) {
-        return
+        return;
       }
       this.logining = true;
+      setTimeout(() => {
+        this.logining = false;
+      }, 3000);
       // console.log(this.$refs[formName].validate())
-      this.$ajax.post("register/login", this.form).then(res => {
-        this.logining = false;
-        const userData = res.data
-        this.$store.commit("UPDATE_USER", userData);
-        this.$store.commit("UPDATE_USERID", userData.userId);
-        this.$router.push('/home')
-      }).catch(() => {
-        this.logining = false;
-      });
+      this.$ajax
+        .post("register/login", this.form)
+        .then(res => {
+          this.logining = false;
+          const userData = res.data;
+          this.$store.commit("UPDATE_USER", userData);
+          this.$store.commit("UPDATE_USERID", userData.userId);
+          this.$router.push("/home");
+        })
+        .catch(() => {
+          this.logining = false;
+        });
     }
   }
 };
@@ -85,8 +91,8 @@ export default {
   width: 420px;
   padding: 35px 35px 15px 35px;
   background: #fff;
-  border: 1px solid #eaeaea;
-  box-shadow: 0 0 25px #cac6c6;
+  border: 1px solid #ebeef5;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   .title {
     margin-bottom: 20px;
     text-align: center;

@@ -131,12 +131,20 @@ export default {
         })
       },
       logout() {
+        const send = {
+          userId: this.userData.userId
+        }
         this.$confirm('确认退出吗?', '提示', {
           type: 'warning'
         }).then(() => {
+          this.$ajax.post('register/loginOut', send).then(res => {
+            this.$message.success('登出成功')
+            this.$router.push('/login');
+          }).catch(() => {
+            this.$router.push('/login');
+          })
           this.$store.commit('UPDATE_USER', '');
           this.$store.commit('UPDATE_USERID', '');
-          this.$router.push('/login');
         }).catch(() => {});
       },
       handleClick(val) {

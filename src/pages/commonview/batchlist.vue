@@ -1,9 +1,6 @@
 <template>
   <el-row>
     <el-table :data="table.data" border style="width: 100%">
-      <el-table-column label="设备序列号">
-        <template slot-scope="scope">{{ scope.row.sn }}</template>
-      </el-table-column>
       <el-table-column label="第一层蔬菜名称">
         <template slot-scope="scope">{{ scope.row.plantOne }}</template>
       </el-table-column>
@@ -58,133 +55,123 @@
 <script>
 export default {
   data() {
-      return {
-        userId: '',
-        modelId: '',
-        modelVisible: false,
-        modelList: [],
-        table: {
-          data: [],
-          send: {
-            pageNo: 1,
-            pageSize: this.$CONSTANT.PAGE_SIZE
-          },
-          totalCount: 0,
-          totalPages: 0,
-          pageSelect: this.$CONSTANT.PAGE_SELECT
-        }
+    return {
+      userId: "",
+      deviceId: "",
+      modelId: "",
+      modelVisible: false,
+      modelList: [],
+      table: {
+        data: [],
+        send: {
+          pageNo: 1,
+          pageSize: this.$CONSTANT.PAGE_SIZE
+        },
+        totalCount: 0,
+        totalPages: 0,
+        pageSelect: this.$CONSTANT.PAGE_SELECT
       }
+    };
+  },
+  created() {
+    this.deviceId = this.$route.query.id;
+    this.userId = this.$store.state.userId;
+    this.getList();
+    this.getModel();
+  },
+  methods: {
+    getList() {
+      const send = this.deviceId + '/' + this.table.send.pageNo + '/' + this.table.send.pageSize;
+      this.$ajax.get("batch", send).then(res => {
+        console.log("", res);
+        this.table.data = res.data.list;
+        this.table.totalCount = res.data.total;
+        this.table.totalPages = res.data.pages;
+      });
     },
-    created() {
-      this.userId = this.$store.state.userId
-      this.getList()
-      this.getModel()
+    getModel() {
+      const send = {
+        userId: this.userId,
+        page: 1,
+        pageSize: 100
+      };
+      this.$ajax.post("model/list", send).then(res => {
+        console.log("", res);
+        this.modelList = res.data.list;
+      });
     },
-    methods: {
-      getList() {
-        if (this.userId === 2) {
-          const send = this.table.send.pageNo + '/' + this.table.send.pageSize
-          this.$ajax.get('batch/history', send)
-            .then(res => {
-              console.log('', res);
-              this.table.data = res.data.list;
-              this.table.totalCount = res.data.total;
-              this.table.totalPages = res.data.pages;
-            })
-        } else {
-          const send1 = this.userId + '/' + this.table.send.pageNo + '/' + this.table.send.pageSize
-          this.$ajax.get('batch', send1)
-            .then(res => {
-              console.log('', res);
-              this.table.data = res.data.list;
-              this.table.totalCount = res.data.total;
-              this.table.totalPages = res.data.pages;
-            })
-        }
-      },
-      getModel() {
-        const send = {
-          userId: this.userId,
-          page: 1,
-          pageSize: 100
-        }
-        this.$ajax.post('model/list', send)
-          .then(res => {
-            console.log('', res);
-            this.modelList = res.data.list;
-          })
-      },
-      deleteBatch(id) {
-        this.$confirm('确定删除批次吗', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$ajax.get('batch/delete', id)
-            .then(res => {
-              var type = res.success ? 'success' : 'error';
-              if (type === 'success') {
-                this.getList();
-              }
-              this.$message({
-                message: res.message,
-                type: type
-              });
-            })
-        }).catch(() => {});
-      },
-      removeBatch(id) {
-        this.$confirm('确定废弃批次吗', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$ajax.get('batch/remove', id)
-            .then(res => {
-              var type = res.success ? 'success' : 'error';
-              if (type === 'success') {
-                this.getList();
-              }
-              this.$message({
-                message: res.message,
-                type: type
-              });
-            })
-        }).catch(() => {});
-      },
-      concatModel(id) {
-        this.batchId = id
-        this.modelId = ''
-        this.modelVisible = true;
-      },
-      modelSubmit() {
-        const send = this.batchId + '/' + this.modelId
-        this.$ajax.get('batch/association', send)
-          .then(res => {
-            var type = res.success ? 'success' : 'error';
-            if (type === 'success') {
+    deleteBatch(id) {
+      this.$confirm("确定删除批次吗", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$ajax.get("batch/delete", id).then(res => {
+            var type = res.success ? "success" : "error";
+            if (type === "success") {
               this.getList();
-              this.modelVisible = false;
             }
             this.$message({
               message: res.message,
               type: type
             });
-          })
-      },
-      handleSizeChange(val) {
-        this.table.send.pageSize = val;
-        this.getList();
-      },
-      handleCurrentChange(val) {
-        this.table.send.pageNo = val;
-        this.getList();
-      }
+          });
+        })
+        .catch(() => {});
+    },
+    removeBatch(id) {
+      this.$confirm("确定废弃批次吗", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$ajax.get("batch/remove", id).then(res => {
+            var type = res.success ? "success" : "error";
+            if (type === "success") {
+              this.getList();
+            }
+            this.$message({
+              message: res.message,
+              type: type
+            });
+          });
+        })
+        .catch(() => {});
+    },
+    concatModel(id) {
+      this.batchId = id;
+      this.modelId = "";
+      this.modelVisible = true;
+    },
+    modelSubmit() {
+      const send = this.batchId + "/" + this.modelId;
+      this.$ajax.get("batch/association", send).then(res => {
+        var type = res.success ? "success" : "error";
+        if (type === "success") {
+          this.getList();
+          this.modelVisible = false;
+        }
+        this.$message({
+          message: res.message,
+          type: type
+        });
+      });
+    },
+    handleSizeChange(val) {
+      this.table.send.pageSize = val;
+      this.getList();
+    },
+    handleCurrentChange(val) {
+      this.table.send.pageNo = val;
+      this.getList();
     }
-}
+  }
+};
 </script>
 <style scoped>
 .el-form-item {
-  margin-bottom:0
+  margin-bottom: 0;
 }
 </style>

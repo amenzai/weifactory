@@ -29,7 +29,7 @@
 export default {
   data() {
     return {
-      deviceId: this.$route.query.id || '',
+      deviceId: '',
       batchId: '',
       expertArr: [],
       resData: {},
@@ -50,11 +50,12 @@ export default {
     }
   },
   created() {
+    this.batchInfo = this.$store.state.batchInfo;
     this.getList()
   },
   methods: {
     getList() {
-      this.$ajax.get('order/device', this.deviceId)
+      this.$ajax.get('order/device', this.batchInfo.deviceId)
         .then(res => {
           console.log('', res);
           this.resData = res.data;

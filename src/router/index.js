@@ -35,6 +35,7 @@ import PaySuccess from 'pages/commonview/pay-success'
 import Setting from 'pages/commonview/setting'
 import HandSetting from 'pages/commonview/hand-setting'
 import HistoryData from 'pages/commonview/history-data'
+import Audit from 'pages/expert/audit'
 
 const myRouter = new Router({
   mode: 'hash',
@@ -166,6 +167,10 @@ const myRouter = new Router({
     path: '/register',
     name: '用户注册',
     component: Register
+  }, {
+    path: '/audit',
+    name: '等待审核',
+    component: Audit
   }]
 })
 

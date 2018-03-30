@@ -47,7 +47,7 @@
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.page" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
       </el-pagination>
     </div>
-    <el-dialog :title="ModelManageTitle" size="small" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
+    <el-dialog :title="ModelManageTitle" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
       <el-form ref="modifyForm" :model="modifyDialog.data" label-width="130px" :rules="modifyDialog.rules">
         <el-row>
           <el-col :span="12">
@@ -328,7 +328,6 @@ export default {
           console.log('', res);
           var type = res.success ? 'success' : 'error';
           if (type === 'success') {
-            this.resetForm('modifyForm');
             this.modifyDialog.visible = false;
             this.getList();
           }

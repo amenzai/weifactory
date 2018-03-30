@@ -8,8 +8,8 @@
   width: 420px;
   padding: 35px 35px 15px 35px;
   background: #fff;
-  border: 1px solid #eaeaea;
-  box-shadow: 0 0 25px #cac6c6;
+  border: 1px solid #ebeef5;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
   .title {
     margin-bottom: 20px;
     text-align: center;
@@ -171,25 +171,26 @@ export default {
   methods: {
     submitForm(formName) {
       if (!this.$validateForm(formName)) {
-        return
+        return;
       }
       this.logining = true;
-      const _this = this;
       this.$ajax
         .post("register/doRegister", this.form)
-        .then(function(response) {
-          _this.logining = false;
-          if (response.success) {
-            _this.$alert("注册成功，马上登陆！", "提示", {
+        .then(res => {
+          this.logining = false;
+          if (this.form.roleId === 4) {
+            this.$router.push("/home/expert/audit");
+          } else {
+            this.$alert("注册成功，马上登陆！", "提示", {
               confirmButtonText: "确定",
               callback: action => {
-                _this.$router.push("/login");
+                this.$router.push("/login");
               }
-            });
-          } else {
-            _this.$message.error(response.message);
-            // _this.loadVerify();
+            })
           }
+        })
+        .catch(() => {
+          this.logining = false;
         });
     },
     resetForm(formName) {
@@ -197,9 +198,8 @@ export default {
     },
     sendCode() {
       let valid = false;
-      const _this = this;
-      this.$refs.regForm.validateField("userPhone", function(msg) {
-        if (msg !== _this.form.userPhone && !msg) {
+      this.$refs.regForm.validateField("userPhone", msg => {
+        if (msg !== this.form.userPhone && !msg) {
           valid = true;
         }
       });
@@ -210,34 +210,37 @@ export default {
       const send = {
         cell: this.form.userPhone
       };
-      this.$ajax.post("register/smsCode", send).then(function(response) {
-        _this.smslogining = false;
-        if (response.success) {
-          _this.smsDis = true;
+      this.$ajax
+        .post("register/smsCode", send)
+        .then(res => {
+          this.smslogining = false;
+          this.smsDis = true;
           var count = 120;
-          var ret = setInterval(function() {
+          var ret = setInterval(() => {
             --count;
             if (count === 0) {
-              _this.smsDis = false;
-              _this.smsText = "获取验证码";
+              this.smsDis = false;
+              this.smsText = "获取验证码";
               clearInterval(ret);
             } else {
-              _this.smsText = "重新发送(" + count + "s)";
+              this.smsText = "重新发送(" + count + "s)";
             }
           }, 1000);
-        } else {
-          _this.$message.error(response.message);
-          // _this.loadVerify();
-        }
-      });
+        })
+        .catch(() => {
+          this.smslogining = false;
+        });
     },
     checkUserName() {
       if (this.form.userName) {
-        this.$ajax.get("user", this.form.userName).then(res => {
-          console.log(res.data)
-        }).catch(() => {
-          this.form.userName = "";
-        });
+        this.$ajax
+          .get("user", this.form.userName)
+          .then(res => {
+            console.log(res.data);
+          })
+          .catch(() => {
+            this.form.userName = "";
+          });
       }
     }
     // loadVerify() {

@@ -73,7 +73,7 @@
           </el-row>
         </el-tab-pane>
         <el-tab-pane label="育苗室" name="four">
-          <p v-if="!miaoInfo">该批次未添加育苗，你可以
+          <p v-if="!miaoInfo.seedRoomPlant">该批次未添加育苗，你可以
             <el-button type="text" @click="addMiao">立即添加</el-button>
           </p>
           <div v-else>
@@ -84,8 +84,9 @@
             </el-form>
             <div class="btn-info">
               <p><span>补光灯</span><span>喷淋阀</span></p>
-              <el-switch v-model="miaoInfo.seedLed" active-value="1" inactive-value="0">补光灯</el-switch>
-              <el-switch v-model="miaoInfo.seedSpray" active-value="1" inactive-value="0">补光灯</el-switch>
+              <P><i class="el-icon-my-light-fill" :class="{'yellow':miaoInfo.seedLed === '1'}"></i>
+                  <i class="el-icon-my-light-fill" :class="{'yellow':miaoInfo.seedSpray === '1'}"></i>
+              </P>
             </div>
           </div>
         </el-tab-pane>
@@ -101,12 +102,12 @@
           <router-link :to="{ path: '/home/commonview/hand-setting'}">手动控制</router-link>
         </el-button>
         <el-button>
-          <router-link :to="{ path: '/home/commonview/historydata',query:{id:$route.params.id}}">查询历史数据</router-link>
+          <router-link :to="{ path: '/home/commonview/history-data'}">查询历史数据</router-link>
         </el-button>
         <el-button v-if="trustStatus === '0'">
-          <router-link :to="{ path: '/home/commonview/apply-manage',query:{id:$route.params.id}}">申请专家托管</router-link>
+          <router-link :to="{ path: '/home/commonview/apply-manage'}">申请专家托管</router-link>
         </el-button>
-        <el-button v-if="trustStatus === '0'">申请服务器托管</el-button>
+        <el-button v-if="trustStatus === '0'" @click="applyServer">申请服务器托管</el-button>
         <!-- <el-button>
           <router-link :to="{ path: '/home/commonview/btn-control'}">设备控制</router-link>
         </el-button> -->
@@ -117,7 +118,7 @@
         <el-button type="text" @click="addBatch">立即添加</el-button>
       </p>
     </el-col>
-    <el-dialog title="添加设备批次信息" width="90%" :visible.sync="batchDialog.visible" :close-on-click-modal="false">
+    <el-dialog title="添加设备批次信息" width="60%" :visible.sync="batchDialog.visible" :close-on-click-modal="false">
       <el-form ref="addForm" :model="batchDialog.data" label-width="110px" :rules="batchDialog.rules">
         <el-row>
           <el-col :span="12">
@@ -138,7 +139,7 @@
               <el-date-picker v-model="batchDialog.data.onePlantingTime" type="datetime" placeholder="选择日期时间范围">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="预计采收时间：">
+            <el-form-item label="预计采收时间：" prop="oneRecoveryTime">
               <el-date-picker v-model="batchDialog.data.oneRecoveryTime" type="datetime" placeholder="选择日期时间范围">
               </el-date-picker>
             </el-form-item>
@@ -157,11 +158,11 @@
                 <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="定植时间：">
+            <el-form-item label="定植时间：" prop="twoPlantingTime">
               <el-date-picker v-model="batchDialog.data.twoPlantingTime" type="datetime" placeholder="选择日期时间范围">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="预计采收时间：">
+            <el-form-item label="预计采收时间：" prop="twoRecoveryTime">
               <el-date-picker v-model="batchDialog.data.twoRecoveryTime" type="datetime" placeholder="选择日期时间范围">
               </el-date-picker>
             </el-form-item>
@@ -180,11 +181,11 @@
                 <el-option :label="item.label" :value="item.value" v-for="(item,index) in cultModel" :key="index"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="定植时间：">
+            <el-form-item label="定植时间：" prop="threePlantingTime">
               <el-date-picker v-model="batchDialog.data.threePlantingTime" type="datetime" placeholder="选择日期时间范围">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="预计采收时间：">
+            <el-form-item label="预计采收时间：" prop="threeRecoveryTime">
               <el-date-picker v-model="batchDialog.data.threeRecoveryTime" type="datetime" placeholder="选择日期时间范围">
               </el-date-picker>
             </el-form-item>
@@ -195,8 +196,8 @@
         <el-button type="primary" @click="addSubmit('addForm')">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="添加育苗信息" width="90%" :visible.sync="miaoDialog.visible" :close-on-click-modal="false">
-      <el-form ref="addMiaoForm" :model="miaoDialog.data" label-width="110px" :rules="miaoDialog.rules">
+    <el-dialog title="添加育苗信息" width="50%" :visible.sync="miaoDialog.visible" :close-on-click-modal="false">
+      <el-form ref="addMiaoForm" :model="miaoDialog.data" label-width="120px" :rules="miaoDialog.rules">
         <el-form-item label="育苗室植物：" prop="seedRoomPlant">
           <el-input v-model="miaoDialog.data.seedRoomPlant" class="inline"></el-input>
         </el-form-item>
@@ -204,7 +205,7 @@
           <el-date-picker v-model="miaoDialog.data.seedPlantingTime" type="datetime" placeholder="选择日期时间范围">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="预计可移植日期：">
+        <el-form-item label="预计可移植日期：" prop="seedRecoveryTime">
           <el-date-picker v-model="miaoDialog.data.seedRecoveryTime" type="datetime" placeholder="选择日期时间范围">
           </el-date-picker>
         </el-form-item>
@@ -259,7 +260,68 @@ export default {
               trigger: "change"
             }
           ],
+          cultModelOne: [
+            {
+              required: true,
+              message: "不能为空",
+              trigger: "change"
+            }
+          ],
+          cultModelTwo: [
+            {
+              required: true,
+              message: "不能为空",
+              trigger: "change"
+            }
+          ],
+          cultModelThree: [
+            {
+              required: true,
+              message: "不能为空",
+              trigger: "change"
+            }
+          ],
           onePlantingTime: [
+            {
+              type: "date",
+              required: true,
+              message: "不能为空",
+              trigger: "change"
+            }
+          ],
+          twoPlantingTime: [
+            {
+              type: "date",
+              required: true,
+              message: "不能为空",
+              trigger: "change"
+            }
+          ],
+          threePlantingTime: [
+            {
+              type: "date",
+              required: true,
+              message: "不能为空",
+              trigger: "change"
+            }
+          ],
+          oneRecoveryTime: [
+            {
+              type: "date",
+              required: true,
+              message: "不能为空",
+              trigger: "change"
+            }
+          ],
+          twoRecoveryTime: [
+            {
+              type: "date",
+              required: true,
+              message: "不能为空",
+              trigger: "change"
+            }
+          ],
+          threeRecoveryTime: [
             {
               type: "date",
               required: true,
@@ -281,6 +343,14 @@ export default {
             }
           ],
           seedPlantingTime: [
+            {
+              type: "date",
+              required: true,
+              message: "不能为空",
+              trigger: "change"
+            }
+          ],
+          seedRecoveryTime: [
             {
               type: "date",
               required: true,
@@ -322,14 +392,20 @@ export default {
         seedRecoveryTime: ""
       };
     },
+    applyServer() {
+      this.$ajax.get("control/trust", this.batchId).then(res => {
+        this.$message.success("申请成功！");
+        this.getList();
+      });
+    },
     getMiao() {
       this.$ajax.get("seed/last", this.batchId).then(res => {
         if (res.data === null) {
-          this.miaoInfo = null;
+          this.miaoInfo = {};
         } else {
           this.miaoInfo = res.data;
-          this.saveBatchInfo()
         }
+        this.saveBatchInfo();
       });
     },
     addMiao() {
@@ -433,13 +509,13 @@ export default {
         plantTwo: this.formFirst.plantTwo,
         plantThree: this.formFirst.plantThree,
         cultModelOne: this.formFirst.cultModelOne,
-        cultModelTwo: this.formFirst.plantThree,
+        cultModelTwo: this.formFirst.cultModelTwo,
         cultModelThree: this.formFirst.cultModelThree,
         seedRoomPlant: this.miaoInfo.seedRoomPlant,
         seedPlantingTime: this.miaoInfo.seedPlantingTime,
         seedRecoveryTime: this.miaoInfo.seedRecoveryTime
-      }
-      this.$store.commit('UPDATE_BATCH_INFO', send)
+      };
+      this.$store.commit("UPDATE_BATCH_INFO", send);
     },
     addBatch() {
       this.resetForm("addForm");
@@ -518,6 +594,11 @@ export default {
       margin-left: 40px;
     }
   }
+  i {
+    margin-left: 12px;
+    + i {
+      margin-left: 48px;
+    }
+  }
 }
-
 </style>

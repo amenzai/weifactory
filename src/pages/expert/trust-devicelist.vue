@@ -6,12 +6,6 @@
           <el-button type="text" @click="getDetail(scope.row.deviceId,scope.row.sn,false)">{{ scope.row.sn }}</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="经度">
-        <template slot-scope="scope">{{ scope.row.longitude }}</template>
-      </el-table-column>
-      <el-table-column label="纬度">
-        <template slot-scope="scope">{{ scope.row.latitude }}</template>
-      </el-table-column>
       <el-table-column label="添加日期">
         <template slot-scope="scope">{{ scope.row.gmtCreate | dateFilter }}</template>
       </el-table-column>
