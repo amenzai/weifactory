@@ -1,5 +1,5 @@
 <template>
-  <p class="index-info" v-if="userId === 2">欢迎登陆</p>
+  <p v-if="userId === 2">欢迎登陆</p>
   <div v-else>
     <p class="mb10"><el-button type="primary" @click="addDevice">添加设备</el-button></p>
     <el-row :gutter="20">
@@ -9,11 +9,11 @@
           <p>是否被托管：{{ item.trustStatus === '1' ? '是' : '否' }}</p>
           <p>设备规格：{{ item.deviceType | seeLabel(typeDic) }}</p>
           <p>
-            <el-button size="mini">
+            <el-button type="text">
               <router-link :to="{path: '/home/commonview/batchlist', query: {id: item.deviceId}}">查看批次</router-link>
             </el-button>
-            <el-button type="success" @click="modifyDevice(item)" size="mini">修改</el-button>
-            <el-button type="danger" @click="deleteDevice(item.deviceId)" size="mini">删除</el-button>
+            <el-button type="text" @click="modifyDevice(item)">修改</el-button>
+            <el-button type="text" @click="deleteDevice(item.deviceId)">删除</el-button>
           </p>
         </el-card>
       </el-col>
@@ -136,10 +136,6 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-.index-info {
-  height: 400px;
-  background-color: #fff;
-}
 
 .device-info {
   margin-bottom: 20px;

@@ -46,9 +46,10 @@ const myRouter = new Router({
   }, {
     path: '/home',
     component: Home,
+    name: '首页',
     children: [{
       path: '',
-      name: '首页',
+      name: 'home',
       component: Index
     }, {
       path: 'manager/userlist',

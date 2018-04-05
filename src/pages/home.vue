@@ -1,11 +1,12 @@
 <template>
   <div class="layout clearfix">
     <div class="layout-menu-left">
-      <div class="layout-logo-left"></div>
-      <el-menu default-active="-1" class="el-menu-vertical-demo" :unique-opened="true" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+      <div class="layout-logo-left">LOGO</div>
+      <el-menu default-active="-1" class="el-menu-vertical-demo" :unique-opened="true">
         <el-submenu :index="mainIndex + ''" v-for="(item,mainIndex) in menus" :key="mainIndex">
           <template slot="title">
-            <span><i class="el-icon-setting"></i>{{ item.name }}</span>
+            <span>
+              <i class="el-icon-setting"></i>{{ item.name }}</span>
           </template>
           <el-menu-item :index="mainIndex + '-' + index" v-for="(child,index) in item.children" :key="index">
             <router-link :to="child.url">{{ child.name }}</router-link>
@@ -19,9 +20,10 @@
           <h1 class="title fl-l cursor" @click="$router.push('/home')">微型植物工厂智能监控系统</h1>
           <el-dropdown @command="handleClick">
             <span class="el-dropdown-link">
-                <i class="el-icon-my-user"></i>
-                {{userData.userName}}<i class="el-icon-caret-bottom el-icon--right"></i>
-              </span>
+              <i class="el-icon-my-user"></i>
+              {{userData.userName}}
+              <i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="modify">修改密码</el-dropdown-item>
               <el-dropdown-item command="logout">退出</el-dropdown-item>
@@ -30,8 +32,8 @@
         </div>
       </div>
       <div class="layout-content">
-        <div class="layout-breadcrumb" v-show="$route.matched[1].name !== '首页'">
-          <h2 class="subtitle">{{ $route.matched[1].name }}</h2>
+        <div class="layout-breadcrumb" v-show="$route.matched[1].name !== 'home'">
+          <h2 class="subtitle">{{ $route.matched[0].name }} / {{ $route.matched[1].name }}</h2>
         </div>
         <div class="layout-content-main">
           <transition name="fade" mode="out-in">
@@ -66,133 +68,146 @@
 <script>
 export default {
   data() {
-      var checkPass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入新密码'));
-        } else {
-          if (this.modifyPwd.data.newPassword2 !== '') {
-            this.$refs.modifyPwdForm.validateField('newPassword2');
-          }
-          callback();
+    var checkPass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入新密码'))
+      } else {
+        if (this.modifyPwd.data.newPassword2 !== '') {
+          this.$refs.modifyPwdForm.validateField('newPassword2')
         }
-      };
-      var checkPass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.modifyPwd.data.newPassword) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      };
-      return {
-        modifyPwd: {
-          data: {
-            oldPassword: '',
-            newPassword: '',
-            newPassword2: ''
-          },
-          visible: false,
-          rules: {
-            newPassword: [{
+        callback()
+      }
+    }
+    var checkPass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.modifyPwd.data.newPassword) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
+    return {
+      modifyPwd: {
+        data: {
+          oldPassword: '',
+          newPassword: '',
+          newPassword2: ''
+        },
+        visible: false,
+        rules: {
+          newPassword: [
+            {
               pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/,
               message: '长度不少于八位字符包含数字和字母',
               trigger: 'blur'
-            }, {
+            },
+            {
               required: true,
               validator: checkPass,
               trigger: 'blur'
-            }],
-            newPassword2: [{
+            }
+          ],
+          newPassword2: [
+            {
               required: true,
               validator: checkPass2,
               trigger: 'blur'
-            }]
-          }
-        },
-        menus: [],
-        userData: {},
-        isShow: {
-          breadcrumb: true,
-          copy: true
-        }
-      }
-    },
-    created() {
-      this.userData = this.$store.state.userInfo
-      this.getMenus()
-    },
-    methods: {
-      getMenus() {
-        this.$ajax.get('menu', this.userData.userId).then(res => {
-          this.menus = res.data
-        }).catch(err => {
-          console.log(err)
-        })
-      },
-      logout() {
-        const send = {
-          userId: this.userData.userId
-        }
-        this.$confirm('确认退出吗?', '提示', {
-          type: 'warning'
-        }).then(() => {
-          this.$ajax.post('register/loginOut', send).then(res => {
-            this.$message.success('登出成功')
-            this.$router.push('/login');
-          }).catch(() => {
-            this.$router.push('/login');
-          })
-          this.$store.commit('UPDATE_USER', '');
-          this.$store.commit('UPDATE_USERID', '');
-        }).catch(() => {});
-      },
-      handleClick(val) {
-        console.log(val)
-        switch (val) {
-          case 'logout':
-            this.logout();
-            break;
-          case 'modify':
-            this.modifyPwd.visible = true;
-            this.$nextTick(() => {
-              this.$resetForm('modifyPwdForm');
-            })
-            this.modifyPwd.data = {
-              oldPassword: '',
-              newPassword: '',
-              newPassword2: ''
-            };
-            break;
-        }
-      },
-      modifySubmit(formName) {
-        if (!this.$validateForm(formName)) {
-          return
-        }
-        const send = {
-          username: this.$store.state.userInfo.userName,
-          oldPassword: this.modifyPwd.data.oldPassword,
-          newPassword: this.modifyPwd.data.newPassword
-        }
-        this.$ajax.post('user/changePassword', send)
-          .then(res => {
-            console.log('', res);
-            var type = res.success ? 'success' : 'error';
-            if (type === 'success') {
-              this.modifyPwd.visible = false;
             }
-            this.$message({
-              message: res.message,
-              type: type
-            });
-          })
+          ]
+        }
+      },
+      menus: [],
+      userData: {},
+      isShow: {
+        breadcrumb: true,
+        copy: true
       }
     }
+  },
+  created() {
+    this.userData = this.$store.state.userInfo
+    this.getMenus()
+  },
+  methods: {
+    getMenus() {
+      this.$ajax
+        .get('menu', this.userData.userId)
+        .then(res => {
+          this.menus = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    logout() {
+      const send = {
+        userId: this.userData.userId
+      }
+      this.$confirm('确认退出吗?', '提示', {
+        type: 'warning'
+      })
+        .then(() => {
+          this.$ajax
+            .post('register/loginOut', send)
+            .then(res => {
+              this.$message.success('登出成功')
+              this.$router.push('/login')
+            })
+            .catch(() => {
+              this.$router.push('/login')
+            })
+          this.$store.commit('UPDATE_USER', '')
+          this.$store.commit('UPDATE_USERID', '')
+        })
+        .catch(() => {})
+    },
+    handleClick(val) {
+      console.log(val)
+      switch (val) {
+        case 'logout':
+          this.logout()
+          break
+        case 'modify':
+          this.modifyPwd.visible = true
+          this.$nextTick(() => {
+            this.$resetForm('modifyPwdForm')
+          })
+          this.modifyPwd.data = {
+            oldPassword: '',
+            newPassword: '',
+            newPassword2: ''
+          }
+          break
+      }
+    },
+    modifySubmit(formName) {
+      if (!this.$validateForm(formName)) {
+        return
+      }
+      const send = {
+        username: this.$store.state.userInfo.userName,
+        oldPassword: this.modifyPwd.data.oldPassword,
+        newPassword: this.modifyPwd.data.newPassword
+      }
+      this.$ajax.post('user/changePassword', send).then(res => {
+        console.log('', res)
+        var type = res.success ? 'success' : 'error'
+        if (type === 'success') {
+          this.modifyPwd.visible = false
+        }
+        this.$message({
+          message: res.message,
+          type: type
+        })
+      })
+    }
+  }
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
+@import '~common/less/variable';
 html,
 body {
   width: 100%;
@@ -200,23 +215,24 @@ body {
 }
 
 .layout-menu-left {
-  width: 200px;
-  // background: rgb(238, 241, 246);
-  background: #545c64;
+  width: 210px;
+  // background: #545c64;
+  background-color: #fff;
   position: absolute;
   top: 0;
   bottom: 0;
   overflow: auto;
-  color: rgba(255, 255, 255, .7);
+  // color: rgba(255, 255, 255, .7);
   a {
-    color: rgba(255, 255, 255, .7);
+    color: #303133;
   }
   .layout-logo-left {
-    width: 90%;
-    height: 30px;
-    background: #5b6270;
-    border-radius: 3px;
-    margin: 15px auto;
+    height: 60px;
+    background-color: #545c64;
+    line-height: 60px;
+    font-size: 28px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
   }
 }
 
@@ -224,27 +240,26 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  left: 200px;
+  left: 210px;
   bottom: 0;
   .layout-header {
     height: 60px;
     line-height: 60px;
-    background: #545c64;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+    background-color: #545c64;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     position: absolute;
     top: 0;
     width: 100%;
     .title {
       font-size: 20px;
-      color: rgba(255, 255, 255, .7);
+      color: rgba(255, 255, 255, 0.7);
       font-weight: 500;
       padding-left: 20px;
     }
   }
   .layout-content {
-    min-height: 200px;
-    padding: 15px;
-    // background: #f5f5f5;
+    padding: 16px;
+    background-color: #f0f2f5;
     position: absolute;
     width: 100%;
     bottom: 0;
@@ -252,14 +267,16 @@ body {
     overflow: auto;
     .layout-breadcrumb {
       padding-bottom: 10px;
-      border-bottom: 1px solid #EBEEF5;
       .subtitle {
-        font-size: 20px;
+        font-size: 14px;
+        color: #666;
       }
     }
     .layout-content-main {
-      // height: 1000px;
-      padding-top: 15px;
+      // border-radius: 6px;
+      min-height: 500px;
+      padding: 24px;
+      background-color: #fff;
     }
     .layout-copy {
       text-align: center;
@@ -274,6 +291,8 @@ body {
   border: 0;
 }
 .el-submenu .el-menu-item {
+  height: 44px;
+  line-height: 44px;
   padding: 0;
 }
 
@@ -284,12 +303,13 @@ body {
 }
 
 .el-menu-item a.router-link-active {
-  color: #ffd04b;
-  background-color: rgb(67, 74, 80);
+  color: #409eff;
+  background-color: @router-link-bgc;
+  border-right: 4px solid @blue;
 }
 
 .el-dropdown {
-  color: rgba(255, 255, 255, .7);
+  color: rgba(255, 255, 255, 0.7);
   float: right;
   margin-right: 20px;
   cursor: pointer;
@@ -297,5 +317,4 @@ body {
 .el-dropdown-menu {
   z-index: 999999;
 }
-
 </style>

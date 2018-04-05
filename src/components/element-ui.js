@@ -41,7 +41,9 @@ import {
   Card,
   MessageBox,
   Message,
-  Notification
+  Notification,
+  Loading,
+  Alert
 } from 'element-ui';
 
 export default {
@@ -87,7 +89,10 @@ export default {
     Vue.component(Tabs.name, Tabs);
     Vue.component(TabPane.name, TabPane);
     Vue.component(Card.name, Card);
+    Vue.component(Alert.name, Alert);
 
+    Vue.use(Loading.directive);
+    Vue.prototype.$loading = Loading.service;
     Vue.prototype.$msgbox = MessageBox;
     Vue.prototype.$alert = MessageBox.alert;
     Vue.prototype.$confirm = MessageBox.confirm;
