@@ -1,8 +1,8 @@
 <template>
   <div class="layout clearfix">
     <div class="layout-menu-left">
-      <div class="layout-logo-left">LOGO</div>
-      <el-menu default-active="-1" class="el-menu-vertical-demo" :unique-opened="true">
+      <div class="layout-logo-left cursor" @click="$router.push('/home')">LOGO</div>
+      <el-menu default-active="0" class="el-menu-vertical-demo" :unique-opened="true">
         <el-submenu :index="mainIndex + ''" v-for="(item,mainIndex) in menus" :key="mainIndex">
           <template slot="title">
             <span>
@@ -17,7 +17,7 @@
     <div class="layout-main">
       <div class="layout-header">
         <div class="layout-nav">
-          <h1 class="title fl-l cursor" @click="$router.push('/home')">微型植物工厂智能监控系统</h1>
+          <h1 class="title fl-l">微型植物工厂智能监控系统</h1>
           <el-dropdown @command="handleClick">
             <span class="el-dropdown-link">
               <i class="el-icon-my-user"></i>
@@ -228,11 +228,11 @@ body {
   }
   .layout-logo-left {
     height: 60px;
-    background-color: #545c64;
+    // background-color: #545c64;
     line-height: 60px;
     font-size: 28px;
     text-align: center;
-    color: rgba(255, 255, 255, 0.7);
+    // color: rgba(255, 255, 255, 0.7);
   }
 }
 
@@ -274,7 +274,7 @@ body {
     }
     .layout-content-main {
       // border-radius: 6px;
-      min-height: 500px;
+      min-height: 400px;
       padding: 24px;
       background-color: #fff;
     }
