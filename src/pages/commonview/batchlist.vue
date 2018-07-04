@@ -2,22 +2,22 @@
   <el-row>
     <el-table :data="table.data" border style="width: 100%">
       <el-table-column label="第一层蔬菜名称">
-        <template slot-scope="scope">{{ scope.row.plantOne }}</template>
+        <template slot-scope="scope">{{ scope.row.plantOne | seeLabel(vegetableName) }}</template>
       </el-table-column>
       <el-table-column label="第一层栽培模式">
-        <template slot-scope="scope">{{ scope.row.cultModelOne | getLabel('cultModel')}}</template>
+        <template slot-scope="scope">{{ scope.row.cultModelOne | seeLabel(cultModel)}}</template>
       </el-table-column>
       <el-table-column label="第二层蔬菜名称">
-        <template slot-scope="scope">{{ scope.row.plantTwo }}</template>
+        <template slot-scope="scope">{{ scope.row.plantTwo | seeLabel(vegetableName) }}</template>
       </el-table-column>
       <el-table-column label="第二层栽培模式">
-        <template slot-scope="scope">{{ scope.row.cultModelTwo | getLabel('cultModel')}}</template>
+        <template slot-scope="scope">{{ scope.row.cultModelTwo | seeLabel(cultModel)}}</template>
       </el-table-column>
       <el-table-column label="第三层蔬菜名称">
-        <template slot-scope="scope">{{ scope.row.plantThree }}</template>
+        <template slot-scope="scope">{{ scope.row.plantThree | seeLabel(vegetableName) }}</template>
       </el-table-column>
       <el-table-column label="第三层栽培模式">
-        <template slot-scope="scope">{{ scope.row.cultModelThree | getLabel('cultModel')}}</template>
+        <template slot-scope="scope">{{ scope.row.cultModelThree | seeLabel(cultModel)}}</template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -53,12 +53,14 @@
   </el-row>
 </template>
 <script>
+import { vegetableNameMixin, controlModelMixin } from 'common/js/mixin.js'
 export default {
+  mixins: [vegetableNameMixin, controlModelMixin],
   data() {
     return {
-      userId: "",
-      deviceId: "",
-      modelId: "",
+      userId: '',
+      deviceId: '',
+      modelId: '',
       modelVisible: false,
       modelList: [],
       table: {
@@ -71,104 +73,111 @@ export default {
         totalPages: 0,
         pageSelect: this.$CONSTANT.PAGE_SELECT
       }
-    };
+    }
   },
   created() {
-    this.deviceId = this.$route.query.id;
-    this.userId = this.$store.state.userId;
-    this.getList();
-    this.getModel();
+    this.deviceId = this.$route.query.id
+    this.userId = this.$store.state.userId
+    this.getList()
+    this.getModel()
   },
   methods: {
     getList() {
-      const send = this.deviceId + '/' + this.table.send.pageNo + '/' + this.table.send.pageSize;
-      this.$ajax.get("batch", send).then(res => {
-        console.log("", res);
-        this.table.data = res.data.list;
-        this.table.totalCount = res.data.total;
-        this.table.totalPages = res.data.pages;
-      });
+      const send =
+        this.deviceId +
+        '/' +
+        this.table.send.pageNo +
+        '/' +
+        this.table.send.pageSize
+      this.$http.get('batch', send).then(res => {
+        console.log('', res)
+        this.table.data = res.data.list
+        this.table.totalCount = res.data.total
+        this.table.totalPages = res.data.pages
+      })
     },
     getModel() {
       const send = {
         userId: this.userId,
         page: 1,
         pageSize: 100
-      };
-      this.$ajax.post("model/list", send).then(res => {
-        console.log("", res);
-        this.modelList = res.data.list;
-      });
+      }
+      this.$http.post('model/list', send).then(res => {
+        console.log('', res)
+        this.modelList = res.data.list
+      })
     },
     deleteBatch(id) {
-      this.$confirm("确定删除批次吗", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定删除批次吗', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          this.$ajax.get("batch/delete", id).then(res => {
-            var type = res.success ? "success" : "error";
-            if (type === "success") {
-              this.getList();
+          this.$http.get('batch/delete', id).then(res => {
+            var type = res.success ? 'success' : 'error'
+            if (type === 'success') {
+              this.getList()
             }
             this.$message({
               message: res.message,
               type: type
-            });
-          });
+            })
+          })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     removeBatch(id) {
-      this.$confirm("确定废弃批次吗", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定废弃批次吗', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        confirmButtonClass: 'box-confim',
+        cancelButtonClass: 'box-cancel',
+        type: 'warning'
       })
         .then(() => {
-          this.$ajax.get("batch/remove", id).then(res => {
-            var type = res.success ? "success" : "error";
-            if (type === "success") {
-              this.getList();
+          this.$http.get('batch/remove', id).then(res => {
+            var type = res.success ? 'success' : 'error'
+            if (type === 'success') {
+              this.getList()
             }
             this.$message({
               message: res.message,
               type: type
-            });
-          });
+            })
+          })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     concatModel(id) {
-      this.batchId = id;
-      this.modelId = "";
-      this.modelVisible = true;
+      this.batchId = id
+      this.modelId = ''
+      this.modelVisible = true
     },
     modelSubmit() {
-      const send = this.batchId + "/" + this.modelId;
-      this.$ajax.get("batch/association", send).then(res => {
-        var type = res.success ? "success" : "error";
-        if (type === "success") {
-          this.getList();
-          this.modelVisible = false;
+      const send = this.batchId + '/' + this.modelId
+      this.$http.get('batch/association', send).then(res => {
+        var type = res.success ? 'success' : 'error'
+        if (type === 'success') {
+          this.getList()
+          this.modelVisible = false
         }
         this.$message({
           message: res.message,
           type: type
-        });
-      });
+        })
+      })
     },
     handleSizeChange(val) {
-      this.table.send.pageSize = val;
-      this.getList();
+      this.table.send.pageSize = val
+      this.getList()
     },
     handleCurrentChange(val) {
-      this.table.send.pageNo = val;
-      this.getList();
+      this.table.send.pageNo = val
+      this.getList()
     }
   }
-};
+}
 </script>
 <style scoped>
 .el-form-item {

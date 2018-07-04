@@ -1,4 +1,3 @@
-import dictionary from './dictionary.json';
 import originJsonp from 'jsonp'
 
 export function jsonp(url, data, option) {
@@ -24,22 +23,14 @@ function param(data) {
   return url ? url.substring(1) : ''
 }
 
-export function getDicArr(name) {
-  return dictionary[name].options || [];
-}
-
-export function toJSON(val) {
-  return val == null ? '' : typeof val === 'object' ? JSON.stringify(val, null, 2) : String(val)
-}
-
 export function dateFmt(date, format) {
   if (!date) return '';
   date = new Date(date);
-  const paddNum = function(num) {
-      num += ''
-      return num.replace(/^(\d)$/, '0$1')
-    }
-    // 指定格式字符
+  const paddNum = function (num) {
+    num += ''
+    return num.replace(/^(\d)$/, '0$1')
+  }
+  // 指定格式字符
   const cfg = {
     yyyy: date.getFullYear(),
     yy: date.getFullYear().toString().substring(2),
@@ -52,7 +43,7 @@ export function dateFmt(date, format) {
     ss: paddNum(date.getSeconds())
   }
   format || (format = 'yyyy-MM-dd hh:mm:ss')
-  return format.replace(/([a-z])(\1)*/ig, function(m) {
+  return format.replace(/([a-z])(\1)*/ig, function (m) {
     return cfg[m]
   })
 }
@@ -68,39 +59,12 @@ export function currencyFmt(s, n) {
   return '\u00a5' + ' ' + l + '.' + r;
 }
 
-export function temperatureFmt(value) {
-  return value + '℃'
-}
-
-export function humidityFmt(value) {
-  return value + '%RH'
-}
-
-export function getLabel(value, name) {
-  const tmp = dictionary[name]
-  if (tmp === undefined) {
-    return ''
-  }
-  const map = tmp['options']
-  let result = ''
-  if (map !== undefined) {
-    for (let i = 0; i < map.length; i++) {
-      const tmp = map[i]
-      if (tmp.value === value) {
-        result = tmp.label
-        break
-      }
-    }
-    return result;
-  } else {}
-}
-
 export function seeLabel(value, arr) {
-  if (!arr) return;
+  arr = arr || []
   let result = '';
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i].value === value) {
-      result = arr[i].label;
+    if (arr[i].itemCode === value) {
+      result = arr[i].itemName;
       break;
     }
   }
@@ -108,7 +72,7 @@ export function seeLabel(value, arr) {
 }
 
 export function resetForm(formName) {
-  this.$refs[formName].resetFields()
+  this.$refs[formName] && this.$refs[formName].resetFields()
 }
 
 export function validateForm(formName) {

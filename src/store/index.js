@@ -1,29 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import * as actions from './actions'
-// import * as getters from './getters'
-// import state from './state'
-// import mutations from './mutations'
-// import createLogger from 'vuex/dist/logger'
+import storage from 'good-storage'
 
 Vue.use(Vuex)
 
-// const debug = process.env.NODE_ENV !== 'production'
-// export default new Vuex.Store({
-//   actions,
-//   getters,
-//   state,
-//   mutations,
-//   strict: debug,
-//   plugins: debug ? [createLogger()] : []
-// })
+const UID = '__uid__'
+const USER_INFO = '__userInfo__'
+const BATCH_INFO = '__batchInfo__'
+const DICT_INFO = '__dicInfo__'
 
 const state = {
   loading: false,
-  userId: window.sessionStorage.getItem('__uid__') ? parseInt(window.sessionStorage.getItem('__uid__')) : '',
-  userInfo: window.sessionStorage.getItem('__userInfo__') ? JSON.parse(window.sessionStorage.getItem('__userInfo__')) : '',
-  orderPay: {},
-  batchInfo: window.sessionStorage.getItem('__batchInfo__') ? JSON.parse(window.sessionStorage.getItem('__batchInfo__')) : ''
+  userId: storage.session.get(UID, ''),
+  userInfo: storage.session.get(USER_INFO, {}),
+  batchInfo: storage.session.get(BATCH_INFO, {}),
+  dicInfo: storage.session.get(DICT_INFO, {}),
+  orderPay: {}
 }
 const store = new Vuex.Store({
   state,
@@ -33,30 +25,24 @@ const store = new Vuex.Store({
     },
     UPDATE_USER(state, userInfo) {
       state.userInfo = userInfo
-      if (userInfo) {
-        window.sessionStorage.setItem('__userInfo__', JSON.stringify(userInfo))
-      } else {
-        window.sessionStorage.removeItem('__userInfo__')
-      }
+      storage.session.set(USER_INFO, userInfo)
     },
     UPDATE_USERID(state, userId) {
       state.userId = userId
-      if (userId) {
-        window.sessionStorage.setItem('__uid__', userId)
-      } else {
-        window.sessionStorage.removeItem('__uid__')
-      }
+      storage.session.set(UID, userId)
     },
     UPDATE_BATCH_INFO(state, batchInfo) {
       state.batchInfo = batchInfo
-      if (batchInfo) {
-        window.sessionStorage.setItem('__batchInfo__', JSON.stringify(batchInfo))
-      } else {
-        window.sessionStorage.removeItem('__batchInfo__')
-      }
+      storage.session.set(BATCH_INFO, batchInfo)
+    },
+    UPDATE_DICT_INFO(state, dicInfo) {
+      state.dicInfo = dicInfo
+      storage.session.set(DICT_INFO, dicInfo)
+    },
+    UPDATE_ORDER(state, orderData) {
+      state.orderPay = orderData
     }
   }
 })
 
 export default store
-

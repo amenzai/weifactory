@@ -7,15 +7,17 @@
         <el-form-item label="邮箱：">{{ userDetail.email }}</el-form-item>
         <el-form-item label="微信号：">{{ userDetail.weixinId }}</el-form-item>
         <el-form-item label="微信昵称：">{{ userDetail.weixinNickName }}</el-form-item>
-        <el-form-item label="简介：">{{ userDetail.introduction }}</el-form-item>
-        <el-form-item label="角色：">{{ userDetail.roleName }}</el-form-item>  
+        <!-- <el-form-item label="简介：">{{ userDetail.introduction }}</el-form-item> -->
+        <el-form-item label="角色：">{{ userDetail.roleName | seeLabel(roleNo)}}</el-form-item>  
         <el-form-item label="创建时间：">{{ userDetail.gmtCreate | dateFilter}}</el-form-item>  
       </el-form>
     </el-col>
   </el-row>
 </template>
 <script>
+import { roleNoMixin } from 'common/js/mixin.js'
 export default {
+  mixins: [roleNoMixin],
   data() {
     return {
       userId: '',
@@ -28,7 +30,7 @@ export default {
   },
   methods: {
     getList() {
-      this.$ajax.get('user/detail', this.userId)
+      this.$http.get('user/detail', this.userId)
         .then(res => {
           console.log('', res);
           this.userDetail = res.data;

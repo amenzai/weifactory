@@ -37,6 +37,7 @@ module.exports = {
     'quotes': 0,
     'no-mixed-spaces-and-tabs': 0,
     'no-trailing-spaces': 0,
-    'indent': 0
+    'indent': 0,
+    'eqeqeq': 0
   }
 }

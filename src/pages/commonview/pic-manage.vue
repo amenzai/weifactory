@@ -47,7 +47,7 @@ export default {
           page: this.table.send.page,
           pageSize: this.table.send.pageSize
         }
-        this.$ajax.post('image/list', send)
+        this.$http.post('image/list', send)
           .then(res => {
             console.log('', res);
             this.table.data = res.data.list;

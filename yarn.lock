@@ -5697,10 +5697,6 @@ vue@^2.3.3:
   version "2.5.16"
   resolved "http://registry.npm.taobao.org/vue/download/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
 
-vuex-router-sync@^4.2.0:
-  version "4.3.2"
-  resolved "http://registry.npm.taobao.org/vuex-router-sync/download/vuex-router-sync-4.3.2.tgz#604b61a377daaa68b2ef6e8e0326b2cad26f359e"
-
 vuex@^2.3.1:
   version "2.5.0"
   resolved "http://registry.npm.taobao.org/vuex/download/vuex-2.5.0.tgz#20f0265ade6c9a5ac6724a405d3ffdb4726c9741"

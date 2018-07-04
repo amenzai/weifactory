@@ -82,7 +82,7 @@ export default {
     },
     methods: {
       getList() {
-        this.$ajax.get('control/list', this.sn)
+        this.$http.get('control/list', this.sn)
           .then(res => {
             console.log('', res);
             this.btnList = res.data;
@@ -113,7 +113,7 @@ export default {
         this.send.sensorId = id
         this.send.status = this.btnGroup[index]
         console.log(this.$toJSON(this.send))
-        this.$ajax.post('control/sensor', this.send)
+        this.$http.post('control/sensor', this.send)
           .then(res => {
             this.getList();
             this.$message.success(res.message);

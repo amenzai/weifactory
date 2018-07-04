@@ -45,7 +45,7 @@ export default {
     methods: {
       getList() {
         const send = this.userId + '/' + this.table.send.pageNo + '/' + this.table.send.pageSize
-        this.$ajax.get('device/list/trust', send)
+        this.$http.get('device/list/trust', send)
           .then(res => {
             console.log('', res);
             this.table.data = res.data.list;

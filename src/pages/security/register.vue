@@ -9,7 +9,7 @@
   padding: 35px 35px 15px 35px;
   background: #fff;
   border: 1px solid #ebeef5;
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   .title {
     margin-bottom: 20px;
     text-align: center;
@@ -62,7 +62,7 @@
       </el-form-item>
       <el-form-item style="text-align:right;">
         已有账号？
-        <el-button type="text" @click="$router.push('/login')">请登录</el-button>
+        <el-button type="text" @click="$router.push('/security/login')">请登录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -71,176 +71,176 @@
 export default {
   data() {
     var checkPass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入密码"));
+      if (value === '') {
+        callback(new Error('请输入密码'))
       } else {
-        if (this.form.enpassword !== "") {
-          this.$refs.regForm.validateField("enpassword");
+        if (this.form.enpassword !== '') {
+          this.$refs.regForm.validateField('enpassword')
         }
-        callback();
+        callback()
       }
-    };
+    }
     var checkPass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
       } else if (value !== this.form.userPassword) {
-        callback(new Error("两次输入密码不一致!"));
+        callback(new Error('两次输入密码不一致!'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       logining: false,
       smslogining: false,
-      smsText: "获取验证码",
+      smsText: '获取验证码',
       smsDis: false,
       form: {
         roleId: 2,
-        userName: "",
-        userPassword: "",
-        enpassword: "",
-        userEmail: "",
-        userPhone: "",
-        codeNum: ""
+        userName: '',
+        userPassword: '',
+        enpassword: '',
+        userEmail: '',
+        userPhone: '',
+        codeNum: ''
       },
       rules: {
         userName: [
           {
             required: true,
-            message: "请输入用户名",
-            trigger: "blur"
+            message: '请输入用户名',
+            trigger: 'blur'
           },
           {
-            min: 8,
-            message: "长度不少于八位字符",
-            trigger: "blur"
+            pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/,
+            message: '长度不少于八位字符',
+            trigger: 'blur'
           }
         ],
         userPassword: [
           {
             pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/,
-            message: "长度不少于八位字符包含数字和字母",
-            trigger: "blur"
+            message: '长度不少于八位字符包含数字和字母',
+            trigger: 'blur'
           },
           {
             validator: checkPass,
-            trigger: "blur"
+            trigger: 'blur'
           }
         ],
         enpassword: [
           {
             validator: checkPass2,
-            trigger: "blur"
+            trigger: 'blur'
           }
         ],
         userEmail: [
           {
-            type: "email",
-            message: "邮箱格式不正确",
-            trigger: "blur"
+            type: 'email',
+            message: '邮箱格式不正确',
+            trigger: 'blur'
           }
         ],
         userPhone: [
           {
             required: true,
-            message: "请输入手机号码",
-            trigger: "blur"
+            message: '请输入手机号码',
+            trigger: 'blur'
           },
           {
             pattern: /^1[34578]\d{9}$/,
-            message: "手机号码格式不正确",
-            trigger: "blur"
+            message: '手机号码格式不正确',
+            trigger: 'blur'
           }
         ],
         codeNum: [
           {
             required: true,
-            message: "请输入短信验证码",
-            trigger: "blur"
+            message: '请输入短信验证码',
+            trigger: 'blur'
           },
           {
             min: 6,
             max: 6,
-            message: "长度6个字符",
-            trigger: "blur"
+            message: '长度6个字符',
+            trigger: 'blur'
           }
         ]
       }
-    };
+    }
   },
   methods: {
     submitForm(formName) {
       if (!this.$validateForm(formName)) {
-        return;
+        return
       }
-      this.logining = true;
-      this.$ajax
-        .post("register/doRegister", this.form)
+      this.logining = true
+      this.$http
+        .post('register/doRegister', this.form)
         .then(res => {
-          this.logining = false;
+          this.logining = false
           if (this.form.roleId === 4) {
-            this.$router.push("/home/expert/audit");
+            this.$router.push('/expert/audit')
           } else {
-            this.$alert("注册成功，马上登陆！", "提示", {
-              confirmButtonText: "确定",
+            this.$alert('注册成功，马上登陆！', '提示', {
+              confirmButtonText: '确定',
               callback: action => {
-                this.$router.push("/login");
+                this.$router.push('/security/login')
               }
             })
           }
         })
         .catch(() => {
-          this.logining = false;
-        });
+          this.logining = false
+        })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
     },
     sendCode() {
-      let valid = false;
-      this.$refs.regForm.validateField("userPhone", msg => {
+      let valid = false
+      this.$refs.regForm.validateField('userPhone', msg => {
         if (msg !== this.form.userPhone && !msg) {
-          valid = true;
+          valid = true
         }
-      });
+      })
       if (!valid) {
-        return false;
+        return false
       }
-      this.smslogining = true;
+      this.smslogining = true
       const send = {
         cell: this.form.userPhone
-      };
-      this.$ajax
-        .post("register/smsCode", send)
+      }
+      this.$http
+        .post('register/smsCode', send)
         .then(res => {
-          this.smslogining = false;
-          this.smsDis = true;
-          var count = 120;
+          this.smslogining = false
+          this.smsDis = true
+          var count = 120
           var ret = setInterval(() => {
-            --count;
+            --count
             if (count === 0) {
-              this.smsDis = false;
-              this.smsText = "获取验证码";
-              clearInterval(ret);
+              this.smsDis = false
+              this.smsText = '获取验证码'
+              clearInterval(ret)
             } else {
-              this.smsText = "重新发送(" + count + "s)";
+              this.smsText = '重新发送(' + count + 's)'
             }
-          }, 1000);
+          }, 1000)
         })
         .catch(() => {
-          this.smslogining = false;
-        });
+          this.smslogining = false
+        })
     },
     checkUserName() {
       if (this.form.userName) {
-        this.$ajax
-          .get("user", this.form.userName)
+        this.$http
+          .get('user', this.form.userName)
           .then(res => {
-            console.log(res.data);
+            console.log(res.data)
           })
           .catch(() => {
-            this.form.userName = "";
-          });
+            this.form.userName = ''
+          })
       }
     }
     // loadVerify() {
@@ -252,5 +252,5 @@ export default {
     //   this.verifyImage = imageUrl + '?t=' + new Date().getTime()
     // }
   }
-};
+}
 </script>

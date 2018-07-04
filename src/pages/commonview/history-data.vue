@@ -28,32 +28,32 @@
       </el-form-item>
       <el-form-item label="类型：" v-show="current === '0'">
         <el-select clearable v-model="type" placeholder="请选择" @change="changeType">
-          <el-option label="LED1" value="14"></el-option>
-          <el-option label="LED2" value="15"></el-option>
-          <el-option label="LED3" value="16"></el-option>
           <el-option label="温度" value="11"></el-option>
           <el-option label="湿度" value="12"></el-option>
           <el-option label="营养液" value="13"></el-option>
+          <el-option label="LED1" value="14"></el-option>
+          <el-option label="LED2" value="15"></el-option>
+          <el-option label="LED3" value="16"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="类型：" v-show="current === '1'">
         <el-select clearable v-model="type" placeholder="请选择" @change="changeType">
-          <el-option label="LED1" value="24"></el-option>
-          <el-option label="LED2" value="25"></el-option>
-          <el-option label="LED3" value="26"></el-option>
           <el-option label="温度" value="21"></el-option>
           <el-option label="湿度" value="22"></el-option>
           <el-option label="营养液" value="23"></el-option>
+          <el-option label="LED1" value="24"></el-option>
+          <el-option label="LED2" value="25"></el-option>
+          <el-option label="LED3" value="26"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="类型：" v-show="current === '2'">
         <el-select clearable v-model="type" placeholder="请选择" @change="changeType">
-          <el-option label="LED1" value="34"></el-option>
-          <el-option label="LED2" value="35"></el-option>
-          <el-option label="LED3" value="36"></el-option>
           <el-option label="温度" value="31"></el-option>
           <el-option label="湿度" value="32"></el-option>
           <el-option label="营养液" value="33"></el-option>
+          <el-option label="LED1" value="34"></el-option>
+          <el-option label="LED2" value="35"></el-option>
+          <el-option label="LED3" value="36"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item v-show="current !== '3'">
@@ -65,7 +65,7 @@
     </el-form>
     <div id="myChart" style="width: 100%;height: 400px" v-show="current !== '3'"></div>
     <div style="width: 600px;" v-show="current === '3'">
-      <img :src="imgUrl" alt="点击搜索查看图片" style="width: 100%">
+      <img :src="imgUrl" alt="点击搜索查看图片" style="width: 300px">
     </div>
   </el-row>
 </template>
@@ -73,6 +73,7 @@
 export default {
   data() {
     return {
+      sn: '',
       chartLine: null,
       imgUrl: '',
       option: {},
@@ -92,7 +93,8 @@ export default {
   },
   created() {
     this.batchInfo = this.$store.state.batchInfo;
-    this.send.batchId = this.batchInfo.batchId;
+    this.sn = window.sessionStorage.getItem('sn') || ''
+    this.send.sn = this.sn
   },
   mounted() {
     this.init();
@@ -132,7 +134,7 @@ export default {
         },
         series: [
           {
-            name: "温度",
+            name: "",
             type: "line",
             stack: "总量",
             label: {
@@ -156,7 +158,7 @@ export default {
       const arr3 = ['12', '22', '32']
       const arr4 = ['13', '23', '33']
       if (arr1.indexOf(val) !== -1) {
-        this.option.title.text = 'LED开关脉冲图（开：1，关：0）'
+        this.option.title.text = 'LED生长灯亮灭情况（开：1，关：0）'
         this.option.series[0].step = "start";
       } else if (arr2.indexOf(val) !== -1) {
         this.option.title.text = '温度时间折线图（温度/℃）'
@@ -179,7 +181,7 @@ export default {
         this.send.endTime = "";
       }
       this.send.type = this.type;
-      this.$ajax.post("history/data", this.send).then(res => {
+      this.$http.post("history/data", this.send).then(res => {
         this.option.series[0].data = res.data.y;
         this.option.xAxis.data = res.data.x.map(item =>
           this.$dateFilter(item, "yyyy-MM-dd hh:mm")
@@ -194,10 +196,10 @@ export default {
         this.date2 = ''
       }
       const send = {
-        batchId: this.batchInfo.batchId,
+        sn: this.sn,
         startTime: this.date2
       }
-      this.$ajax.post("history/image", send).then(res => {
+      this.$http.post("history/image", send).then(res => {
         if (res.data === null) {
           this.$message.warning('暂无图片信息')
           return

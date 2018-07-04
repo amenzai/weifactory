@@ -7,7 +7,7 @@
         </el-form-item>
         <el-form-item label="设备规格：" prop="deviceType">
           <el-select v-model="data.deviceType">
-            <el-option :label="item.label" :value="item.value" v-for="(item, index) in typeDic" :key="index"></el-option>
+            <el-option :label="item.itemName" :value="item.itemCode" v-for="(item, index) in typeDic" :key="index"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="备注：" prop="note">
@@ -35,27 +35,27 @@ export default {
         sn: [
           {
             required: true,
-            message: "请输入设备序列号",
-            trigger: "blur"
+            message: '请输入设备序列号',
+            trigger: 'blur'
           }
         ],
         deviceType: [
           {
             required: true,
-            message: "请输入设备规格",
-            trigger: "blur"
+            message: '请输入设备规格',
+            trigger: 'blur'
           }
         ]
       }
-    };
+    }
   },
   computed: {
     userId() {
-      return this.$store.state.userId;
+      return this.$store.state.userId
     }
   },
   created() {
-    this.getTypeDic();
+    this.getTypeDic()
   },
   methods: {
     init() {
@@ -73,36 +73,30 @@ export default {
         userId: this.userId
       }
       if (send.id) {
-        this.$ajax.post("device/update", send, true).then(res => {
+        this.$http.post('device/update', send, true).then(res => {
           console.log(res)
-          this.visible = false;
+          this.visible = false
           this.$emit('submit')
-          this.$message.success(res.message);
-        });
+          this.$message.success(res.message)
+        })
       } else {
-        this.$ajax.post("device/add", send).then(res => {
+        this.$http.post('device/add', send).then(res => {
           console.log(res)
-          this.visible = false;
+          this.visible = false
           this.$emit('submit')
-          this.$message.success(res.message);
-        });
+          this.$message.success(res.message)
+        })
       }
     },
     getTypeDic() {
-      this.$ajax.get("dict/dictItemList/device.type").then(res => {
-        this.typeDic = res.data.map(item => {
-          return {
-            label: item.itemName,
-            value: item.itemCode
-          };
-        });
-      });
+      this.$http.get('dict/dictItemList/device.type').then(res => {
+        this.typeDic = res.data
+      })
     }
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-
 </style>

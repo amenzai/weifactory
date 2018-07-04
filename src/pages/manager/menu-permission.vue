@@ -33,7 +33,7 @@ export default {
     },
     methods: {
       getList() {
-        this.$ajax.get('menu/role', this.roleId)
+        this.$http.get('menu/role', this.roleId)
           .then(res => {
             this.data = res.data
           })
@@ -77,7 +77,7 @@ export default {
           roleId: this.roleId,
           menuString: this.selectsData.join(',')
         }
-        this.$ajax.post('role/updateRoleMenus', send)
+        this.$http.post('role/updateRoleMenus', send)
           .then(res => {
             var type = res.success ? 'success' : 'error';
             if (type === 'success') {

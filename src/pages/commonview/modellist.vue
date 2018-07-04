@@ -50,7 +50,7 @@
     <el-dialog :title="ModelManageTitle" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
       <el-form ref="modifyForm" :model="modifyDialog.data" label-width="130px" :rules="modifyDialog.rules">
         <el-row>
-          <el-col :span="12">
+          <el-col :span="10">
             <el-form-item label="模型名：" prop="modelName">
               <el-input v-model="modifyDialog.data.modelName"></el-input>
             </el-form-item>
@@ -72,43 +72,25 @@
             <el-form-item label="光照强度下限：" prop="illuminationDown">
               <el-input v-model="modifyDialog.data.illuminationDown"></el-input>
             </el-form-item>
+          </el-col>
+          <el-col :span="10" :offset="2">
             <el-form-item label="二氧化碳浓度上限：" prop="co2Up">
               <el-input v-model="modifyDialog.data.co2Up"></el-input>
             </el-form-item>
             <el-form-item label="二氧化碳浓度下限：" prop="co2Down">
               <el-input v-model="modifyDialog.data.co2Down"></el-input>
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="EC值上限：" prop="ecUp">
               <el-input v-model="modifyDialog.data.ecUp"></el-input>
             </el-form-item>
             <el-form-item label="EC值下限：" prop="ecDown">
               <el-input v-model="modifyDialog.data.ecDown"></el-input>
             </el-form-item>
-            <el-form-item label="氧气浓度上限：" prop="oxygenUp">
-              <el-input v-model="modifyDialog.data.oxygenUp"></el-input>
-            </el-form-item>
-            <el-form-item label="氧气浓度下限：" prop="oxygenDown">
-              <el-input v-model="modifyDialog.data.oxygenDown"></el-input>
-            </el-form-item>
-            <el-form-item label="ph值上限：" prop="phUp">
+            <el-form-item label="PH值上限：" prop="phUp">
               <el-input v-model="modifyDialog.data.phUp"></el-input>
             </el-form-item>
-            <el-form-item label="ph值下限：" prop="phDown">
+            <el-form-item label="PH值下限：" prop="phDown">
               <el-input v-model="modifyDialog.data.phDown"></el-input>
-            </el-form-item>
-            <el-form-item label="高液位上限：" prop="highLevelUp">
-              <el-input v-model="modifyDialog.data.highLevelUp"></el-input>
-            </el-form-item>
-            <el-form-item label="高液位下限：" prop="hightLevelDown">
-              <el-input v-model="modifyDialog.data.hightLevelDown"></el-input>
-            </el-form-item>
-            <el-form-item label="低液位上限：" prop="lowLevelUp">
-              <el-input v-model="modifyDialog.data.lowLevelUp"></el-input>
-            </el-form-item>
-            <el-form-item label="低液位下限：" prop="lowLevelDown">
-              <el-input v-model="modifyDialog.data.lowLevelDown"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -185,16 +167,6 @@ export default {
             message: '请输入EC值下限',
             trigger: 'blur'
           }],
-          oxygenUp: [{
-            required: true,
-            message: '请输入氧气浓度上限',
-            trigger: 'blur'
-          }],
-          oxygenDown: [{
-            required: true,
-            message: '请输入氧气浓度下限',
-            trigger: 'blur'
-          }],
           phUp: [{
             required: true,
             message: '请输入ph值上限',
@@ -203,26 +175,6 @@ export default {
           phDown: [{
             required: true,
             message: '请输入ph值下限',
-            trigger: 'blur'
-          }],
-          highLevelUp: [{
-            required: true,
-            message: '请输入高液位上限',
-            trigger: 'blur'
-          }],
-          hightLevelDown: [{
-            required: true,
-            message: '请输入高液位下限',
-            trigger: 'blur'
-          }],
-          lowLevelUp: [{
-            required: true,
-            message: '请输入低液位上限',
-            trigger: 'blur'
-          }],
-          lowLevelDown: [{
-            required: true,
-            message: '请输入低液位下限',
             trigger: 'blur'
           }]
         }
@@ -260,18 +212,12 @@ export default {
         co2Down: '',
         ecUp: '',
         ecDown: '',
-        oxygenUp: '',
-        oxygenDown: '',
         phUp: '',
-        phDown: '',
-        highLevelUp: '',
-        hightLevelDown: '',
-        lowLevelUp: '',
-        lowLevelDown: ''
+        phDown: ''
       }
     },
     getList() {
-      this.$ajax.post('model/list', this.table.send)
+      this.$http.post('model/list', this.table.send)
         .then(res => {
           console.log('', res);
           this.table.data = res.data.list;
@@ -303,14 +249,8 @@ export default {
         co2Down: data.co2Down.toString(),
         ecUp: data.ecUp.toString(),
         ecDown: data.ecDown.toString(),
-        oxygenUp: data.oxygenUp.toString(),
-        oxygenDown: data.oxygenDown.toString(),
         phUp: data.phUp.toString(),
-        phDown: data.phDown.toString(),
-        highLevelUp: data.highLevelUp.toString(),
-        hightLevelDown: data.hightLevelDown.toString(),
-        lowLevelUp: data.lowLevelUp.toString(),
-        lowLevelDown: data.lowLevelDown.toString()
+        phDown: data.phDown.toString()
       }
     },
     modifySubmit(formName) {
@@ -323,7 +263,7 @@ export default {
       }
       this.modifyDialog.data.userId = this.userData.userId
       const send = JSON.parse(JSON.stringify(this.modifyDialog.data));
-      this.$ajax.post('model/saveOrUpdate', send)
+      this.$http.post('model/saveOrUpdate', send)
         .then(res => {
           console.log('', res);
           var type = res.success ? 'success' : 'error';
@@ -341,9 +281,11 @@ export default {
       this.$confirm('确定删除模型吗', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
+        confirmButtonClass: 'box-confim',
+        cancelButtonClass: 'box-cancel',
         type: 'warning'
       }).then(() => {
-        this.$ajax.get('model/delete', id)
+        this.$http.get('model/delete', id)
           .then(res => {
             var type = res.success ? 'success' : 'error';
             if (type === 'success') {

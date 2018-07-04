@@ -1,13 +1,18 @@
 <template>
   <p v-if="userId === 2">欢迎登陆</p>
   <div v-else>
-    <p class="mb10"><el-button type="primary" @click="addDevice">添加设备</el-button></p>
+    <p class="mb10" v-if="userInfo.roleName === 'ROLE_USER'">
+      <el-button type="primary" @click="addDevice">添加设备</el-button>
+    </p>
     <el-row :gutter="20">
       <el-col :span="6" v-for="(item, index) in deviceInfo" :key="index">
         <el-card class="device-info">
-          <h2>设备序列号：<span @click="getDetail(item.deviceId,item.sn)" class="blue">{{ item.sn }}</span></h2>
-          <p>是否被托管：{{ item.trustStatus === '1' ? '是' : '否' }}</p>
+          <h2>设备序列号：
+            <span @click="getDetail(item.deviceId,item.sn)" class="blue">{{ item.sn }}</span>
+          </h2>
+          <p>是否被托管：{{ item.trustStatus === '0' ? '否' : '是' }}</p>
           <p>设备规格：{{ item.deviceType | seeLabel(typeDic) }}</p>
+          <p>是否在线：<i class="gjc-tag" :class="{ active: item.onlineStatus == '1' }">{{ item.onlineStatus == '1' ? '在线' : '离线' }}</i></p>
           <p>
             <el-button type="text">
               <router-link :to="{path: '/home/commonview/batchlist', query: {id: item.deviceId}}">查看批次</router-link>
@@ -22,7 +27,7 @@
   </div>
 </template>
 <script>
-import AddDevice from "./components/addDevice.vue";
+import AddDevice from './components/addDevice.vue'
 export default {
   components: {
     AddDevice
@@ -32,7 +37,8 @@ export default {
       deviceInfo: [],
       typeDic: [],
       data: {},
-      title: "",
+      title: '',
+      userInfo: {},
       modifyDialog: {
         visible: false,
         data: {},
@@ -40,103 +46,100 @@ export default {
           sn: [
             {
               required: true,
-              message: "请输入设备序列号",
-              trigger: "blur"
+              message: '请输入设备序列号',
+              trigger: 'blur'
             }
           ],
           deviceType: [
             {
               required: true,
-              message: "请输入设备规格",
-              trigger: "blur"
+              message: '请输入设备规格',
+              trigger: 'blur'
             }
           ]
         }
       }
-    };
+    }
   },
   computed: {
     userId() {
-      return this.$store.state.userId;
+      return this.$store.state.userId
     }
   },
   created() {
-    this.getDeviceData();
-    this.getTypeDic();
+    this.userInfo = this.$store.state.userInfo
+    this.getDeviceData()
+    this.getTypeDic()
   },
   methods: {
     getDeviceData() {
-      this.$ajax.get("device/deviceList", this.userId).then(res => {
-        this.deviceInfo = res.data;
-        this.deviceInfo.forEach((item, index) => {
-          this.getUse(item.deviceId, index);
-        });
-      });
+      this.$http.get('device/deviceList', this.userId).then(res => {
+        this.deviceInfo = res.data
+        // this.deviceInfo.forEach((item, index) => {
+        //   this.getUse(item.deviceId, index);
+        // });
+      })
     },
-    getUse(deviceId, index) {
-      this.$ajax.get("batch", deviceId).then(res => {
-        if (res.data) {
-          this.$set(
-            this.deviceInfo[index],
-            "trustStatus",
-            res.data.trustStatus
-          );
-        }
-      });
-    },
+    // getUse(deviceId, index) {
+    //   this.$http.get("batch", deviceId).then(res => {
+    //     if (res.data) {
+    //       this.$set(
+    //         this.deviceInfo[index],
+    //         "trustStatus",
+    //         res.data.trustStatus
+    //       );
+    //     }
+    //   });
+    // },
     getTypeDic() {
-      this.$ajax.get("dict/dictItemList/device.type").then(res => {
-        this.typeDic = res.data.map(item => {
-          return {
-            label: item.itemName,
-            value: item.itemCode
-          };
-        });
-      });
+      this.$http.get('dict/dictItemList/device.type').then(res => {
+        this.typeDic = res.data
+      })
     },
     addDevice() {
-      this.title = "添加设备";
+      this.title = '添加设备'
       this.data = {
-        deviceId: "",
-        sn: "",
-        deviceType: "",
-        note: ""
-      };
-      this.$refs.AddDevice.visible = true;
-      this.$refs.AddDevice.init();
+        deviceId: '',
+        sn: '',
+        deviceType: '',
+        note: ''
+      }
+      this.$refs.AddDevice.visible = true
+      this.$refs.AddDevice.init()
     },
     modifyDevice(item) {
-      console.log(item);
-      this.data = JSON.parse(JSON.stringify(item));
-      this.title = "修改设备信息";
-      this.$refs.AddDevice.visible = true;
-      this.$refs.AddDevice.init();
+      console.log(item)
+      this.data = JSON.parse(JSON.stringify(item))
+      this.title = '修改设备信息'
+      this.$refs.AddDevice.visible = true
+      this.$refs.AddDevice.init()
     },
     deleteDevice(id) {
-      this.$confirm("确定删除设备吗", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确定删除设备吗', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        confirmButtonClass: 'box-confim',
+        cancelButtonClass: 'box-cancel',
+        type: 'warning'
       })
         .then(() => {
-          this.$ajax.get("device/delete", id).then(res => {
-            this.getDeviceData();
-            this.$message.success(res.message);
-          });
+          this.$http.get('device/delete', id).then(res => {
+            this.getDeviceData()
+            this.$message.success(res.message)
+          })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     getDetail(id, sn) {
-      this.$router.push("/home/commonview/device-detail/" + id);
-      window.sessionStorage.setItem("sn", sn);
-      window.sessionStorage.setItem("isShow", true);
+      this.$router.push('/home/commonview/device-detail/' + id)
+      window.sessionStorage.setItem('sn', sn)
+      window.sessionStorage.setItem('isShow', true)
     }
   }
-};
+}
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-
 .device-info {
   margin-bottom: 20px;
   h2 {
@@ -144,6 +147,17 @@ export default {
   }
   p {
     margin-top: 16px;
+  }
+}
+.gjc-tag {
+  font-size: 12px;
+  display: inline-block;
+  padding: 2px 4px;
+  background-color: #ccc;
+  border-radius: 4px;
+  &.active {
+    background-color: #67C23A;
+    color: #fff;
   }
 }
 </style>

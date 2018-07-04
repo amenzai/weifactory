@@ -6,7 +6,7 @@
       </el-form-item>
       <el-form-item label="异常类型：">
         <el-select clearable v-model="table.send.exceptionType" placeholder="请选择">
-          <el-option :label="item.label" :value="item.value" v-for="(item,index) in exceptionType" :key="index"></el-option>
+          <el-option :label="item.itemName" :value="item.itemCode" v-for="(item,index) in exceptionType" :key="index"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -34,11 +34,12 @@
   </el-row>
 </template>
 <script>
+import { exceptionTypeMixin } from 'common/js/mixin.js'
 export default {
+  mixins: [exceptionTypeMixin],
   data() {
     return {
       userId: '',
-      exceptionType: [],
       table: {
         data: [],
         send: {
@@ -57,44 +58,30 @@ export default {
   created() {
     this.table.send.userId = this.$store.state.userId
     this.getList()
-    this.getExceptionType()
   },
   methods: {
     getList() {
-      this.$ajax.post('exception/list',this.table.send)
-        .then(res => {
-          console.log('', res);
-          this.table.data = res.data.list;
-          this.table.totalCount = res.data.total;
-          this.table.totalPages = res.data.pages;
-        })
-    },
-    getExceptionType() {
-      this.$ajax.get('dict/dictItemList','exceptionType')
-        .then(res => {
-          this.exceptionType = res.data.map(item => {
-            return {
-              label: item.itemName,
-              value: item.itemCode
-            }
-          })
-        })
+      this.$http.post('exception/list', this.table.send).then(res => {
+        console.log('', res)
+        this.table.data = res.data.list
+        this.table.totalCount = res.data.total
+        this.table.totalPages = res.data.pages
+      })
     },
     handleSizeChange(val) {
-      this.table.send.pageSize = val;
-      this.getList();
+      this.table.send.pageSize = val
+      this.getList()
     },
     handleCurrentChange(val) {
-      this.table.send.page = val;
-      this.getList();
+      this.table.send.page = val
+      this.getList()
     },
     searchList() {
       this.table.send.page = 1
-      this.getList();
+      this.getList()
     }
   }
 }
 </script>
 <style scoped>
-
 </style>

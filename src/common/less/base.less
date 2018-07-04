@@ -1,5 +1,4 @@
 @import './variable.less';
-
 .fl-l {
   float: left;
 }
@@ -7,16 +6,20 @@
 .fl-r {
   float: right;
 }
+
 .ta-c {
   text-align: center;
 }
+
 .ta-r {
   text-align: right;
 }
+
 .blue {
   color: @blue;
   cursor: pointer;
 }
+
 .yellow {
   color: @yellow;
 }
@@ -48,6 +51,23 @@
   margin-bottom: 10px;
 }
 
+.el-button--primary.box-confim {
+  color: #606266;
+  border-color: #dcdfe6;
+  background-color: #fff;
+}
+
+.box-cancel {
+  color: #fff;
+  background-color: #409EFF;
+  border-color: #409EFF;
+  &:hover {
+    background: #66b1ff;
+    border-color: #66b1ff;
+    color: #fff;
+  }
+}
+
 .el-input.inline {
   width: 40%;
 }
@@ -61,18 +81,38 @@
   font-size: 12px;
 }
 
-
 // .el-form--inline .el-form-item {
 //   margin-bottom: 5px
 // }
-
-.el-table__body, .el-table__footer, .el-table__header {
+.el-table__body,
+.el-table__footer,
+.el-table__header {
   border-collapse: collapse;
 }
 
 .el-table .cell {
   padding-left: 8px;
   padding-right: 8px;
+}
+
+.el-collapse-item__content {
+  padding-bottom: 0;
+}
+
+#search-input .el-input__inner {
+  width: 130px;
+}
+
+#search-input .el-date-editor {
+  width: 220px;
+}
+
+#search-input .el-date-editor .el-input__inner {
+  width: 100%;
+}
+
+#search-input .el-input {
+  width: inherit;
 }
 
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
@@ -83,7 +123,6 @@
   background-color: #f5f5f5;
 }
 
-
 /*定义滚动条轨道 内阴影+圆角*/
 
 ::-webkit-scrollbar-track {
@@ -91,7 +130,6 @@
   border-radius: 10px;
   background-color: #fff;
 }
-
 
 /*定义滑块 内阴影+圆角*/
 

@@ -9,20 +9,14 @@
         <el-form-item label="最低湿度：">{{ modelDetail.humidityDown }}</el-form-item>
         <el-form-item label="最高光照强度：">{{ modelDetail.illuminationUp }}</el-form-item>
         <el-form-item label="最低光照强度：">{{ modelDetail.illuminationDown }}</el-form-item>
-        <el-form-item label="二氧化碳浓度上限：">{{ modelDetail.co2Up }}</el-form-item>
-        <el-form-item label="二氧化碳浓度下限：">{{ modelDetail.co2Down }}</el-form-item>
       </el-col>
       <el-col :span="12">
+        <el-form-item label="二氧化碳浓度上限：">{{ modelDetail.co2Up }}</el-form-item>
+        <el-form-item label="二氧化碳浓度下限：">{{ modelDetail.co2Down }}</el-form-item>
         <el-form-item label="EC值上限：">{{ modelDetail.ecUp }}</el-form-item>
         <el-form-item label="EC值下限：">{{ modelDetail.ecDown }}</el-form-item>
-        <el-form-item label="氧气浓度上限：">{{ modelDetail.oxygenUp }}</el-form-item>
-        <el-form-item label="氧气浓度下限：">{{ modelDetail.oxygenDown }}</el-form-item>
-        <el-form-item label="ph值上限：">{{ modelDetail.phUp }}</el-form-item>
-        <el-form-item label="ph值下限：">{{ modelDetail.phDown }}</el-form-item>
-        <el-form-item label="高液位上限：">{{ modelDetail.highLevelUp }}</el-form-item>
-        <el-form-item label="高液位下限：">{{ modelDetail.hightLevelDown }}</el-form-item>
-        <el-form-item label="低液位上限：">{{ modelDetail.lowLevelUp }}</el-form-item>
-        <el-form-item label="低液位下限：">{{ modelDetail.lowLevelDown }}</el-form-item>
+        <el-form-item label="PH值上限：">{{ modelDetail.phUp }}</el-form-item>
+        <el-form-item label="PH值下限：">{{ modelDetail.phDown }}</el-form-item>
       </el-col>
     </el-form>
   </el-row>
@@ -40,7 +34,7 @@ export default {
     },
     methods: {
       getList() {
-        this.$ajax.get('model/detail', this.modelId)
+        this.$http.get('model/detail', this.modelId)
           .then(res => {
             console.log('', res);
             this.modelDetail = res.data;

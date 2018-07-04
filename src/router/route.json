@@ -1,0 +1,202 @@
+[{
+    "path": "/home",
+    "page": "home",
+    "title": "首页",
+    "children": [{
+        "path": "",
+        "name": "index",
+        "title": "首页",
+        "page": "index"
+      },
+      {
+        "path": "/404",
+        "title": "404",
+        "name": "404",
+        "page": "404"
+      },
+      {
+        "path": "manager/userlist",
+        "page": "manager/userlist",
+        "title": "用户管理"
+      },
+      {
+        "path": "manager/dictlist",
+        "page": "manager/dictlist",
+        "title": "字典管理"
+      },
+      {
+        "path": "manager/user-detail",
+        "page": "manager/user-detail",
+        "title": "用户详情"
+      },
+      {
+        "path": "commonview/batchlist",
+        "page": "commonview/batchlist",
+        "title": "批次管理"
+      },
+      {
+        "path": "commonview/batch-detail",
+        "page": "commonview/batch-detail",
+        "title": "批次详情"
+      },
+      {
+        "path": "manager/devicelist",
+        "page": "manager/devicelist",
+        "title": "设备管理"
+      },
+      {
+        "path": "manager/device-sn",
+        "page": "manager/device-sn",
+        "title": "设备序列号管理"
+      },
+      {
+        "path": "commonview/device-detail/:id",
+        "page": "commonview/device-detail",
+        "title": "设备批次信息"
+      },
+      {
+        "path": "commonview/apply-manage",
+        "page": "commonview/apply-manage",
+        "title": "申请专家托管"
+      },
+      {
+        "path": "commonview/order-payment",
+        "page": "commonview/order-payment",
+        "title": "订单支付"
+      },
+      {
+        "path": "commonview/btn-control",
+        "page": "commonview/btn-control",
+        "title": "设备控制"
+      },
+      {
+        "path": "commonview/setting",
+        "page": "commonview/setting",
+        "title": "生长模式"
+      },
+      {
+        "path": "commonview/hand-setting",
+        "page": "commonview/hand-setting",
+        "title": "手动控制"
+      },
+      {
+        "path": "commonview/history-data",
+        "page": "commonview/history-data",
+        "title": "历史数据"
+      },
+      {
+        "path": "manager/expertlist",
+        "page": "manager/expertlist",
+        "title": "专家管理"
+      },
+      {
+        "path": "manager/rolelist",
+        "page": "manager/rolelist",
+        "title": "角色管理"
+      },
+      {
+        "path": "manager/menulist",
+        "page": "manager/menulist",
+        "title": "菜单管理"
+      },
+      {
+        "path": "manager/menu-permission",
+        "page": "manager/menu-permission",
+        "title": "角色菜单权限"
+      },
+      {
+        "path": "commonview/orderlist",
+        "page": "commonview/orderlist",
+        "title": "订单管理"
+      },
+      {
+        "path": "commonview/order-detail",
+        "page": "commonview/order-detail",
+        "title": "订单详情"
+      },
+      {
+        "path": "commonview/modellist",
+        "page": "commonview/modellist",
+        "title": "参数阈值库管理"
+      },
+      {
+        "path": "commonview/model-detail",
+        "page": "commonview/model-detail",
+        "title": "参数阈值库详情"
+      },
+      {
+        "path": "expert/trust-devicelist",
+        "page": "expert/trust-devicelist",
+        "title": "托管设备管理"
+      },
+      {
+        "path": "commonview/pic-manage",
+        "page": "commonview/pic-manage",
+        "title": "图片管理"
+      },
+      {
+        "path": "manager/concatlog-manage",
+        "page": "manager/concatlog-manage",
+        "title": "连接日志管理"
+      },
+      {
+        "path": "commonview/exception-manage",
+        "page": "commonview/exception-manage",
+        "title": "异常管理"
+      },
+      {
+        "path": "commonview/pay-success",
+        "page": "commonview/pay-success",
+        "title": "支付成功"
+      },
+      {
+        "path": "manager/paramlist",
+        "page": "manager/paramlist",
+        "title": "参数管理"
+      },
+      {
+        "path": "manager/time-task",
+        "page": "manager/time-task",
+        "title": "定时任务"
+      },
+      {
+        "path": "manager/param-setting",
+        "page": "manager/param-setting",
+        "title": "生长模式参数设置"
+      },
+      {
+        "path": "manager/param-setlist",
+        "page": "manager/param-setlist",
+        "title": "生长模式参数设置信息"
+      },
+      {
+        "path": "manager/feed-setting",
+        "page": "manager/feed-setting",
+        "title": "育苗参数设置"
+      },
+      {
+        "path": "manager/feed-setlist",
+        "page": "manager/feed-setlist",
+        "title": "育苗参数设置信息"
+      }
+    ]
+  },
+  {
+    "path": "/expert/audit",
+    "title": "等待审核",
+    "name": "audit",
+    "page": "expert/audit"
+  },
+  {
+    "path": "/security/login",
+    "title": "用户登录",
+    "name": "login",
+    "page": "security/login"
+  },
+  {
+    "path": "/security/register",
+    "title": "用户注册",
+    "name": "register",
+    "page": "security/register"
+  }
+]

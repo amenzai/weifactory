@@ -13,19 +13,19 @@
             <el-input-number v-model="data.wd1" controls-position="right" :min="0" :max="99999999"></el-input-number>
           </li>
           <li>
-           <el-checkbox v-model="data.kqxh1" label="空气循环" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.kqxd1" label="空气消毒" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.hxf1" label="换新风" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.kqxh1" label="空气循环" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.kqxd1" label="空气消毒" border true-label="1" false-label="0" @change="handleChanage1"></el-checkbox>
+            <el-checkbox v-model="data.hxf1" label="换新风" border true-label="1" false-label="0"></el-checkbox>
           </li>
           <li>
-           <el-checkbox v-model="data.syyy1" label="施营养液" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.pyyy1" label="排营养液" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.yyyxd1" label="营养液消毒" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.syyy1" label="施营养液" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.pyyy1" label="排营养液" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.yyyxd1" label="营养液消毒" border true-label="1" false-label="0"></el-checkbox>
           </li>
           <li>
-           <el-checkbox v-model="data.led11" label="LED1" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.led12" label="LED2" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.led13" label="LED3" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.led11" label="LED1" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.led12" label="LED2" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.led13" label="LED3" border true-label="1" false-label="0"></el-checkbox>
           </li>
         </ul>
       </el-tab-pane>
@@ -36,19 +36,19 @@
             <el-input-number v-model="data.wd2" controls-position="right" :min="0" :max="99999999"></el-input-number>
           </li>
           <li>
-           <el-checkbox v-model="data.kqxh2" label="空气循环" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.kqxd2" label="空气消毒" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.hxf2" label="换新风" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.kqxh2" label="空气循环" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.kqxd2" label="空气消毒" border true-label="1" false-label="0" @change="handleChanage2"></el-checkbox>
+            <el-checkbox v-model="data.hxf2" label="换新风" border true-label="1" false-label="0"></el-checkbox>
           </li>
           <li>
-           <el-checkbox v-model="data.syyy2" label="施营养液" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.pyyy2" label="排营养液" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.yyyxd2" label="营养液消毒" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.syyy2" label="施营养液" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.pyyy2" label="排营养液" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.yyyxd2" label="营养液消毒" border true-label="1" false-label="0"></el-checkbox>
           </li>
           <li>
-           <el-checkbox v-model="data.led21" label="LED1" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.led22" label="LED2" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.led23" label="LED3" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.led21" label="LED1" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.led22" label="LED2" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.led23" label="LED3" border true-label="1" false-label="0"></el-checkbox>
           </li>
         </ul>
       </el-tab-pane>
@@ -59,26 +59,26 @@
             <el-input-number v-model="data.wd3" controls-position="right" :min="0" :max="99999999"></el-input-number>
           </li>
           <li>
-           <el-checkbox v-model="data.kqxh3" label="空气循环" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.kqxd3" label="空气消毒" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.hxf3" label="换新风" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.kqxh3" label="空气循环" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.kqxd3" label="空气消毒" border true-label="1" false-label="0" @change="handleChanage3"></el-checkbox>
+            <el-checkbox v-model="data.hxf3" label="换新风" border true-label="1" false-label="0"></el-checkbox>
           </li>
           <li>
-           <el-checkbox v-model="data.syyy3" label="施营养液" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.pyyy3" label="排营养液" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.yyyxd3" label="营养液消毒" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.syyy3" label="施营养液" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.pyyy3" label="排营养液" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.yyyxd3" label="营养液消毒" border true-label="1" false-label="0"></el-checkbox>
           </li>
           <li>
-           <el-checkbox v-model="data.led31" label="LED1" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.led32" label="LED2" border true-label="1" false-label="0"></el-checkbox>
-           <el-checkbox v-model="data.led33" label="LED3" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.led31" label="LED1" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.led32" label="LED2" border true-label="1" false-label="0"></el-checkbox>
+            <el-checkbox v-model="data.led33" label="LED3" border true-label="1" false-label="0"></el-checkbox>
           </li>
         </ul>
       </el-tab-pane>
       <el-tab-pane label="育苗室" name="four">
         <p class="miao-btn">
           <el-checkbox v-model="data.ymbg" label="育苗补光" border true-label="1" false-label="0"></el-checkbox>
-         <el-checkbox v-model="data.mpjs" label="苗盘浇水" border true-label="1" false-label="0"></el-checkbox>
+          <el-checkbox v-model="data.mpjs" label="苗盘浇水" border true-label="1" false-label="0"></el-checkbox>
         </p>
       </el-tab-pane>
     </el-tabs>
@@ -87,7 +87,7 @@
       <el-button @click="reset">取消</el-button>
     </p>
     <div class="bottom-info ta-c">
-      <control-btn :trust-status="batchInfo.trustStatus"></control-btn>
+      <control-btn></control-btn>
     </div>
   </el-row>
 </template>
@@ -99,13 +99,13 @@ export default {
   },
   data() {
     return {
-      activeName: "first",
+      activeName: 'first',
       batchInfo: {},
       data: {}
-    };
+    }
   },
   created() {
-    this.batchInfo = this.$store.state.batchInfo;
+    this.batchInfo = this.$store.state.batchInfo
     this.getParamInfo()
   },
   methods: {
@@ -143,12 +143,12 @@ export default {
         led33: '0',
         ymbg: '0',
         mpjs: '0'
-      };
+      }
     },
     getParamInfo() {
-      this.$ajax.get("hand", this.batchInfo.batchId).then(res => {
+      this.$http.get('hand', this.batchInfo.batchId).then(res => {
         if (res.data === null) {
-          this.init();
+          this.init()
         } else {
           this.data = {
             handControlId: res.data.handControlId,
@@ -184,23 +184,42 @@ export default {
             led33: res.data.led33,
             ymbg: res.data.ymbg,
             mpjs: res.data.mpjs
-          };
+          }
         }
-      });
+      })
     },
     submit() {
-      const send = JSON.parse(JSON.stringify(this.data));
-      send.batchId = this.batchInfo.batchId;
-      this.$ajax.post("hand/saveOrUpdate", send).then(res => {
-        this.$message.success(res.message);
-        this.getParamInfo();
-      });
+      const send = JSON.parse(JSON.stringify(this.data))
+      // send.deviceId = this.batchInfo.deviceId
+      send.sn = window.sessionStorage.getItem('sn') || ''
+      this.$http.post('hand/saveOrUpdate', send).then(res => {
+        this.$message.success(res.message)
+        this.getParamInfo()
+      }).catch(() => {
+        this.getParamInfo()
+      })
     },
     reset() {
-      this.getParamInfo();
+      this.getParamInfo()
+    },
+    handleChanage1(val) {
+      if (val === '1') {
+        console.log(1)
+        this.data.hxf1 = '1'
+      }
+    },
+    handleChanage2(val) {
+      if (val === '1') {
+        this.data.hxf2 = '1'
+      }
+    },
+    handleChanage3(val) {
+      if (val === '1') {
+        this.data.hxf3 = '1'
+      }
     }
   }
-};
+}
 </script>
 <style scoped lang="less">
 .list-item {

@@ -49,7 +49,7 @@ export default {
   methods: {
     getList() {
       const send = this.table.send.pageNo + '/' + this.table.send.pageSize
-      this.$ajax.get('role/list',send)
+      this.$http.get('role/list',send)
         .then(res => {
           console.log('', res);
           this.table.data = res.data.list;

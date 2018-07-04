@@ -135,7 +135,7 @@ export default {
       },
       handleClick(val) {
         if (val) {
-          this.$ajax.get('menu/list', val)
+          this.$http.get('menu/list', val)
             .then(res => {
               console.log('', res);
               this.menuItemList = res.data;
@@ -145,7 +145,7 @@ export default {
         }
       },
       getList() {
-        this.$ajax.get('menu/list')
+        this.$http.get('menu/list')
           .then(res => {
             console.log('', res);
             this.menuList = res.data;
@@ -179,7 +179,7 @@ export default {
           return false;
         }
         const send = JSON.parse(JSON.stringify(this.addDialog.data));
-        this.$ajax.post('menu/saveOrUpdate', send)
+        this.$http.post('menu/saveOrUpdate', send)
           .then(res => {
             console.log('', res);
             var type = res.success ? 'success' : 'error';
@@ -223,7 +223,7 @@ export default {
           return false;
         }
         const send = JSON.parse(JSON.stringify(this.addItemDialog.data));
-        this.$ajax.post('menu/saveOrUpdate', send)
+        this.$http.post('menu/saveOrUpdate', send)
           .then(res => {
             console.log('', res);
             var type = res.success ? 'success' : 'error';
@@ -241,9 +241,11 @@ export default {
         this.$confirm('确定删除菜单吗', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
+          confirmButtonClass: 'box-confim',
+          cancelButtonClass: 'box-cancel',
           type: 'warning'
         }).then(() => {
-          this.$ajax.get('menu/delete', id)
+          this.$http.get('menu/delete', id)
             .then(res => {
               var type = res.success ? 'success' : 'error';
               if (type === 'success') {

@@ -1,11 +1,28 @@
 <template>
   <el-row>
+    <el-form ref="form" :inline="true" :model="table.send" @keyup.enter.native="getList" id="search-input">
+      <el-form-item label="用户名：">
+        <el-input v-model="table.send.userName"></el-input>
+      </el-form-item>
+      <el-form-item label="手机号：">
+        <el-input v-model="table.send.userPhone"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱：">
+        <el-input v-model="table.send.userEmail"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="searchList">搜索</el-button>
+      </el-form-item>
+    </el-form>
     <el-col :span="24" class="mb10">
-      <el-button @click="addUser">用户添加</el-button>
+      <el-button @click="addUser" type="primary">用户添加</el-button>
     </el-col>
     <el-table :data="table.data" border style="width: 100%">
       <el-table-column label="用户名">
         <template slot-scope="scope">{{ scope.row.userName }}</template>
+      </el-table-column>
+      <el-table-column label="角色">
+        <template slot-scope="scope">{{ scope.row.role | seeLabel(roleArr) }}</template>
       </el-table-column>
       <el-table-column label="手机号">
         <template slot-scope="scope">{{ scope.row.userPhone }}</template>
@@ -30,7 +47,7 @@
       </el-table-column>
     </el-table>
     <div class="fl-r mt10">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.pageNo" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="table.send.page" :page-sizes="table.pageSelect" :page-size="table.send.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="table.totalCount">
       </el-pagination>
     </div>
     <el-dialog :title="userManageTitle" :visible.sync="modifyDialog.visible" :close-on-click-modal="false">
@@ -64,175 +81,190 @@
   </el-row>
 </template>
 <script>
+import { userRoleMixin } from 'common/js/mixin.js'
 export default {
+  mixins: [userRoleMixin],
   data() {
-      return {
-        state: '',
-        isName: false,
-        isShow: true,
-        userManageTitle: '',
-        modifyDialog: {
-          visible: false,
-          data: {},
-          rules: {
-            userName: [{
+    return {
+      state: '',
+      isName: false,
+      isShow: true,
+      userManageTitle: '',
+      modifyDialog: {
+        visible: false,
+        data: {},
+        rules: {
+          userName: [
+            {
               required: true,
               message: '请输入用户名',
               trigger: 'blur'
-            }],
-            userPassword: [{
+            }
+          ],
+          userPassword: [
+            {
               required: true,
               message: '请输入密码',
               trigger: 'blur'
-            }],
-            userPhone: [{
+            }
+          ],
+          userPhone: [
+            {
               pattern: /^1[34578]\d{9}$/,
               message: '手机号码格式不正确'
-            }],
-            userEmail: [{
+            }
+          ],
+          userEmail: [
+            {
               type: 'email',
               message: '邮箱格式不正确'
-            }]
-          }
-        },
-        table: {
-          data: [],
-          send: {
-            pageNo: 1,
-            pageSize: this.$CONSTANT.PAGE_SIZE
-          },
-          totalCount: 0,
-          totalPages: 0,
-          pageSelect: this.$CONSTANT.PAGE_SELECT
+            }
+          ]
         }
-      }
-    },
-    created() {
-      this.getList()
-    },
-    methods: {
-      init() {
-        this.modifyDialog.data = {
-          id: '',
+      },
+      table: {
+        data: [],
+        send: {
           userName: '',
-          userPassword: '',
           userPhone: '',
           userEmail: '',
-          userWeixinId: '',
-          userWeixinNickname: '',
-          personalIntroduction: ''
-        }
-      },
-      getList() {
-        const send = this.table.send.pageNo + '/' + this.table.send.pageSize
-        this.$ajax.get('user/userList', send)
-          .then(res => {
-            console.log('', res);
-            this.table.data = res.data.list;
-            this.table.pageNo = res.data.firstPage;
-            this.table.totalCount = res.data.total;
-            this.table.totalPages = res.data.pages;
-          })
-      },
-      addUser() {
-        this.userManageTitle = '添加用户'
-        this.state = 1
-        this.isShow = true
-        this.isName = false
-        this.resetForm('modifyForm')
-        this.init()
-        this.modifyDialog.visible = true;
-      },
-      modifyUser(data) {
-        this.userManageTitle = '修改用户信息'
-        this.state = 2
-        this.isShow = false
-        this.isName = true
-        this.resetForm('modifyForm')
-        this.init()
-        this.modifyDialog.visible = true;
-        this.modifyDialog.data = {
-          id: data.userId,
-          userName: data.userName,
-          userPassword: data.userPassword,
-          userPhone: data.userPhone,
-          userEmail: data.userEmail,
-          userWeixinId: data.userWeixinId,
-          userWeixinNickname: data.userWeixinNickname,
-          personalIntroduction: data.personalIntroduction
-        }
-      },
-      modifySubmit(formName) {
-        let valid = false;
-        this.$refs[formName].validate((v) => {
-          valid = v
-        });
-        if (!valid) {
-          return false;
-        }
-        const send = JSON.parse(JSON.stringify(this.modifyDialog.data));
-        if (this.state === 1) {
-          this.$ajax.post('user/add', send)
-            .then(res => {
-              console.log('', res);
-              var type = res.success ? 'success' : 'error';
-              if (type === 'success') {
-                this.modifyDialog.visible = false;
-                this.getList();
-              }
-              this.$message({
-                message: res.message,
-                type: type
-              });
-            })
-        } else {
-          delete send.userPassword
-          this.$ajax.post('user/update', send)
-            .then(res => {
-              console.log('', res);
-              var type = res.success ? 'success' : 'error';
-              if (type === 'success') {
-                this.modifyDialog.visible = false;
-                this.getList();
-              }
-              this.$message({
-                message: res.message,
-                type: type
-              });
-            })
-        }
-      },
-      deleteUser(id) {
-        this.$confirm('确定删除用户吗', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$ajax.get('user/delete', id)
-            .then(res => {
-              var type = res.success ? 'success' : 'error';
-              if (type === 'success') {
-                this.getList();
-              }
-              this.$message({
-                message: res.message,
-                type: type
-              });
-            })
-        }).catch(() => {});
-      },
-      handleSizeChange(val) {
-        this.table.send.pageSize = val;
-        this.getList();
-      },
-      handleCurrentChange(val) {
-        this.table.send.pageNo = val;
-        this.getList();
-      },
-      resetForm(formName) {
-        this.$refs[formName] && this.$refs[formName].resetFields();
+          page: 1,
+          pageSize: this.$CONSTANT.PAGE_SIZE
+        },
+        totalCount: 0,
+        totalPages: 0,
+        pageSelect: this.$CONSTANT.PAGE_SELECT
       }
     }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    init() {
+      this.modifyDialog.data = {
+        id: '',
+        userName: '',
+        userPassword: '',
+        userPhone: '',
+        userEmail: '',
+        userWeixinId: '',
+        userWeixinNickname: '',
+        personalIntroduction: ''
+      }
+    },
+    getList() {
+      this.$http.post('user/search', this.table.send).then(res => {
+        console.log('', res)
+        this.table.data = res.data.list
+        this.table.totalCount = res.data.total
+        this.table.totalPages = res.data.pages
+      })
+    },
+    addUser() {
+      this.userManageTitle = '添加用户'
+      this.state = 1
+      this.isShow = true
+      this.isName = false
+      this.resetForm('modifyForm')
+      this.init()
+      this.modifyDialog.visible = true
+    },
+    modifyUser(data) {
+      this.userManageTitle = '修改用户信息'
+      this.state = 2
+      this.isShow = false
+      this.isName = true
+      this.resetForm('modifyForm')
+      this.init()
+      this.modifyDialog.visible = true
+      this.modifyDialog.data = {
+        id: data.userId,
+        userName: data.userName,
+        userPassword: data.userPassword,
+        userPhone: data.userPhone,
+        userEmail: data.userEmail,
+        userWeixinId: data.userWeixinId,
+        userWeixinNickname: data.userWeixinNickname,
+        personalIntroduction: data.personalIntroduction
+      }
+    },
+    modifySubmit(formName) {
+      let valid = false
+      this.$refs[formName].validate(v => {
+        valid = v
+      })
+      if (!valid) {
+        return false
+      }
+      const send = JSON.parse(JSON.stringify(this.modifyDialog.data))
+      if (this.state === 1) {
+        this.$http.post('user/add', send).then(res => {
+          console.log('', res)
+          var type = res.success ? 'success' : 'error'
+          if (type === 'success') {
+            this.modifyDialog.visible = false
+            this.getList()
+          }
+          this.$message({
+            message: res.message,
+            type: type
+          })
+        })
+      } else {
+        delete send.userPassword
+        this.$http.post('user/update', send).then(res => {
+          console.log('', res)
+          var type = res.success ? 'success' : 'error'
+          if (type === 'success') {
+            this.modifyDialog.visible = false
+            this.getList()
+          }
+          this.$message({
+            message: res.message,
+            type: type
+          })
+        })
+      }
+    },
+    deleteUser(id) {
+      this.$confirm('确定删除用户吗', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        confirmButtonClass: 'box-confim',
+        cancelButtonClass: 'box-cancel',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$http.get('user/delete', id).then(res => {
+            var type = res.success ? 'success' : 'error'
+            if (type === 'success') {
+              this.getList()
+            }
+            this.$message({
+              message: res.message,
+              type: type
+            })
+          })
+        })
+        .catch(() => {})
+    },
+    searchList() {
+      this.table.send.page = 1
+      this.getList()
+    },
+    handleSizeChange(val) {
+      this.table.send.pageSize = val
+      this.getList()
+    },
+    handleCurrentChange(val) {
+      this.table.send.page = val
+      this.getList()
+    },
+    resetForm(formName) {
+      this.$refs[formName] && this.$refs[formName].resetFields()
+    }
+  }
 }
 </script>
 <style scoped>

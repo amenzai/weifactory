@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-form :inline="true" ref="form" :model="table.send">
+    <el-form :inline="true" ref="form" :model="table.send" @keyup.enter.native="searchList">
       <el-form-item label="设备序列号：">
         <el-input v-model="table.send.sn"></el-input>
       </el-form-item>
@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     getList() {
-      this.$ajax.post('comm/list',this.table.send)
+      this.$http.post('comm/list',this.table.send)
         .then(res => {
           console.log('', res);
           this.table.data = res.data.list;
@@ -84,7 +84,7 @@ export default {
         })
     },
     getOptionType() {
-      this.$ajax.get('dict/dictItemList','optionType')
+      this.$http.get('dict/dictItemList','optionType')
         .then(res => {
           this.optionType = res.data.map(item => {
             return {
